@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Calvin Assassin Game</string>
     <string name="main_page_text">This is the initial prototype for The B Team\'s Assassin game.\n\n\nOur awesome members are:\n\nPaige Brinks\nJesse Hulse\nFrank Boye\nNate Bender\nChristiaan Hazlett\n\n\nGet ready this fall... to watch your back.</string>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 </resources>
