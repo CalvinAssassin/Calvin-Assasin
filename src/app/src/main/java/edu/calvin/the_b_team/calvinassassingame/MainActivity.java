@@ -1,19 +1,18 @@
 package edu.calvin.the_b_team.calvinassassingame;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.ActionBarActivity;
 import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.content.Intent;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //Beginning of menu drawer configuration
     private void addDrawerItems() {
         String[] menuPages = { "Profile", "Map", "Standings", "Settings" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuPages);
@@ -49,19 +49,18 @@ public class MainActivity extends AppCompatActivity {
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "Menu Item Clicked!", Toast.LENGTH_SHORT).show();
+                selectItem(position);
             }
         });
     }
 
     private void setupDrawer() {
-        //Put a hamburger menu button in the Action Bar
         mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
 
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle("Choose One!");
+                getSupportActionBar().setTitle("Choose one!");
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
@@ -74,7 +73,9 @@ public class MainActivity extends AppCompatActivity {
         };
 
         mDrawerToggle.setDrawerIndicatorEnabled(true);
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
+
 
 //    This is an expiriment. It adds the '...' to the action bar
 //    @Override
@@ -103,4 +104,36 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void selectItem(int position) {
+
+        // Handle Navigation Options
+        Intent intent;
+        switch (position) {
+            case 0:
+                intent = new Intent(this, ProfileViewActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                this.startActivity(intent);
+                break;
+            case 1:
+                intent = new Intent(this, MapViewActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                this.startActivity(intent);
+                break;
+            case 2:
+                intent = new Intent(this, StandingsViewActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                this.startActivity(intent);
+                break;
+            case 3:
+                intent = new Intent(this, SettingsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                this.startActivity(intent);
+                break;
+        }
+    }
+    // End of menu drawer configuration
+
+
+
 }
