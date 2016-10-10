@@ -1,4 +1,4 @@
-# assassin-android
+# Calvin Assasin
 Android phone app for the CS262 Assassin game project
 
 # Vision Statement
