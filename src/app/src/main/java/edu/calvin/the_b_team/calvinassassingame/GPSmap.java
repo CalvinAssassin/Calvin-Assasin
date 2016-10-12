@@ -42,10 +42,9 @@ public class GPSmap extends FragmentActivity implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         // The coordinates for Calvin College is 42.9306° N, -85.5880° W
-        LatLng calvin = new LatLng(43, -85);
+        LatLng calvin = new LatLng(42.9306, -85.5880);
         mMap.addMarker(new MarkerOptions().position(calvin).title("Marker at calvin college"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(calvin));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(calvin, 15));
     }
 }
