@@ -35,6 +35,8 @@ public class StandingsViewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        setTitle("Standings");
+
     }
    // Beginning of menu drawer configuration
 
@@ -74,7 +76,7 @@ public class StandingsViewActivity extends AppCompatActivity {
     }
 
 
-//    This is an expiriment. It adds the '...' to the action bar
+//    This is an experiment. It adds the '...' to the action bar
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
 //        // Inflate the menu; this adds items to the action bar if it is present.
