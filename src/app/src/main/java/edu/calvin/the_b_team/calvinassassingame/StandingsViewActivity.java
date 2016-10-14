@@ -1,3 +1,8 @@
+// This class is the main java class for the standings activity.
+// It shows game progress, stats on players, and who's left alive
+//
+// @author: Christiaan Hazlett, The B Team
+
 package edu.calvin.the_b_team.calvinassassingame;
 
 import android.content.Intent;
