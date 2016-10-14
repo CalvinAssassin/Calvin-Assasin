@@ -6,6 +6,14 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="title_activity_settings">Settings</string>
 
+    <!-- Strings related to Profile Activity -->
+    <string name="user_name_label">Player name: </string>
+    <string name="user_name">Full Name</string>
+    <string name="user_year_label">Player class: </string>
+    <string name="year">Freshman</string>
+    <string name="user_home_label">Residence: </string>
+    <string name="user_home">Huizenga</string>
+
     <!-- Strings related to Settings -->
 
     <!-- Example General settings -->
