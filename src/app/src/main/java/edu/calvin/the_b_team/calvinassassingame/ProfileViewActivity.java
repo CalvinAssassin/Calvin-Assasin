@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ImageView;
 
 public class ProfileViewActivity extends AppCompatActivity {
 
@@ -113,7 +114,7 @@ public class ProfileViewActivity extends AppCompatActivity {
                 this.startActivity(intent);
                 break;
             case 1:
-                intent = new Intent(this, MapViewActivity.class);
+                intent = new Intent(this, GPSmap.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 this.startActivity(intent);
                 break;
