@@ -18,7 +18,7 @@
         android:background="#ffffffff">
 
         <Button
-            android:text="I Killed My Target"
+            android:text="@string/eliniate_button"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:id="@+id/killedButton"
@@ -76,7 +76,7 @@
             android:layout_alignParentEnd="true" />
 
         <TextView
-            android:text="Target Last Seen:"
+            android:text="@string/last_seen"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="24sp"

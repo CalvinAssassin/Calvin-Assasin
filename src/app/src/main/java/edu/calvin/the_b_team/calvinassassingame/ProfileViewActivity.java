@@ -28,7 +28,7 @@ public class ProfileViewActivity extends AppCompatActivity {
 
         //Set up the menu drawer and its items
         mDrawerList = (ListView)findViewById(R.id.navList);mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        mActivityTitle = getTitle().toString();
+        setTitle(getResources().getText(R.string.profile_activity_title));
 
         addDrawerItems();
         setupDrawer();
@@ -40,7 +40,7 @@ public class ProfileViewActivity extends AppCompatActivity {
     // Beginning of menu drawer configuration
 
     private void addDrawerItems() {
-        String[] menuPages = { "Profile", "Map", "Standings", "Settings" };
+        String[] menuPages = { "Home", "Map", "Standings", "Settings" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuPages);
         mDrawerList.setAdapter(mAdapter);
 
@@ -65,7 +65,7 @@ public class ProfileViewActivity extends AppCompatActivity {
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                getSupportActionBar().setTitle(mActivityTitle);
+                getSupportActionBar().setTitle(R.string.profile_activity_title);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
@@ -109,7 +109,7 @@ public class ProfileViewActivity extends AppCompatActivity {
         Intent intent;
         switch (position) {
             case 0:
-                intent = new Intent(this, ProfileViewActivity.class);
+                intent = new Intent(this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 this.startActivity(intent);
                 break;
