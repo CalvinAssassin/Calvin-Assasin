@@ -1,5 +1,6 @@
 package edu.calvin.the_b_team.calvinassassingame;
 
+import android.graphics.Point;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 
@@ -10,6 +11,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import android.support.v4.app.Fragment;
+import android.util.Log;
+import android.view.Display;
+import android.view.ViewGroup;
 
 /**
  * This class implements a basic map with a marker placed at calvin college.
@@ -26,8 +30,24 @@ public class GPSmap extends FragmentActivity implements OnMapReadyCallback {
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
+        //retrieve the height and width of screen
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+        //set map's height and width to be 4/5 the size of screen
+        ViewGroup.LayoutParams params = mapFragment.getView().getLayoutParams();
+        params.height = (int) ( height * 0.8 );
+        params.width = (int) ( width * 0.8 );
+
+        mapFragment.getView().setLayoutParams(params);
         mapFragment.getMapAsync(this);
+
+
     }
+
+
 
 
     /**
@@ -46,5 +66,7 @@ public class GPSmap extends FragmentActivity implements OnMapReadyCallback {
         LatLng calvin = new LatLng(42.9306, -85.5880);
         mMap.addMarker(new MarkerOptions().position(calvin).title("Marker at calvin college"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(calvin, 15));
+
+
     }
 }
