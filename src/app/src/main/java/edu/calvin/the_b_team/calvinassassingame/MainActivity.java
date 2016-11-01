@@ -1,6 +1,8 @@
 package edu.calvin.the_b_team.calvinassassingame;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -9,6 +11,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.content.Intent;
@@ -21,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
     private ActionBarDrawerToggle mDrawerToggle;
+    private Button killedButton;
+    private AlertDialog.Builder alert;
 
 
     @Override
@@ -30,14 +35,35 @@ public class MainActivity extends AppCompatActivity {
         setTitle(getResources().getText(R.string.main_activity_title));
 
         //Set up the menu drawer and its items
-        mDrawerList = (ListView)findViewById(R.id.navList);mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView)findViewById(R.id.navList);
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
+        killedButton = (Button)findViewById(R.id.killedButton);
 
         addDrawerItems();
         setupDrawer();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        // when killedTarget button is clicked,
+        // show a pop up which says a confirmation message has been sent
+        alert = new AlertDialog.Builder(MainActivity.this);
+        alert.setTitle("Target Assassinated");
+        alert.setMessage("Confirmation message has been sent to your target.");
+        alert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick (DialogInterface dialog, int id) {
+                // right now this doesn't do anything
+                // eventually it will send an alert to the target
+            }
+        });
+        killedButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //when this button is clicked, show the alert
+                alert.show();
+            }
+        });
 
     }
 

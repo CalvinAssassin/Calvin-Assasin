@@ -45,28 +45,7 @@
             android:layout_alignParentStart="true" />
 
         <TextView
-            android:text="Computer Science"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:id="@+id/targetMajorTextView"
-            android:layout_marginTop="31dp"
-            android:layout_below="@+id/targetNameTextView"
-            android:layout_alignParentEnd="true"
-            android:layout_alignStart="@+id/targetNameTextView" />
-
-        <TextView
-            android:text="12 hours left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:id="@+id/timeRemainingTextView"
-            android:layout_below="@+id/targetMajorTextView"
-            android:layout_toEndOf="@+id/targetImage"
-            android:layout_marginTop="33dp" />
-
-        <TextView
-            android:text="Target Name"
+            android:text="Paige Brinks"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="28sp"
@@ -83,6 +62,36 @@
             android:id="@+id/targetLastSeenTextView"
             android:layout_below="@+id/targetImage"
             android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="12 hours left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:id="@+id/timeRemainingTextView"
+            android:layout_above="@+id/targetLastSeenTextView"
+            android:layout_toEndOf="@+id/targetImage" />
+
+        <TextView
+            android:text="Computer Science"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:id="@+id/targetMajorTextView"
+            android:layout_below="@+id/targetNameTextView"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="17dp"
+            android:layout_alignStart="@+id/targetNameTextView" />
+
+        <TextView
+            android:text="Commuter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:id="@+id/targetHomeTextView"
+            android:layout_below="@+id/targetMajorTextView"
+            android:layout_toEndOf="@+id/targetImage"
+            android:layout_marginTop="15dp" />
 
     </RelativeLayout>
 
