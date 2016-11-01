@@ -1,5 +1,7 @@
 package edu.calvin.the_b_team.calvinassassingame;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -9,8 +11,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ImageView;
+import android.net.Uri;
 
 public class ProfileViewActivity extends AppCompatActivity {
 
@@ -20,6 +25,15 @@ public class ProfileViewActivity extends AppCompatActivity {
     private String mActivityTitle;
     private ActionBarDrawerToggle mDrawerToggle;
 
+    private Button choosePhotoButton;
+    private Button finalizeButton;
+    private EditText playerNameEditable;
+    private EditText playerClassEditable;
+    private EditText playerHomeEditable;
+
+    private boolean finalized = false;
+
+    private ImageView profileImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +50,71 @@ public class ProfileViewActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        profileImage = (ImageView) findViewById(R.id.profile_picture);
+        choosePhotoButton = (Button) findViewById(R.id.choose_photo_button);
+        finalizeButton = (Button) findViewById(R.id.finalize_profile_button);
+        playerNameEditable = (EditText) findViewById(R.id.player_name_editable);
+        playerClassEditable = (EditText) findViewById(R.id.player_class_editable);
+        playerHomeEditable = (EditText) findViewById(R.id.player_home_editable);
+
+        final AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
+        dlgAlert.setMessage(R.string.finalize_message);
+        dlgAlert.setTitle("Finalize?");
+        dlgAlert.setPositiveButton("Finalize",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        finalized = true;
+                        //Disable the info fields
+                        playerNameEditable.setEnabled(false);
+                        playerClassEditable.setEnabled(false);
+                        playerHomeEditable.setEnabled(false);
+                        choosePhotoButton.setEnabled(false);
+                    }
+                });
+        dlgAlert.setNegativeButton("Not yet",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        //Dismiss confirmation message and return
+                    }
+                });
+        dlgAlert.setCancelable(true);
+
+        //Open the photo gallery browser to allow the user to choose a profile photo
+        choosePhotoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent pickPhoto = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(pickPhoto , 1);//one can be replaced with any action code
+            }
+        });
+        finalizeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dlgAlert.create().show();
+            }
+        });
+
     }
+
+    //Set the profile picture after returning from the photo gallery
+    protected void onActivityResult(int requestCode, int resultCode, Intent imageReturnedIntent) {
+        super.onActivityResult(requestCode, resultCode, imageReturnedIntent);
+        switch(requestCode) {
+            case 0:
+                if(resultCode == RESULT_OK){
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    profileImage.setImageURI(selectedImage);
+                }
+                break;
+            case 1:
+                if(resultCode == RESULT_OK){
+                    Uri selectedImage = imageReturnedIntent.getData();
+                    profileImage.setImageURI(selectedImage);
+                }
+                break;
+        }
+    }
+
     // Beginning of menu drawer configuration
 
     private void addDrawerItems() {

@@ -20,6 +20,7 @@
     <string name="year">Freshman</string>
     <string name="user_home_label">Residence: </string>
     <string name="user_home">Huizenga</string>
+    <string name="finalize_message">You will not be able to change you profile after finalizing. Continue?</string>
 
     <!-- Strings related to Standings Activity -->
     <string name="standings_activity_title">Standings</string>
