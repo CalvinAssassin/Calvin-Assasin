@@ -1,8 +1,10 @@
 package edu.calvin.the_b_team.calvinassassingame;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +18,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ImageView;
 import android.net.Uri;
+import android.content.SharedPreferences;
+import android.widget.Toast;
+
 
 public class ProfileViewActivity extends AppCompatActivity {
 
@@ -31,9 +36,10 @@ public class ProfileViewActivity extends AppCompatActivity {
     private EditText playerClassEditable;
     private EditText playerHomeEditable;
 
-    private boolean finalized = false;
-
+    private boolean settingsFinalized = false;
     private ImageView profileImage;
+
+    private SharedPreferences app_preferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,18 +63,34 @@ public class ProfileViewActivity extends AppCompatActivity {
         playerClassEditable = (EditText) findViewById(R.id.player_class_editable);
         playerHomeEditable = (EditText) findViewById(R.id.player_home_editable);
 
+        app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        playerNameEditable.setText(app_preferences.getString("playerName",playerNameEditable.getText().toString()));
+        playerClassEditable.setText(app_preferences.getString("playerClass",playerClassEditable.getText().toString()));
+        playerHomeEditable.setText(app_preferences.getString("playerHome",playerHomeEditable.getText().toString()));
+        settingsFinalized = app_preferences.getBoolean("settingsFinalized",false);
+
+        if (settingsFinalized == true){
+            disableTextFields();
+        }
+
         final AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
         dlgAlert.setMessage(R.string.finalize_message);
         dlgAlert.setTitle("Finalize?");
+        dlgAlert.setCancelable(true);
         dlgAlert.setPositiveButton("Finalize",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        finalized = true;
+                        settingsFinalized = true;
                         //Disable the info fields
-                        playerNameEditable.setEnabled(false);
-                        playerClassEditable.setEnabled(false);
-                        playerHomeEditable.setEnabled(false);
-                        choosePhotoButton.setEnabled(false);
+                        disableTextFields();
+
+                        SharedPreferences.Editor editor = app_preferences.edit();
+                        editor.putString("playerName", playerNameEditable.getText().toString());
+                        editor.putString("playerClass", playerClassEditable.getText().toString());
+                        editor.putString("playerHome", playerHomeEditable.getText().toString());
+                        editor.putBoolean("settingsFinalized", settingsFinalized);
+                        editor.commit(); // Very important
                     }
                 });
         dlgAlert.setNegativeButton("Not yet",
@@ -77,7 +99,6 @@ public class ProfileViewActivity extends AppCompatActivity {
                         //Dismiss confirmation message and return
                     }
                 });
-        dlgAlert.setCancelable(true);
 
         //Open the photo gallery browser to allow the user to choose a profile photo
         choosePhotoButton.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +114,14 @@ public class ProfileViewActivity extends AppCompatActivity {
                 dlgAlert.create().show();
             }
         });
+    }
 
+    private void disableTextFields(){
+        playerNameEditable.setEnabled(false);
+        playerClassEditable.setEnabled(false);
+        playerHomeEditable.setEnabled(false);
+        choosePhotoButton.setEnabled(false);
+        finalizeButton.setEnabled(false);
     }
 
     //Set the profile picture after returning from the photo gallery
