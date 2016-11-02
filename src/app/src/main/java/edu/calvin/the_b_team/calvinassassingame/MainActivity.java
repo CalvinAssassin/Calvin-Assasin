@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setupDrawer();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hamburger);
         getSupportActionBar().setHomeButtonEnabled(true);
 
     }

@@ -60,6 +60,7 @@ public class ProfileViewActivity extends AppCompatActivity {
         mDrawerList = (ListView)findViewById(R.id.navList);mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         addDrawerItems();
         setupDrawer();
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hamburger);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
@@ -128,6 +129,7 @@ public class ProfileViewActivity extends AppCompatActivity {
         playerHomeEditable.setEnabled(false);
         choosePhotoButton.setEnabled(false);
         finalizeButton.setEnabled(false);
+        finalizeButton.setVisibility(View.GONE);
     }
 
     //Save all of the profile data to a preferences file to be loaded back in when the app is re-opened
