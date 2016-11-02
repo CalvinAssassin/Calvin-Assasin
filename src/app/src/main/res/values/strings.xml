@@ -13,13 +13,15 @@
 
     <!-- Strings related to Profile Activity -->
     <string name="profile_activity_title">Profile</string>
-
+    <string name="profile_activity_description">Information about you.</string>
+    <string name="choose_photo_button">Choose Photo</string>
     <string name="user_name_label">Player name: </string>
     <string name="user_name">Full Name</string>
     <string name="user_year_label">Player class: </string>
     <string name="user_year">Freshman</string>
     <string name="user_home_label">Residence: </string>
     <string name="user_home">Huizenga</string>
+    <string name="finalize_button">FINALIZE</string>
     <string name="finalize_message">You will not be able to change you profile after finalizing. Continue?</string>
 
     <!-- Strings related to Standings Activity -->

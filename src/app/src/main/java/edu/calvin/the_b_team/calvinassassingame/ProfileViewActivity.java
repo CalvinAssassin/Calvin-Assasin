@@ -1,5 +1,6 @@
 package edu.calvin.the_b_team.calvinassassingame;
 
+//Imports for days
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -34,17 +35,20 @@ import java.io.IOException;
 
 public class ProfileViewActivity extends AppCompatActivity {
 
+    //Initialize Drawer and Layout things
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
 
+    //Initialize Widgets
     private Button choosePhotoButton;
     private Button finalizeButton;
     private EditText playerNameEditable;
     private EditText playerClassEditable;
     private EditText playerHomeEditable;
 
+    //Initialize State Variables
     private boolean settingsFinalized = false;
     private ImageView profileImage;
 
@@ -95,12 +99,12 @@ public class ProfileViewActivity extends AppCompatActivity {
         });
 
         //Define the confirmation dialogue to confirm finalizing the profile info
-        final AlertDialog.Builder dlgAlert  = new AlertDialog.Builder(this);
-        dlgAlert.setMessage(R.string.finalize_message);
-        dlgAlert.setTitle("Finalize?");
-        dlgAlert.setCancelable(true);
-        dlgAlert.setPositiveButton("Finalize", new DialogInterface.OnClickListener() {
-            //When the confirm button is pressed, finalize the data
+        final AlertDialog.Builder finalizeAlert  = new AlertDialog.Builder(this);
+        finalizeAlert.setMessage(R.string.finalize_message);
+        finalizeAlert.setTitle("Finalize?");
+        finalizeAlert.setCancelable(true);
+        finalizeAlert.setPositiveButton("Finalize", new DialogInterface.OnClickListener() {
+            //When the finalize button is pressed, finalize the data
             public void onClick(DialogInterface dialog, int which) {
                 settingsFinalized = true;
                 //Disable the info fields
@@ -108,7 +112,7 @@ public class ProfileViewActivity extends AppCompatActivity {
                 finalizeTextFields();
             }
         });
-        dlgAlert.setNegativeButton("Not yet", new DialogInterface.OnClickListener() {
+        finalizeAlert.setNegativeButton("Not yet", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 //Dismiss confirmation message and return
             }
@@ -117,13 +121,13 @@ public class ProfileViewActivity extends AppCompatActivity {
         finalizeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dlgAlert.create().show();
+                finalizeAlert.create().show();
             }
         });
     }
 
+    //Stop the user from editing the info on the page
     private void disableTextFields(){
-        //Prevent the user from editing the info on the page
         playerNameEditable.setEnabled(false);
         playerClassEditable.setEnabled(false);
         playerHomeEditable.setEnabled(false);
@@ -132,7 +136,9 @@ public class ProfileViewActivity extends AppCompatActivity {
         finalizeButton.setVisibility(View.GONE);
     }
 
-    //Save all of the profile data to a preferences file to be loaded back in when the app is re-opened
+    /* Save all of the profile data to a preferences file to be loaded back in when the app is re-opened
+    /* A complete removal and reinstall of the app is required to make these editable again. This prevents
+    /* users from editing their name/info during or between games. For obvious reasons */
     private void finalizeTextFields(){
         SharedPreferences.Editor editor = app_preferences.edit();
         editor.putString("playerName", playerNameEditable.getText().toString());
@@ -158,6 +164,7 @@ public class ProfileViewActivity extends AppCompatActivity {
         try {
             fos = new FileOutputStream(mypath);
             // Use the compress method on the BitMap object to write image to the OutputStream
+            // TODO: See if theres a way to save the photo without compressing it; for now its lossless compression
             bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
         }
         catch (Exception e) {
