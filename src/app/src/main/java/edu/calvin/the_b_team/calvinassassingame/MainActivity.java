@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setupDrawer();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hamburger);
         getSupportActionBar().setHomeButtonEnabled(true);
 
         // when killedTarget button is clicked,
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
             case 0:
                 intent = new Intent(this, ProfileViewActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                this.startActivity(intent);
+                startActivity(intent);
                 break;
             case 1:
                 intent = new Intent(this,GPSmap.class);
