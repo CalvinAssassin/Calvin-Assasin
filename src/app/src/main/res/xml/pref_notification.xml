@@ -24,4 +24,23 @@
         android:key="notifications_new_message_vibrate"
         android:title="@string/pref_title_vibrate" />
 
+    <PreferenceCategory
+        android:title="Alerts" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:dependency="notifications_new_message"
+        android:key="notifications_assassination"
+        android:title="@string/pref_assassination_alert_label" />
+    <SwitchPreference
+        android:defaultValue="true"
+        android:dependency="notifications_new_message"
+        android:key="notifications_assassin_proximity"
+        android:title="@string/pref_assassin_prox_alert_label" />
+    <SwitchPreference
+        android:defaultValue="true"
+        android:dependency="notifications_new_message"
+        android:key="notifications_time_limit"
+        android:title="@string/pref_time_limit_alert_label" />
+
 </PreferenceScreen>
