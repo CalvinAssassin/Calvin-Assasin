@@ -18,27 +18,12 @@
     <string name="user_name_label">Player name: </string>
     <string name="user_name">Full Name</string>
     <string name="user_year_label">Player class: </string>
+<<<<<<< HEAD
     <string name="user_home_label">Residence: </string>
-    <string name="finalize_button">FINALIZE</string>
-    <string name="finalize_message">You will not be able to change you profile after finalizing. Continue?</string>
-    <string-array name="class_array">
-        <item>Freshman</item>
-        <item>Sophomore</item>
-        <item>Junior</item>
-        <item>Senior</item>
-        <item>Other</item>
-    </string-array>
-    <string-array name="home_array">
-        <item>KHvR</item>
-        <item>BB</item>
-        <item>NVW</item>
-        <item>BHT</item>
-        <item>SE</item>
-        <item>BV</item>
-        <item>KE</item>
-        <item>Off Campus</item>
-    </string-array>
 
+    <!-- Strings related to Map Activity-->
+    <string name="title_activity_gpsmap">Map</string>
+=======
     <string name="user_year">Freshman</string>
     <string name="user_home_label">Residence: </string>
     <string name="user_home">Huizenga</string>
@@ -61,9 +46,7 @@
         <item>KE</item>
         <item>Off Campus</item>
     </string-array>
-
-    <!-- Strings related to Map Activity-->
-    <string name="title_activity_gpsmap">Map</string>
+>>>>>>> master
 
     <!-- Strings related to Standings Activity -->
     <string name="standings_activity_title">Standings</string>

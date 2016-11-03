@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Calvin Assassin</string>
+    <string name="app_name">Calvin Assassin Game</string>
     <string name="action_settings">Settings</string>
 
     <!-- Strings related to Menu Drawer -->
@@ -13,57 +13,13 @@
 
     <!-- Strings related to Profile Activity -->
     <string name="profile_activity_title">Profile</string>
-    <string name="profile_activity_description">Information about you.</string>
-    <string name="choose_photo_button">Choose Photo</string>
+
     <string name="user_name_label">Player name: </string>
     <string name="user_name">Full Name</string>
     <string name="user_year_label">Player class: </string>
-    <string name="user_home_label">Residence: </string>
-    <string name="finalize_button">FINALIZE</string>
-    <string name="finalize_message">You will not be able to change you profile after finalizing. Continue?</string>
-    <string-array name="class_array">
-        <item>Freshman</item>
-        <item>Sophomore</item>
-        <item>Junior</item>
-        <item>Senior</item>
-        <item>Other</item>
-    </string-array>
-    <string-array name="home_array">
-        <item>KHvR</item>
-        <item>BB</item>
-        <item>NVW</item>
-        <item>BHT</item>
-        <item>SE</item>
-        <item>BV</item>
-        <item>KE</item>
-        <item>Off Campus</item>
-    </string-array>
-
-    <string name="user_year">Freshman</string>
+    <string name="year">Freshman</string>
     <string name="user_home_label">Residence: </string>
     <string name="user_home">Huizenga</string>
-    <string name="finalize_button">FINALIZE</string>
-    <string name="finalize_message">You will not be able to change you profile after finalizing. Continue?</string>
-    <string-array name="class_array">
-        <item>Freshman</item>
-        <item>Sophomore</item>
-        <item>Junior</item>
-        <item>Senior</item>
-        <item>Other</item>
-    </string-array>
-    <string-array name="home_array">
-        <item>KHvR</item>
-        <item>BB</item>
-        <item>NVW</item>
-        <item>BHT</item>
-        <item>SE</item>
-        <item>BV</item>
-        <item>KE</item>
-        <item>Off Campus</item>
-    </string-array>
-
-    <!-- Strings related to Map Activity-->
-    <string name="title_activity_gpsmap">Map</string>
 
     <!-- Strings related to Standings Activity -->
     <string name="standings_activity_title">Standings</string>
@@ -119,11 +75,12 @@
 
     <!-- Example settings for Notifications -->
     <string name="pref_header_notifications">Notifications</string>
+
     <string name="pref_title_new_message_notifications">New message notifications</string>
+
     <string name="pref_title_ringtone">Ringtone</string>
     <string name="pref_ringtone_silent">Silent</string>
+
     <string name="pref_title_vibrate">Vibrate</string>
-    <string name="pref_assassination_alert_label">Assassination</string>
-    <string name="pref_assassin_prox_alert_label">Assassin Proximity</string>
-    <string name="pref_time_limit_alert_label">Time Limit</string>
+    <string name="title_activity_gpsmap">Map</string>
 </resources>
