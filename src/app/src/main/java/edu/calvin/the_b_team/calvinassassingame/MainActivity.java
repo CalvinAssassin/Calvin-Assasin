@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         alert = new AlertDialog.Builder(MainActivity.this);
         alert.setTitle("Target Assassinated");
         alert.setMessage("Confirmation message has been sent to your target.");
-        alert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick (DialogInterface dialog, int id) {
                 // right now this doesn't do anything
                 // eventually it will send an alert to the target

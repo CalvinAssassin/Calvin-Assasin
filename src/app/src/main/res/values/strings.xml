@@ -23,6 +23,23 @@
     <string name="user_home">Huizenga</string>
     <string name="finalize_button">FINALIZE</string>
     <string name="finalize_message">You will not be able to change you profile after finalizing. Continue?</string>
+    <string-array name="class_array">
+        <item>Freshman</item>
+        <item>Sophomore</item>
+        <item>Junior</item>
+        <item>Senior</item>
+        <item>Other</item>
+    </string-array>
+    <string-array name="home_array">
+        <item>KHvR</item>
+        <item>BB</item>
+        <item>NVW</item>
+        <item>BHT</item>
+        <item>SE</item>
+        <item>BV</item>
+        <item>KE</item>
+        <item>Off Campus</item>
+    </string-array>
 
     <!-- Strings related to Standings Activity -->
     <string name="standings_activity_title">Standings</string>
@@ -78,12 +95,9 @@
 
     <!-- Example settings for Notifications -->
     <string name="pref_header_notifications">Notifications</string>
-
     <string name="pref_title_new_message_notifications">New message notifications</string>
-
     <string name="pref_title_ringtone">Ringtone</string>
     <string name="pref_ringtone_silent">Silent</string>
-
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="title_activity_gpsmap">Map</string>
 </resources>

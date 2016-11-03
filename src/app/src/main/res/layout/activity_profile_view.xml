@@ -46,10 +46,12 @@
 
         <TextView
             android:text="@string/user_name_label"
+            android:selectAllOnFocus="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/player_name_label"
-            android:layout_alignBaseline="@+id/player_name_editable"/>
+            android:layout_below="@+id/choose_photo_button"
+            android:layout_marginTop="24dp"/>
 
         <EditText
             android:layout_width="wrap_content"
@@ -58,59 +60,56 @@
             android:text="@string/user_name"
             android:ems="10"
             android:id="@+id/player_name_editable"
-            android:layout_marginTop="16dp"
             android:textAlignment="center"
-            android:layout_below="@+id/choose_photo_button"
-            android:layout_toEndOf="@+id/player_name_label" />
+            android:layout_alignBaseline="@+id/player_name_label"
+            android:layout_centerHorizontal="true" />
 
         <TextView
             android:text="@string/user_year_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/player_class_label"
-            android:layout_alignBaseline="@+id/player_class_editable"
-            android:layout_alignBottom="@+id/player_class_editable"
-            android:layout_alignEnd="@+id/player_name_label"
+            android:layout_below="@+id/player_name_label"
+            android:layout_marginTop="24dp"
+            android:layout_alignStart="@+id/player_name_label"
             android:textAlignment="center" />
 
-        <EditText
+        <Spinner
+            android:id="@+id/player_class_editable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="text"
-            android:text="@string/user_year"
-            android:ems="10"
-            android:id="@+id/player_class_editable"
-            android:layout_below="@+id/player_name_editable"
-            android:layout_alignStart="@+id/player_name_editable"
-            android:textAlignment="center" />
+            android:layout_alignBottom="@+id/player_class_label"
+            android:layout_marginTop="24dp"
+            android:textAlignment="center"
+            android:layout_centerHorizontal="true"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/player_home_label"
             android:text="@string/user_home_label"
-            android:layout_alignBaseline="@+id/player_home_editable"
-            android:layout_alignBottom="@+id/player_home_editable"
+            android:layout_below="@+id/player_class_label"
+            android:layout_marginTop="24dp"
             android:layout_alignStart="@+id/player_class_label" />
 
-        <EditText
+        <Spinner
+            android:id="@+id/player_home_editable"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/player_home_editable"
-            android:ems="10"
-            android:inputType="text"
-            android:text="@string/user_home"
+            android:layout_alignBottom="@+id/player_home_label"
             android:textAlignment="center"
-            android:layout_below="@+id/player_class_editable"
-            android:layout_alignStart="@+id/player_class_editable" />
+            android:layout_centerHorizontal="true"/>
 
         <Button
             android:text="FINALIZE"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/player_home_editable"
+            android:layout_marginTop="32dp"
             android:layout_centerHorizontal="true"
             android:id="@+id/finalize_profile_button"/>
+
+
     </RelativeLayout>
 
     <!-- Side navigation drawer UI -->

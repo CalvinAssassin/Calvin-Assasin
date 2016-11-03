@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.ImageView;
 import android.net.Uri;
 import android.content.SharedPreferences;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.io.File;
@@ -45,8 +46,8 @@ public class ProfileViewActivity extends AppCompatActivity {
     private Button choosePhotoButton;
     private Button finalizeButton;
     private EditText playerNameEditable;
-    private EditText playerClassEditable;
-    private EditText playerHomeEditable;
+    private Spinner playerClassEditable;
+    private Spinner playerHomeEditable;
 
     //Initialize State Variables
     private boolean settingsFinalized = false;
@@ -73,14 +74,24 @@ public class ProfileViewActivity extends AppCompatActivity {
         choosePhotoButton = (Button) findViewById(R.id.choose_photo_button);
         finalizeButton = (Button) findViewById(R.id.finalize_profile_button);
         playerNameEditable = (EditText) findViewById(R.id.player_name_editable);
-        playerClassEditable = (EditText) findViewById(R.id.player_class_editable);
-        playerHomeEditable = (EditText) findViewById(R.id.player_home_editable);
+        playerClassEditable = (Spinner) findViewById(R.id.player_class_editable);
+        playerHomeEditable = (Spinner) findViewById(R.id.player_home_editable);
         app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        ArrayAdapter<CharSequence> classList, homeList;
+        classList = ArrayAdapter.createFromResource(this, R.array.class_array, android.R.layout.simple_spinner_item);
+        homeList  = ArrayAdapter.createFromResource(this, R.array.home_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        classList.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        homeList.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        playerClassEditable.setAdapter(classList);
+        playerHomeEditable.setAdapter(homeList);
 
         //Load layout items from saved preferences
         playerNameEditable.setText(app_preferences.getString("playerName",playerNameEditable.getText().toString()));
-        playerClassEditable.setText(app_preferences.getString("playerClass",playerClassEditable.getText().toString()));
-        playerHomeEditable.setText(app_preferences.getString("playerHome",playerHomeEditable.getText().toString()));
+        playerClassEditable.setSelection(app_preferences.getInt("playerClass",0));
+        playerHomeEditable.setSelection(app_preferences.getInt("playerHome",0));
         loadProfileImage(app_preferences.getString("playerPhotoPath","android.resource://edu.calvin.the_b_team.calvinassassingame/" + R.mipmap.ic_profile_placeholder));
         settingsFinalized = app_preferences.getBoolean("settingsFinalized",false);
 
@@ -142,8 +153,8 @@ public class ProfileViewActivity extends AppCompatActivity {
     private void finalizeTextFields(){
         SharedPreferences.Editor editor = app_preferences.edit();
         editor.putString("playerName", playerNameEditable.getText().toString());
-        editor.putString("playerClass", playerClassEditable.getText().toString());
-        editor.putString("playerHome", playerHomeEditable.getText().toString());
+        editor.putInt("playerClass", playerClassEditable.getSelectedItemPosition());
+        editor.putInt("playerHome", playerHomeEditable.getSelectedItemPosition());
         editor.putBoolean("settingsFinalized", settingsFinalized);
 
         Bitmap profileBitmap = ((BitmapDrawable)profileImage.getDrawable()).getBitmap();
