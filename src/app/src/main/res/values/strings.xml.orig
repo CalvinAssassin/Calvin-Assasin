@@ -18,8 +18,12 @@
     <string name="user_name_label">Player name: </string>
     <string name="user_name">Full Name</string>
     <string name="user_year_label">Player class: </string>
+<<<<<<< HEAD
     <string name="user_home_label">Residence: </string>
 
+    <!-- Strings related to Map Activity-->
+    <string name="title_activity_gpsmap">Map</string>
+=======
     <string name="user_year">Freshman</string>
     <string name="user_home_label">Residence: </string>
     <string name="user_home">Huizenga</string>
@@ -42,9 +46,7 @@
         <item>KE</item>
         <item>Off Campus</item>
     </string-array>
-
-    <!-- Strings related to Map Activity-->
-    <string name="title_activity_gpsmap">Map</string>
+>>>>>>> master
 
     <!-- Strings related to Standings Activity -->
     <string name="standings_activity_title">Standings</string>

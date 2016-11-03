@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         setupDrawer();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hamburger);
         getSupportActionBar().setHomeButtonEnabled(true);
 
         // when killedTarget button is clicked,
@@ -51,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         alert = new AlertDialog.Builder(MainActivity.this);
         alert.setTitle("Target Assassinated");
         alert.setMessage("Confirmation message has been sent to your target.");
-        alert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick (DialogInterface dialog, int id) {
                 // right now this doesn't do anything
                 // eventually it will send an alert to the target
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
             case 0:
                 intent = new Intent(this, ProfileViewActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                this.startActivity(intent);
+                startActivity(intent);
                 break;
             case 1:
                 intent = new Intent(this,GPSmap.class);
