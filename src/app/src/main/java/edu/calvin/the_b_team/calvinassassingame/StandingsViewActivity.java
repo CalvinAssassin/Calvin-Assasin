@@ -126,7 +126,7 @@ public class StandingsViewActivity extends AppCompatActivity {
                 this.startActivity(intent);
                 break;
             case 2:
-                intent = new Intent(this, GPSmap.class);
+                intent = new Intent(this, MapCompactActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 this.startActivity(intent);
                 break;
