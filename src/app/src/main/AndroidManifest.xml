@@ -25,6 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ProfileViewActivity" />
+        <activity android:name=".MapCompactActivity" />
         <activity android:name=".StandingsViewActivity" />
         <activity
             android:name=".SettingsActivity"
@@ -41,9 +42,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity
-            android:name=".GPSmap"
-            android:label="@string/title_activity_gpsmap"></activity>
     </application>
 
 </manifest>
