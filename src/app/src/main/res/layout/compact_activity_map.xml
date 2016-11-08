@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="\nThe location of target 10 minutes ago.\n"
+            android:text="The location of target 10 minutes ago.\n"
             android:id="@+id/mapText" />
 
         <fragment xmlns:android="http://schemas.android.com/apk/res/android"

@@ -59,7 +59,7 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
         int height = size.y;
         //set map's height and width to be 4/5 the size of screen
         ViewGroup.LayoutParams params = mapFragment.getView().getLayoutParams();
-        params.height = (int) ( height * 0.8 );
+        params.height = (int) ( height * 0.75 );
         params.width = (int) ( width * 0.8 );
 
         mapFragment.getView().setLayoutParams(params);
