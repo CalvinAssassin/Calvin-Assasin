@@ -104,4 +104,7 @@
     <string name="pref_assassination_alert_label">Assassination</string>
     <string name="pref_assassin_prox_alert_label">Assassin Proximity</string>
     <string name="pref_time_limit_alert_label">Time Limit</string>
+
+    <!--Colors-->
+    <color name="gray">#777777</color>
 </resources>
