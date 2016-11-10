@@ -29,23 +29,15 @@
         <ImageView
             android:layout_width="100dp"
             android:layout_height="200dp"
-            app:srcCompat="@android:drawable/sym_def_app_icon"
+            app:srcCompat="@drawable/javin"
             android:id="@+id/targetImage"
             android:layout_below="@+id/killedButton"
             android:layout_alignParentStart="true"
             android:layout_marginTop="20dp"
             android:layout_toStartOf="@+id/targetMajorTextView" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/map"
-            android:id="@+id/targetLastSeenImage"
-            android:layout_alignTop="@+id/targetLastSeenTextView"
-            android:layout_alignParentStart="true" />
-
         <TextView
-            android:text="Paige Brinks"
+            android:text="Javin Unger"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="28sp"
@@ -53,24 +45,6 @@
             tools:text="Target Name"
             android:layout_alignTop="@+id/targetImage"
             android:layout_alignParentEnd="true" />
-
-        <TextView
-            android:text="@string/last_seen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:id="@+id/targetLastSeenTextView"
-            android:layout_below="@+id/targetImage"
-            android:layout_alignParentStart="true" />
-
-        <TextView
-            android:text="12 hours left"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:id="@+id/timeRemainingTextView"
-            android:layout_above="@+id/targetLastSeenTextView"
-            android:layout_toEndOf="@+id/targetImage" />
 
         <TextView
             android:text="Computer Science"
@@ -84,7 +58,7 @@
             android:layout_alignStart="@+id/targetNameTextView" />
 
         <TextView
-            android:text="Commuter"
+            android:text="KE Apartments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="24sp"
@@ -92,6 +66,27 @@
             android:layout_below="@+id/targetMajorTextView"
             android:layout_toEndOf="@+id/targetImage"
             android:layout_marginTop="15dp" />
+
+        <TextView
+            android:text="Time Remaining:"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:id="@+id/time_remaining_TextView"
+            app:srcCompat="@drawable/javin"
+            android:layout_below="@+id/targetImage"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="29dp" />
+
+        <TextView
+            android:text="00:00:00:00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="60sp"
+            android:id="@+id/count_down_textView"
+            android:layout_marginTop="16dp"
+            android:layout_below="@+id/time_remaining_TextView"
+            android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
 

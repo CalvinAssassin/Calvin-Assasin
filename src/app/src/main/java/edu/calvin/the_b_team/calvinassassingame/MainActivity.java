@@ -1,8 +1,11 @@
 package edu.calvin.the_b_team.calvinassassingame;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -13,8 +16,12 @@ import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Intent;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -25,7 +32,11 @@ public class MainActivity extends AppCompatActivity {
     private String mActivityTitle;
     private ActionBarDrawerToggle mDrawerToggle;
     private Button killedButton;
-    private AlertDialog.Builder alert;
+    private AlertDialog.Builder assassinationSentAlert;
+    private AlertDialog.Builder targetConfirmationAlert;
+    private TextView count_down_textView;
+    private Handler handler;
+    private Runnable runnable;
 
 
     @Override
@@ -39,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
         killedButton = (Button)findViewById(R.id.killedButton);
+        count_down_textView = (TextView)findViewById(R.id.count_down_textView);
 
         addDrawerItems();
         setupDrawer();
@@ -47,26 +59,98 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hamburger);
         getSupportActionBar().setHomeButtonEnabled(true);
 
+        countDownStart();
+
         // when killedTarget button is clicked,
         // show a pop up which says a confirmation message has been sent
-        alert = new AlertDialog.Builder(MainActivity.this);
-        alert.setTitle("Target Assassinated");
-        alert.setMessage("Confirmation message has been sent to your target.");
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        // then get response from target and alert the user of their targets response
+        assassinationSentAlert = new AlertDialog.Builder(MainActivity.this);
+        targetConfirmationAlert = new AlertDialog.Builder(MainActivity.this);
+
+        assassinationSentAlert.setTitle("Target Assassinated");
+        assassinationSentAlert.setMessage("Confirmation message has been sent to your target.");
+
+        targetConfirmationAlert.setTitle("Target Assassinated");
+        targetConfirmationAlert.setMessage("Target has confirmed assassination! Please wait while you are being assigned your new target.");
+
+        targetConfirmationAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick (DialogInterface dialog2, int id2) {
+                Intent intent;
+                intent = new Intent(MainActivity.this, StandingsViewActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+            }
+        });
+
+        assassinationSentAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick (DialogInterface dialog, int id) {
-                // right now this doesn't do anything
-                // eventually it will send an alert to the target
+                // for demo, this just sends the confirmation message 5 secs after
+                // assassination request has been sent
+                handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        if(this!=null && !isFinishing()){
+                            // show pop up that target has confirmed the assassination
+                            targetConfirmationAlert.show();
+                        }
+                    }
+                }, 5000);
             }
         });
         killedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //when this button is clicked, show the alert
-                alert.show();
+                assassinationSentAlert.show();
             }
         });
 
+    }       // onCreate
+
+    /** countDownStart() starts the count down until the end of the round
+     * if there is less than one day left, the text will turn red
+     */
+    public void countDownStart() {
+        handler = new Handler();
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                handler.postDelayed(this, 1000);
+                try {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    // Date of end of round
+                    Date futureDate = dateFormat.parse("2016-11-16");   // in the future this date will not be hard coded
+                    Date currentDate = new Date();
+                    // get difference in time from now until futureDate
+                    // update it every second
+                    if (!currentDate.after(futureDate)) {
+                        long diff = futureDate.getTime() - currentDate.getTime();
+                        long days = diff / (24 * 60 * 60 * 1000);
+                        diff -= days * (24 * 60 * 60 * 1000);
+                        long hours = diff / (60 * 60 * 1000);
+                        diff -= hours * (60 * 60 * 1000);
+                        long minutes = diff / (60 * 1000);
+                        diff -= minutes * (60 * 1000);
+                        long seconds = diff / 1000;
+
+                        // if there is less than one day left in the round,
+                        // turn timer color to red
+                        if(days < 1) {
+                            count_down_textView.setTextColor(Color.RED);
+                        }
+                        count_down_textView.setText(String.format("%02d", days) + ":" + "" + String.format("%02d", hours)
+                                + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
+                    } else {
+                        count_down_textView.setText("TIME UP");
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        handler.postDelayed(runnable, 1000);
     }
+
 
     //Beginning of menu drawer configuration
     private void addDrawerItems() {
