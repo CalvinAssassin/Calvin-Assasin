@@ -42,6 +42,9 @@ public class dataModel {
     private String targetMajor;
     // figure out how to store position data, then add vars here
 
+    // Player ranking variables
+//    private Map<String, String>
+
 
     //
     // Accessor Methods
@@ -77,6 +80,7 @@ public class dataModel {
     //
     public boolean syncDataWithServer() {
         // Add this after creating server
-        // Probably this will do a diff and then call update methods
+        // Probably this will do a diff and then call separate update methods
+        return true;
     }
 }
