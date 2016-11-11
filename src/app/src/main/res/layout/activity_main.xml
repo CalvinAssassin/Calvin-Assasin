@@ -81,10 +81,11 @@
             android:text="00:00:00:00"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="60sp"
+            android:textSize="57sp"
             android:id="@+id/count_down_textView"
             android:layout_marginTop="16dp"
             android:layout_below="@+id/time_remaining_TextView"
+            android:gravity="center"
             android:layout_centerHorizontal="true" />
 
     </RelativeLayout>
