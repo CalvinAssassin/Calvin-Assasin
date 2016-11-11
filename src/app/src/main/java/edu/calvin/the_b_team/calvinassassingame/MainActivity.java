@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Handler;
@@ -40,6 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView splashImage;
     private Handler handler;
     private Runnable runnable;
+    private boolean targetEliminated;
+    private SharedPreferences savedValues;
 
 
     @Override
@@ -54,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
         mActivityTitle = getTitle().toString();
         killedButton = (Button)findViewById(R.id.killedButton);
         count_down_textView = (TextView)findViewById(R.id.count_down_textView);
+        targetEliminated = false;
+        savedValues = getSharedPreferences("SavedValues", MODE_PRIVATE);
 
         addDrawerItems();
         setupDrawer();
@@ -78,10 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
         targetConfirmationAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick (DialogInterface dialog2, int id2) {
-                Intent intent;
-                intent = new Intent(MainActivity.this, StandingsViewActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                targetEliminated = true;
             }
         });
 
@@ -122,11 +124,16 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     // Date of end of round
-                    Date futureDate = dateFormat.parse("2016-11-16");   // in the future this date will not be hard coded
+                    Date futureDate = dateFormat.parse("2016-11-12");   // in the future this date will not be hard coded
                     Date currentDate = new Date();
                     // get difference in time from now until futureDate
                     // update it every second
-                    if (!currentDate.after(futureDate)) {
+                    if (currentDate.after(futureDate)) {
+                        count_down_textView.setText("TIME UP");
+                    } else if (targetEliminated) {
+                        count_down_textView.setTextColor(Color.RED);
+                        count_down_textView.setText("TARGET\nELIMINATED");
+                    } else {
                         long diff = futureDate.getTime() - currentDate.getTime();
                         long days = diff / (24 * 60 * 60 * 1000);
                         diff -= days * (24 * 60 * 60 * 1000);
@@ -138,13 +145,11 @@ public class MainActivity extends AppCompatActivity {
 
                         // if there is less than one day left in the round,
                         // turn timer color to red
-                        if(days < 1) {
+                        if (days < 1) {
                             count_down_textView.setTextColor(Color.RED);
                         }
                         count_down_textView.setText(String.format("%02d", days) + ":" + "" + String.format("%02d", hours)
                                 + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
-                    } else {
-                        count_down_textView.setText("TIME UP");
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -248,6 +253,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     // End of menu drawer configuration
+
+    @Override
+    public void onPause() {
+        SharedPreferences.Editor editor = savedValues.edit();
+        editor.putBoolean("targetEliminatedBool", targetEliminated);
+        editor.commit();
+
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        targetEliminated = savedValues.getBoolean("targetEliminatedBool", false);
+    }
 
 
 
