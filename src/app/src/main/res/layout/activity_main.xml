@@ -1,5 +1,6 @@
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
@@ -16,16 +17,81 @@
         tools:context=".MainActivity"
         android:background="#ffffffff">
 
-        <TextView
+        <Button
+            android:text="@string/eliniate_button"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/killedButton"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true" />
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="200dp"
+            app:srcCompat="@android:drawable/sym_def_app_icon"
+            android:id="@+id/targetImage"
+            android:layout_below="@+id/killedButton"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="20dp"
+            android:layout_toStartOf="@+id/targetMajorTextView" />
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/main_page_text"
-            android:id="@+id/main_page_text_label"
-            android:textSize="24sp"
-            android:gravity="center"
-            android:layout_marginTop="28dp"
-            android:layout_alignParentTop="true"
+            app:srcCompat="@drawable/map"
+            android:id="@+id/targetLastSeenImage"
+            android:layout_alignTop="@+id/targetLastSeenTextView"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="Paige Brinks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="28sp"
+            android:id="@+id/targetNameTextView"
+            tools:text="Target Name"
+            android:layout_alignTop="@+id/targetImage"
             android:layout_alignParentEnd="true" />
+
+        <TextView
+            android:text="@string/last_seen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:id="@+id/targetLastSeenTextView"
+            android:layout_below="@+id/targetImage"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:text="12 hours left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:id="@+id/timeRemainingTextView"
+            android:layout_above="@+id/targetLastSeenTextView"
+            android:layout_toEndOf="@+id/targetImage" />
+
+        <TextView
+            android:text="Computer Science"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:id="@+id/targetMajorTextView"
+            android:layout_below="@+id/targetNameTextView"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="17dp"
+            android:layout_alignStart="@+id/targetNameTextView" />
+
+        <TextView
+            android:text="Commuter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:id="@+id/targetHomeTextView"
+            android:layout_below="@+id/targetMajorTextView"
+            android:layout_toEndOf="@+id/targetImage"
+            android:layout_marginTop="15dp" />
 
     </RelativeLayout>
 

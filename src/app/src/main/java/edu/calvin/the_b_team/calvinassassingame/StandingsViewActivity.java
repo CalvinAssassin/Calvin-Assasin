@@ -38,15 +38,16 @@ public class StandingsViewActivity extends AppCompatActivity {
         setupDrawer();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hamburger);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        setTitle("Standings");
+        setTitle(getResources().getText(R.string.standings_activity_title));
 
     }
    // Beginning of menu drawer configuration
 
     private void addDrawerItems() {
-        String[] menuPages = { "Profile", "Map", "Standings", "Settings" };
+        String[] menuPages = { "Home", "Profile", "Map", "Settings" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuPages);
         mDrawerList.setAdapter(mAdapter);
 
@@ -71,7 +72,7 @@ public class StandingsViewActivity extends AppCompatActivity {
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                getSupportActionBar().setTitle(mActivityTitle);
+                getSupportActionBar().setTitle(R.string.standings_activity_title);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
@@ -115,17 +116,17 @@ public class StandingsViewActivity extends AppCompatActivity {
         Intent intent;
         switch (position) {
             case 0:
-                intent = new Intent(this, ProfileViewActivity.class);
+                intent = new Intent(this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 this.startActivity(intent);
                 break;
             case 1:
-                intent = new Intent(this, GPSmap.class);
+                intent = new Intent(this, ProfileViewActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 this.startActivity(intent);
                 break;
             case 2:
-                intent = new Intent(this, StandingsViewActivity.class);
+                intent = new Intent(this, MapCompactActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 this.startActivity(intent);
                 break;

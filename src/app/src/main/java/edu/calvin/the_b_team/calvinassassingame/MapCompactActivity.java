@@ -1,76 +1,92 @@
 package edu.calvin.the_b_team.calvinassassingame;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
+import android.graphics.Point;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.widget.ArrayAdapter;
+import android.support.v7.app.AppCompatActivity;
+import android.view.Display;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
-import android.content.Intent;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MainActivity extends AppCompatActivity {
+/**
+ * Created by jjh35 on 11/5/2016.
+ */
+public class MapCompactActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    private GoogleMap mMap;
+    //Initialize Drawer and Layout things
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
     private DrawerLayout mDrawerLayout;
-    private String mActivityTitle;
     private ActionBarDrawerToggle mDrawerToggle;
-    private Button killedButton;
-    private AlertDialog.Builder alert;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        setTitle(getResources().getText(R.string.main_activity_title));
-
+        setContentView(R.layout.compact_activity_map);
         //Set up the menu drawer and its items
-        mDrawerList = (ListView)findViewById(R.id.navList);
+        mDrawerList = (ListView) findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-        mActivityTitle = getTitle().toString();
-        killedButton = (Button)findViewById(R.id.killedButton);
-
         addDrawerItems();
         setupDrawer();
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hamburger);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        // when killedTarget button is clicked,
-        // show a pop up which says a confirmation message has been sent
-        alert = new AlertDialog.Builder(MainActivity.this);
-        alert.setTitle("Target Assassinated");
-        alert.setMessage("Confirmation message has been sent to your target.");
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            public void onClick (DialogInterface dialog, int id) {
-                // right now this doesn't do anything
-                // eventually it will send an alert to the target
-            }
-        });
-        killedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //when this button is clicked, show the alert
-                alert.show();
-            }
-        });
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        //retrieve the height and width of screen
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        int width = size.x;
+        int height = size.y;
+        //set map's height and width to be 4/5 the size of screen
+        ViewGroup.LayoutParams params = mapFragment.getView().getLayoutParams();
+        params.height = (int) ( height * 0.75 );
+        params.width = (int) ( width * 0.8 );
 
+        mapFragment.getView().setLayoutParams(params);
+        mapFragment.getMapAsync(this);
     }
 
-    //Beginning of menu drawer configuration
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        // The coordinates for Calvin College is 42.9306° N, -85.5880° W
+        LatLng calvin = new LatLng(42.9306, -85.5880);
+        mMap.addMarker(new MarkerOptions().position(calvin).title("Marker at calvin college"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(calvin, 17));
+    }
+
+    // Beginning of menu drawer configuration
     private void addDrawerItems() {
-        String[] menuPages = { "Profile", "Map", "Standings", "Settings" };
+        String[] menuPages = { "Home", "Profile", "Standings", "Settings" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuPages);
         mDrawerList.setAdapter(mAdapter);
 
@@ -95,23 +111,13 @@ public class MainActivity extends AppCompatActivity {
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                getSupportActionBar().setTitle(R.string.main_activity_title);
+                getSupportActionBar().setTitle(R.string.title_activity_gpsmap);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
-
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
-
-
-//    This is an expiriment. It adds the '...' to the action bar
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -124,12 +130,10 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         // Activate the navigation drawer toggle
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -139,12 +143,12 @@ public class MainActivity extends AppCompatActivity {
         Intent intent;
         switch (position) {
             case 0:
-                intent = new Intent(this, ProfileViewActivity.class);
+                intent = new Intent(this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                this.startActivity(intent);
                 break;
             case 1:
-                intent = new Intent(this,MapCompactActivity.class);
+                intent = new Intent(this, ProfileViewActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 this.startActivity(intent);
                 break;
@@ -160,8 +164,5 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
     }
-    // End of menu drawer configuration
-
-
-
+    //End of menu drawer configuration
 }
