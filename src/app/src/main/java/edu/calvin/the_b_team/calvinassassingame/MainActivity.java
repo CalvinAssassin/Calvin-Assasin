@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         assassinationSentAlert.setMessage("Confirmation message has been sent to your target.");
 
         targetConfirmationAlert.setTitle("Target Assassinated");
-        targetConfirmationAlert.setMessage("Target has confirmed assassination! You will be assigned a new target when the next round starts.");
+        targetConfirmationAlert.setMessage("Target has confirmed assassination! You will be assigned a new target soon.");
 
         targetConfirmationAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick (DialogInterface dialog2, int id2) {

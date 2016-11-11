@@ -16,21 +16,19 @@
         android:paddingBottom="@dimen/activity_vertical_margin"
         tools:context=".MainActivity">
 
-        <Button
-            android:text="@string/eliniate_button"
-            android:layout_width="100dp"
+        <TextView
+            android:text="Your target is:"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/killedButton"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true" />
+            android:textSize="28sp"
+            android:id="@+id/myTarget"/>
 
         <ImageView
             android:layout_width="100dp"
             android:layout_height="200dp"
             app:srcCompat="@drawable/javin"
             android:id="@+id/targetImage"
-            android:layout_below="@+id/killedButton"
+            android:layout_below="@+id/myTarget"
             android:layout_alignParentStart="true"
             android:layout_marginTop="20dp"
             android:layout_toStartOf="@+id/targetMajorTextView" />
@@ -86,6 +84,14 @@
             android:layout_marginTop="16dp"
             android:layout_below="@+id/time_remaining_TextView"
             android:layout_centerHorizontal="true" />
+
+        <Button
+            android:text="@string/eliniate_button"
+            android:layout_width="250dp"
+            android:layout_height="75dp"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/killedButton"
+            android:layout_below="@+id/count_down_textView"/>
 
     </RelativeLayout>
 
