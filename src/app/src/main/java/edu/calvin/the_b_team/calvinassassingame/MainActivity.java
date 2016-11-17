@@ -3,8 +3,11 @@ package edu.calvin.the_b_team.calvinassassingame;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v4.widget.DrawerLayout;
@@ -12,6 +15,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.widget.ArrayAdapter;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.content.Intent;
@@ -27,12 +31,37 @@ public class MainActivity extends AppCompatActivity {
     private Button killedButton;
     private AlertDialog.Builder alert;
 
+    private SharedPreferences app_preferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setTitle(getResources().getText(R.string.main_activity_title));
+
+
+        //start of my <code>
+        app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if( ! app_preferences.contains( "playerID" ) )
+        {
+            Intent intent;
+            intent = new Intent(this, ProfileViewActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+            Toast.makeText(getApplicationContext(), "Please Create a profile before continuing", Toast.LENGTH_LONG).show();
+        }
+        else
+        {
+            Log.i( "your user ID is ", Integer.toString( app_preferences.getInt("playerID", 0) ));
+            ServerCommunication server = new ServerCommunication(this);
+            server.getTargetID();
+            //get the target and game ids
+        }
+
+        //end of my </code>
+
 
         //Set up the menu drawer and its items
         mDrawerList = (ListView)findViewById(R.id.navList);
@@ -66,6 +95,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    protected void changePlayerID( View v )
+    {
+        EditText changedIDField = (EditText ) findViewById( R.id.playerIDField);
+        int newID = Integer.parseInt( changedIDField.getText().toString());
+        SharedPreferences.Editor editor = app_preferences.edit();
+        editor.putInt("playerID", newID );
+        editor.commit(); // Commit the changes to the preferences file
+        Log.i("the new user id is: ", Integer.toString(newID));
     }
 
     //Beginning of menu drawer configuration

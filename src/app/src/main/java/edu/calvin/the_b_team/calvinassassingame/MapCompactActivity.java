@@ -1,11 +1,15 @@
 package edu.calvin.the_b_team.calvinassassingame;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,6 +26,16 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.lang.reflect.Array;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Created by jjh35 on 11/5/2016.
@@ -32,6 +48,9 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
     private ArrayAdapter<String> mAdapter;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+    private TextView mapText;
+
+    private SharedPreferences app_preferences;
 
 
     @Override
@@ -40,6 +59,8 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.compact_activity_map);
         //Set up the menu drawer and its items
+        app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
+
         mDrawerList = (ListView) findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         addDrawerItems();
@@ -47,7 +68,25 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hamburger);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        mapText = ( TextView ) findViewById(R.id.mapText);
 
+        //do not display map is the person does not have a player id
+        if( ! app_preferences.contains( "playerID" ) )
+        {
+            mapText.setText( "Please create profile to get Player ID" );
+            return;
+        }
+
+        /* This will retrieve the target's location and store them in the shared preferences which
+         * will be referenced in onMapReady
+         */
+        ServerCommunication server = new ServerCommunication(this);
+        server.getTargetLocation();
+        try {
+            Thread.sleep(500);                 //1000 milliseconds is one second.
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -61,7 +100,6 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
         ViewGroup.LayoutParams params = mapFragment.getView().getLayoutParams();
         params.height = (int) ( height * 0.75 );
         params.width = (int) ( width * 0.8 );
-
         mapFragment.getView().setLayoutParams(params);
         mapFragment.getMapAsync(this);
     }
@@ -79,9 +117,20 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         // The coordinates for Calvin College is 42.9306° N, -85.5880° W
-        LatLng calvin = new LatLng(42.9306, -85.5880);
+        long lat = app_preferences.getLong("targetLatitude",0);
+        long lng = app_preferences.getLong("targetLongitude",0);
+        if( lat == 0 )
+        {
+            Log.i("the lat is 0 ", "" );
+            mapText.setText( "target has unknown location" );
+            return;
+        }
+        Log.i("the converted lat is", Double.toString(( Double.longBitsToDouble( lat ) )));
+        Log.i("the converted lng is", Double.toString(( Double.longBitsToDouble( lng ) )));
+        LatLng calvin = new LatLng( Double.longBitsToDouble( lat ), - ( Double.longBitsToDouble( lng ) ) );
+        //LatLng calvin = new LatLng(42.9306, -85.5880);
         mMap.addMarker(new MarkerOptions().position(calvin).title("Marker at calvin college"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(calvin, 17));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(calvin, 12));
     }
 
     // Beginning of menu drawer configuration

@@ -9,11 +9,13 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,11 +29,19 @@ import android.content.SharedPreferences;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
 
 
 public class ProfileViewActivity extends AppCompatActivity {
@@ -97,7 +107,7 @@ public class ProfileViewActivity extends AppCompatActivity {
 
         //Disable editing the fields if they've previously been finalized
         if (settingsFinalized == true){
-            disableTextFields();
+            //disableTextFields();
         }
 
         //Open the photo gallery browser to allow the user to choose a profile photo
@@ -119,7 +129,7 @@ public class ProfileViewActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 settingsFinalized = true;
                 //Disable the info fields
-                disableTextFields();
+                //disableTextFields();
                 finalizeTextFields();
             }
         });
@@ -137,6 +147,8 @@ public class ProfileViewActivity extends AppCompatActivity {
         });
     }
 
+
+
     //Stop the user from editing the info on the page
     private void disableTextFields(){
         playerNameEditable.setEnabled(false);
@@ -151,16 +163,29 @@ public class ProfileViewActivity extends AppCompatActivity {
     /* A complete removal and reinstall of the app is required to make these editable again. This prevents
     /* users from editing their name/info during or between games. For obvious reasons */
     private void finalizeTextFields(){
+
+        String playerName =  playerNameEditable.getText().toString();
+        int playerClass = playerClassEditable.getSelectedItemPosition();
+        int playerHome = playerHomeEditable.getSelectedItemPosition();
+
+
+
         SharedPreferences.Editor editor = app_preferences.edit();
-        editor.putString("playerName", playerNameEditable.getText().toString());
-        editor.putInt("playerClass", playerClassEditable.getSelectedItemPosition());
-        editor.putInt("playerHome", playerHomeEditable.getSelectedItemPosition());
+        editor.putString("playerName",playerName);
+        editor.putInt("playerClass", playerClass);
+        editor.putInt("playerHome", playerHome);
         editor.putBoolean("settingsFinalized", settingsFinalized);
 
         Bitmap profileBitmap = ((BitmapDrawable)profileImage.getDrawable()).getBitmap();
         editor.putString("playerPhotoPath", saveProfilePhoto(profileBitmap));
 
         editor.commit(); // Commit the changes to the preferences file
+
+        /* these two lines of code will contact the server, create a profile, and store the new playerID
+         * must be done after editor.commit because it will reference those variables.
+         */
+        ServerCommunication server = new ServerCommunication(this);
+        server.createProfile();
     }
 
     //Save the profile image to a file in the app's internal file system (imageDir/profile.jpg)

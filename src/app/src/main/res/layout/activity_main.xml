@@ -36,14 +36,6 @@
             android:layout_marginTop="20dp"
             android:layout_toStartOf="@+id/targetMajorTextView" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/map"
-            android:id="@+id/targetLastSeenImage"
-            android:layout_alignTop="@+id/targetLastSeenTextView"
-            android:layout_alignParentStart="true" />
-
         <TextView
             android:text="Paige Brinks"
             android:layout_width="wrap_content"
@@ -55,21 +47,11 @@
             android:layout_alignParentEnd="true" />
 
         <TextView
-            android:text="@string/last_seen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="24sp"
-            android:id="@+id/targetLastSeenTextView"
-            android:layout_below="@+id/targetImage"
-            android:layout_alignParentStart="true" />
-
-        <TextView
             android:text="12 hours left"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="24sp"
             android:id="@+id/timeRemainingTextView"
-            android:layout_above="@+id/targetLastSeenTextView"
             android:layout_toEndOf="@+id/targetImage" />
 
         <TextView
@@ -92,6 +74,25 @@
             android:layout_below="@+id/targetMajorTextView"
             android:layout_toEndOf="@+id/targetImage"
             android:layout_marginTop="15dp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/playerIDField"
+            android:layout_alignParentBottom="true"
+            android:layout_alignEnd="@+id/targetHomeTextView"
+            android:layout_toEndOf="@+id/targetImage"
+            android:text="1"
+            android:nestedScrollingEnabled="false" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="submit"
+            android:id="@+id/button"
+            android:layout_above="@+id/playerIDField"
+            android:layout_alignEnd="@+id/playerIDField"
+            android:onClick="changePlayerID" />
 
     </RelativeLayout>
 
