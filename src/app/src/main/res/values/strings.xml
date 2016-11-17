@@ -10,6 +10,7 @@
     <string name="eliniate_button">I ELIMINATED MY TARGET</string>
     <string name="last_seen">Target last seen: </string>
     <string name="main_activity_title">Home</string>
+    <string name="targetName">Javin Unger</string>
 
     <!-- Strings related to Profile Activity -->
     <string name="profile_activity_title">Profile</string>

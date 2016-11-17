@@ -44,7 +44,7 @@ public class StandingsViewActivity extends AppCompatActivity {
         setTitle(getResources().getText(R.string.standings_activity_title));
 
     }
-   // Beginning of menu drawer configuration
+    // Beginning of menu drawer configuration
 
     private void addDrawerItems() {
         String[] menuPages = { "Home", "Profile", "Map", "Settings" };
