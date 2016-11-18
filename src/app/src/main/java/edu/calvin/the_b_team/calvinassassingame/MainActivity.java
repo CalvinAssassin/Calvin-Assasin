@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.location.LocationManager;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,10 +42,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle(getResources().getText(R.string.main_activity_title));
 
-
         //start of my <code>
         app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
-
+        //check to see if the user has created a profile, if not, send them to the profile page
         if( ! app_preferences.contains( "playerID" ) )
         {
             Intent intent;
@@ -54,10 +55,10 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-            Log.i( "your user ID is ", Integer.toString( app_preferences.getInt("playerID", 0) ));
+            //retrieve information about the game
             ServerCommunication server = new ServerCommunication(this);
             server.getTargetID();
-            //get the target and game ids
+            server.getTargetLocation();
         }
 
         //end of my </code>
@@ -200,7 +201,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
     // End of menu drawer configuration
-
-
-
 }

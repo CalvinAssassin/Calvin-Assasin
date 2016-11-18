@@ -107,7 +107,7 @@ public class ProfileViewActivity extends AppCompatActivity {
 
         //Disable editing the fields if they've previously been finalized
         if (settingsFinalized == true){
-            //disableTextFields();
+            disableTextFields();
         }
 
         //Open the photo gallery browser to allow the user to choose a profile photo
@@ -129,7 +129,7 @@ public class ProfileViewActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 settingsFinalized = true;
                 //Disable the info fields
-                //disableTextFields();
+                disableTextFields();
                 finalizeTextFields();
             }
         });
@@ -167,8 +167,6 @@ public class ProfileViewActivity extends AppCompatActivity {
         String playerName =  playerNameEditable.getText().toString();
         int playerClass = playerClassEditable.getSelectedItemPosition();
         int playerHome = playerHomeEditable.getSelectedItemPosition();
-
-
 
         SharedPreferences.Editor editor = app_preferences.edit();
         editor.putString("playerName",playerName);

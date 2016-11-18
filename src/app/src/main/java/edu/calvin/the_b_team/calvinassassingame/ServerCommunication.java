@@ -27,34 +27,46 @@ import android.os.Handler;
 
 /**
  * Created by jjh35 on 11/15/2016.
- *  This class facilitates all communication between the app and the server. The methods do not
- *  return any values, rather they update the corresponding variables in shared preferences.
+ *  This class facilitates all communication between the app and the server. All information will
+ *  be saved in shared preferences so that all activities can access them. The methods do not
+ *  return any values, rather they update the corresponding variables in shared preferences. So,
+ *  one will call a method (i.e. getTargetLocation() and then check the values in shared
+ *  shared preference
  */
 public class ServerCommunication {
     //the base URL for our Server
-    private final String baseUrl = "http://153.106.116.71:9998/calvinassassin";
+    private final String baseUrl = "http://153.106.116.83:9998/calvinassassin";
     private SharedPreferences app_preferences;
     private Context context;
 
     /**
-     *  The default constructor. In order for the class to access shared preferences, a context m
+     *  The default constructor. In order for the class to access shared preferences, a context
      *  must be passed from the activity requesting info from the server.
      * @param contextFromActivity
      *  The context from the activity
      */
     ServerCommunication( Context contextFromActivity ) {
         context = contextFromActivity;
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = preferences.edit();
+        //allows information to be pulled from shared preferences
+        app_preferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-
-    private void runQuery()
+    /**
+     * This method will take in an url and a type of request and call on ConnectToServer.execute
+     * to send the network request
+     * @param url
+     * The uri resource on the server
+     * @param request
+     * the type of request
+     */
+    private void runQuery( String url, String request)
     {
+        //launch the network task
+        new ConnectToServer().execute( url, request );
+        //delay the app so that the server has time to respond
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run() {
-
             }
         }, 1000);
     }
@@ -64,19 +76,8 @@ public class ServerCommunication {
      */
     public void getTargetLocation()
     {
-
-        Log.i("the url is ", baseUrl + "/location/?playerid=" + 1 );
-        try {
-            app_preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            int targetID = app_preferences.getInt("targetID",0);
-            new ConnectToServer().execute( baseUrl + "/location/?playerid=" + targetID, "targetLocation" );
-            Log.i("url is", baseUrl + "/location/?playerid=" + targetID );
-        }
-        catch (Exception e)
-        {
-           Log.i("error in ", "getTargetLocation" );
-            Log.e("stacktrace", "exception", e);
-        }
+        int targetID = app_preferences.getInt("targetID",0);
+        runQuery(baseUrl + "/location/?playerid=" + targetID, "targetLocation");
     }
 
     /**
@@ -84,15 +85,8 @@ public class ServerCommunication {
      */
     public void getTargetID()
     {
-        try {
-            app_preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            int playerID = app_preferences.getInt("playerID",0);
-            new ConnectToServer().execute( baseUrl + "/targetid/?assassinID=" + playerID, "targetID" );
-        }
-        catch (Exception e)
-        {
-            //need anything
-        }
+        int playerID = app_preferences.getInt("playerID",0);
+        runQuery( baseUrl + "/targetid/?assassinID=" + playerID, "targetID"  );
     }
 
     /**
@@ -102,13 +96,12 @@ public class ServerCommunication {
     {
         String query;
         try {
-            app_preferences = PreferenceManager.getDefaultSharedPreferences(context);
             String name = app_preferences.getString("playerName","");
             int year = app_preferences.getInt("playerClass",0);
             int residence = app_preferences.getInt("playerHome",0);
             query = "/createuserprofile/?username=" + name + "&name=" + name +
                     "&residence=" + residence + "&year=" + year;
-            new ConnectToServer().execute( baseUrl + query, "createProfile");
+            runQuery( query, "createProflie" );
         }
         catch (Exception e)
         {
@@ -117,6 +110,14 @@ public class ServerCommunication {
 
     }
 
+    /**
+     * This class launches an asynchronous task to do a network request. It will contact
+     * the specified url and store the response in a JSON array
+     *
+     * @String url, the uri of the resource on our server
+     *
+     * @String request, the type of resource requested
+     */
     private class ConnectToServer extends AsyncTask<String, Void, JSONArray> {
 
         @Override
@@ -124,8 +125,6 @@ public class ServerCommunication {
             HttpURLConnection connection = null;
             StringBuilder result = new StringBuilder();
             try {
-                Log.i("the params[0] is ", params[0]);
-                Log.i("the params[1] is ", params[1]);
                 URL url = new URL(params[0]);
                 connection = (HttpURLConnection) url.openConnection();
                 if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
@@ -135,7 +134,7 @@ public class ServerCommunication {
                     while ((line = reader.readLine()) != null) {
                         result.append(line);
                     }
-                    //String[] answer = {result.toString(), params[1] };
+                    //save the server's response to the phone
                     saveInfo( new JSONArray( result.toString() ), params[1] );
                     return new JSONArray(result.toString());
                 } else {
@@ -149,19 +148,29 @@ public class ServerCommunication {
             return null;
         }
 
+        //is this method needed? Will it be needed?
         @Override
         protected void onPostExecute(JSONArray response) {
             if (response != null) {
-               // saveInfo( response );
+
             } else {
-               // Toast.makeText(MainActivity.this, "invalid id", Toast.LENGTH_SHORT).show();
+
             }
         }
     }
 
+    /**
+     * This method will convert a json array to an array list, and save the corresponding
+     * information.
+     *
+     * @param jsonArray
+     *  The Json array from the server with the server's response
+     * @param request
+     * the type of information requested
+     */
     private void saveInfo( JSONArray jsonArray, String request )
     {
-        Log.i("made it", " to saveInfo()");
+        //convert the JSON array to an arrayList
         ArrayList<String> list = new ArrayList<String>();
         try {
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -172,26 +181,22 @@ public class ServerCommunication {
         {
             //need anything?
         }
+
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         SharedPreferences.Editor editor = preferences.edit();
-        if (request.equals("targetLocation"))
-        {
-            Log.i("made it", " inside of request.equals(targetLocation");
-            editor.putLong("targetLatitude", Double.doubleToLongBits(Double.parseDouble(list.get(0))));
-            editor.putLong("targetLongitude",  Double.doubleToLongBits(Double.parseDouble(list.get(1))) );
-            editor.commit(); // Commit the changes to the preferences file
-
+        switch (request) {
+            case "targetLocation" :
+                editor.putLong("targetLatitude", Double.doubleToLongBits(Double.parseDouble(list.get(0))));
+                editor.putLong("targetLongitude",  Double.doubleToLongBits(Double.parseDouble(list.get(1))));
+                break;
+            case "targetID" :
+                editor.putInt("targetID", Integer.parseInt(list.get(0)));
+                break;
+            case "createProfile" :
+                editor.putInt( "playerID", Integer.parseInt(list.get(0)));
+                break;
         }
-        else if (request.equals("targetID"))
-        {
-            editor.putInt("targetID", Integer.parseInt(list.get(0)));
-            editor.commit(); // Commit the changes to the preferences file
-        }
-        else if (request.equals("createProfile"))
-        {
-            editor.putInt( "playerID", Integer.parseInt( list.get(0) ));
-            editor.commit();
-        }
+        editor.commit();
 
     }
 
