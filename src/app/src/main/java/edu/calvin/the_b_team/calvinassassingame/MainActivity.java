@@ -95,17 +95,6 @@ public class MainActivity extends AppCompatActivity {
                 alert.show();
             }
         });
-
-    }
-
-    protected void changePlayerID( View v )
-    {
-        EditText changedIDField = (EditText ) findViewById( R.id.playerIDField);
-        int newID = Integer.parseInt( changedIDField.getText().toString());
-        SharedPreferences.Editor editor = app_preferences.edit();
-        editor.putInt("playerID", newID );
-        editor.commit(); // Commit the changes to the preferences file
-        Log.i("the new user id is: ", Integer.toString(newID));
     }
 
     //Beginning of menu drawer configuration

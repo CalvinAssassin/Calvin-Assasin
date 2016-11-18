@@ -75,25 +75,6 @@
             android:layout_toEndOf="@+id/targetImage"
             android:layout_marginTop="15dp" />
 
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/playerIDField"
-            android:layout_alignParentBottom="true"
-            android:layout_alignEnd="@+id/targetHomeTextView"
-            android:layout_toEndOf="@+id/targetImage"
-            android:text="1"
-            android:nestedScrollingEnabled="false" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="submit"
-            android:id="@+id/button"
-            android:layout_above="@+id/playerIDField"
-            android:layout_alignEnd="@+id/playerIDField"
-            android:onClick="changePlayerID" />
-
     </RelativeLayout>
 
     <!-- Side navigation drawer UI -->

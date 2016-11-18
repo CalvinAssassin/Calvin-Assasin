@@ -49,9 +49,7 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
     private TextView mapText;
-
     private SharedPreferences app_preferences;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -60,7 +58,6 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
         setContentView(R.layout.compact_activity_map);
         //Set up the menu drawer and its items
         app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
-
         mDrawerList = (ListView) findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         addDrawerItems();
@@ -82,11 +79,6 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
          */
         ServerCommunication server = new ServerCommunication(this);
         server.getTargetLocation();
-        try {
-            Thread.sleep(500);                 //1000 milliseconds is one second.
-        } catch(InterruptedException ex) {
-            Thread.currentThread().interrupt();
-        }
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -125,8 +117,6 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
             mapText.setText( "target has unknown location" );
             return;
         }
-        Log.i("the converted lat is", Double.toString(( Double.longBitsToDouble( lat ) )));
-        Log.i("the converted lng is", Double.toString(( Double.longBitsToDouble( lng ) )));
         LatLng calvin = new LatLng( Double.longBitsToDouble( lat ), - ( Double.longBitsToDouble( lng ) ) );
         //LatLng calvin = new LatLng(42.9306, -85.5880);
         mMap.addMarker(new MarkerOptions().position(calvin).title("Marker at calvin college"));
