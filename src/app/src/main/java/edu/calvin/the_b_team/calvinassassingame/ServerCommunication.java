@@ -12,6 +12,8 @@ import android.util.Log;
 import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -20,6 +22,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import android.os.Handler;
 
@@ -108,6 +111,12 @@ public class ServerCommunication {
 
     }
 
+    //a test function. Will this be needed?
+    public void getPlayers()
+    {
+        runQuery( "http://153.106.116.65:9998/calvinassassin/players", "players" );
+    }
+
     /**
      * This class launches an asynchronous task to do a network request. It will contact
      * the specified url and store the response in a JSON array
@@ -117,7 +126,6 @@ public class ServerCommunication {
      * @String request, the type of resource requested
      */
     private class ConnectToServer extends AsyncTask<String, Void, JSONArray> {
-
         @Override
         protected JSONArray doInBackground(String... params) {
             HttpURLConnection connection = null;
@@ -133,7 +141,8 @@ public class ServerCommunication {
                         result.append(line);
                     }
                     //save the server's response to the phone
-                    saveInfo( new JSONArray( result.toString() ), params[1] );
+                    //saveInfo( new JSONArray( result.toString() ), params[1] );
+                    saveFunction( new JSONArray( result.toString() )  );
                     return new JSONArray(result.toString());
                 } else {
                     throw new Exception();
@@ -141,6 +150,7 @@ public class ServerCommunication {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
+                assert connection != null;
                 connection.disconnect();
             }
             return null;
@@ -157,6 +167,55 @@ public class ServerCommunication {
         }
     }
 
+
+    /**
+     * This function will save the values from the server response to save preferences
+     * @param jsonArray
+     */
+    private void saveFunction( JSONArray jsonArray )
+    {
+        Log.i("in save ", " function...");
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        //convert the jsonArray to an array list of json objects
+        ArrayList<JSONObject> jsonObjectList = new ArrayList<JSONObject>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                jsonObjectList.add(jsonObject);
+
+            } catch (Exception e) {
+
+            }
+        }
+        Log.i( "jsonObjectList.size is", Integer.toString(jsonObjectList.size()));
+        //iterate through each jsonObject in the list
+        for (int i=0;  i< jsonObjectList.size(); i++ )
+        {
+            JSONObject jsonObject = jsonObjectList.get(i);
+            Iterator<String> iter = jsonObject.keys();
+            //go through each JSON object
+            while (iter.hasNext()) {
+                String key = iter.next();
+                try {
+                    Object value = jsonObject.get(key);
+                    //to implement: save the values to shared preferences;
+                    Log.i( "the key is ", key );
+                    Log.i( " the value is ", value.toString() );
+                    editor.putString(key, value.toString());
+                    editor.commit();
+                } catch (JSONException e) {
+                    // Something went wrong!
+                }
+            }
+        }
+
+    }
+
+
+    //the following is old code that will be deleted when the newer code is finalized
+
     /**
      * This method will convert a json array to an array list, and save the corresponding
      * information.
@@ -166,37 +225,37 @@ public class ServerCommunication {
      * @param request
      * the type of information requested
      */
-    private void saveInfo( JSONArray jsonArray, String request )
-    {
-        //convert the JSON array to an arrayList
-        ArrayList<String> list = new ArrayList<String>();
-        try {
-            for (int i = 0; i < jsonArray.length(); i++) {
-                list.add(jsonArray.getString(i));
-            }
-        }
-        catch (Exception e )
-        {
-            //need anything?
-        }
-
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = preferences.edit();
-        switch (request) {
-            case "targetLocation" :
-                editor.putLong("targetLatitude", Double.doubleToLongBits(Double.parseDouble(list.get(0))));
-                editor.putLong("targetLongitude",  Double.doubleToLongBits(Double.parseDouble(list.get(1))));
-                break;
-            case "targetID" :
-                editor.putInt("targetID", Integer.parseInt(list.get(0)));
-                break;
-            case "createProfile" :
-                editor.putInt( "playerID", Integer.parseInt(list.get(0)));
-                break;
-        }
-        editor.commit();
-
-    }
+//    private void saveInfo( JSONArray jsonArray, String request )
+//    {
+//        //convert the JSON array to an arrayList
+//        ArrayList<String> list = new ArrayList<String>();
+//        try {
+//            for (int i = 0; i < jsonArray.length(); i++) {
+//                list.add(jsonArray.getString(i));
+//            }
+//        }
+//        catch (Exception e )
+//        {
+//            //need anything?
+//        }
+//
+//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+//        SharedPreferences.Editor editor = preferences.edit();
+//        switch (request) {
+//            case "targetLocation" :
+//                editor.putLong("targetLatitude", Double.doubleToLongBits(Double.parseDouble(list.get(0))));
+//                editor.putLong("targetLongitude",  Double.doubleToLongBits(Double.parseDouble(list.get(1))));
+//                break;
+//            case "targetID" :
+//                editor.putInt("targetID", Integer.parseInt(list.get(0)));
+//                break;
+//            case "createProfile" :
+//                editor.putInt( "playerID", Integer.parseInt(list.get(0)));
+//                break;
+//        }
+//        editor.commit();
+//
+//    }
 
 }
 

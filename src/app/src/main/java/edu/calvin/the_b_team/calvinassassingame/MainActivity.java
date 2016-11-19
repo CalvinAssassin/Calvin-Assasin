@@ -57,8 +57,10 @@ public class MainActivity extends AppCompatActivity {
         {
             //retrieve information about the game
             ServerCommunication server = new ServerCommunication(this);
-            server.getTargetID();
-            server.getTargetLocation();
+//            server.getTargetID();
+//            server.getTargetLocation();
+            Log.i("calling", " getPlayers()");
+            server.getPlayers();
         }
 
         //end of my </code>
