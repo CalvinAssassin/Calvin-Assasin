@@ -169,7 +169,7 @@ public class ServerCommunication {
 
 
     /**
-     * This function will save the values from the server response to save preferences
+     * This function will save the values from the server's response to shared preferences
      * @param jsonArray
      */
     private void saveFunction( JSONArray jsonArray )
