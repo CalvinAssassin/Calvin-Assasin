@@ -42,7 +42,7 @@ import android.os.Handler;
  */
 public class ServerCommunication {
     //the base URL for our Server
-    private final String baseUrl = "http://153.106.116.83:9998/api";
+    private final String baseUrl = "http://153.106.116.66:9998/api";
     private SharedPreferences app_preferences;
     private Context context;
 
@@ -104,8 +104,11 @@ public class ServerCommunication {
      */
     public void getProfile()
     {
-        int playerID = app_preferences.getInt("playerID",0);
-        String url = baseUrl + "/profile/" + playerID;
+        HashMap hm = new HashMap();
+        Player player = new Player(context);
+        String playerID = player.getValue( "ID" );
+        hm.put("id", playerID );
+        String url = baseUrl + "/profile/" + jsonGenerator(hm);
         runQuery( url, "GET", "player");
     }
 
@@ -122,17 +125,17 @@ public class ServerCommunication {
      */
     public void createProfile()
     {
-
         HashMap hm = new HashMap();
-        String firstName = app_preferences.getString("firstName","");
-        String lastName = app_preferences.getString("lastName", "");
-        String major = app_preferences.getString("major","");
-        String residence = app_preferences.getString("playerHome","");
+        Player player = new Player(context);
+        String firstName = player.getValue( "firstName" );
+        String lastName = player.getValue( "lastName" );
+        String major = player.getValue( "major" );
+        String residence = player.getValue( "residence" );
         hm.put("firstName", firstName);
         hm.put("lastName", lastName);
         hm.put("major", major);
         hm.put("residence", residence);
-        String url = baseUrl + "/profile/create/" + jsonGenerator( hm );
+        String url = baseUrl + "/profile/" + jsonGenerator( hm );
         runQuery(url, "POST", "player");
 
     }
