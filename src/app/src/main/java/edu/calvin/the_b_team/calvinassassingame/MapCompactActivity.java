@@ -80,7 +80,9 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
         mMap = googleMap;
         // The coordinates for Calvin College is 42.9306° N, -85.5880° W
         LatLng calvin = new LatLng(42.9306, -85.5880);
-        mMap.addMarker(new MarkerOptions().position(calvin).title("Marker at calvin college"));
+        Game game = new Game(this);
+        LatLng coordinates = new LatLng( Double.parseDouble(game.getValue( "latitude")), Double.parseDouble(game.getValue( "longitude")));
+        mMap.addMarker(new MarkerOptions().position(coordinates).title("Marker at calvin college"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(calvin, 17));
     }
 

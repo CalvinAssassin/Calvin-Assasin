@@ -1,15 +1,25 @@
 package edu.calvin.the_b_team.calvinassassingame;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Location;
 import android.media.Image;
+import android.os.Build;
 import android.os.Handler;
+import android.preference.PreferenceManager;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v4.widget.DrawerLayout;
@@ -22,9 +32,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Intent;
+import android.location.LocationListener;
+import android.location.LocationManager;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.Drive;
+import com.google.android.gms.location.LocationServices;
+
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -42,7 +63,14 @@ public class MainActivity extends AppCompatActivity {
     private Handler handler;
     private Runnable runnable;
     private boolean targetEliminated;
-    private SharedPreferences savedValues;
+    private SharedPreferences savedValues;;
+    private double lat;
+    private double lng;
+
+    private LocationManager locationManager;
+    private LocationListener listener;
+    public Context context = this;
+
 
 
     @Override
@@ -51,6 +79,41 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle(getResources().getText(R.string.main_activity_title));
 
+
+        //get location
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        listener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                Log.i("test ", location.getLongitude() + " " + location.getLatitude());
+                //TODO, only save the coordinates every 10 minutes
+                Player player = new Player(context);
+                player.saveValue( "latitude", String.valueOf(location.getLatitude()));
+                player.saveValue( "longitude", String.valueOf(location.getLongitude()));
+            }
+
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String s) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String s) {
+            }
+        };
+        configure();
+
+
+        ServerCommunication server = new ServerCommunication(this);
+       // Log.i( "the url is ", server.createProfile());
+
+
+        //end of my code. import statement for Log.i was inserted.
         //Set up the menu drawer and its items
         mDrawerList = (ListView)findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
@@ -108,6 +171,33 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }       // onCreate
+
+
+    void configure(){
+        // first check for permissions
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.INTERNET}
+                        ,10);
+            }
+            return;
+        }
+        // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
+        //noinspection MissingPermission
+        locationManager.requestLocationUpdates("gps", 5000, 0, listener);
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case 10:
+                configure();
+                break;
+            default:
+                break;
+        }
+    }
 
     /** countDownStart() starts the count down until the end of the round
      * if there is less than one day left, the text will turn red
@@ -266,7 +356,6 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         targetEliminated = savedValues.getBoolean("targetEliminatedBool", false);
     }
-
 
 
 }
