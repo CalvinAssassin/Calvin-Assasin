@@ -23,6 +23,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Intent;
 
+import com.google.android.gms.games.Game;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -86,7 +88,6 @@ public class MainActivity extends AppCompatActivity {
                 targetEliminated = true;
             }
         });
-
         assassinationSentAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick (DialogInterface dialog, int id) {
                 // for demo, this just sends the confirmation message 5 secs after
@@ -94,9 +95,12 @@ public class MainActivity extends AppCompatActivity {
                 handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
-
+                        if(this!=null && !isFinishing()){
+                            // show pop up that target has confirmed the assassination
+                            targetConfirmationAlert.show();
+                        }
                     }
-                }, 100);
+                }, 5000);
             }
         });
         killedButton.setOnClickListener(new View.OnClickListener() {
@@ -160,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Beginning of menu drawer configuration
     private void addDrawerItems() {
-        String[] menuPages = { "Profile", "Map", "Standings", "Settings" };
+        String[] menuPages = { "Profile", "Map", "Standings", "Join a Game", "Settings" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuPages);
         mDrawerList.setAdapter(mAdapter);
 
@@ -244,6 +248,11 @@ public class MainActivity extends AppCompatActivity {
                 this.startActivity(intent);
                 break;
             case 3:
+                intent = new Intent(this, GameSelectActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                this.startActivity(intent);
+                break;
+            case 4:
                 intent = new Intent(this, SettingsActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 this.startActivity(intent);

@@ -1,92 +1,45 @@
 package edu.calvin.the_b_team.calvinassassingame;
 
 import android.content.Intent;
-import android.graphics.Point;
-import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Display;
+import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+public class GameSelectActivity extends AppCompatActivity {
 
-/**
- * Created by jjh35 on 11/5/2016.
- */
-public class MapCompactActivity extends AppCompatActivity implements OnMapReadyCallback {
-
-    private GoogleMap mMap;
     //Initialize Drawer and Layout things
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.compact_activity_map);
+        setContentView(R.layout.activity_game_select);
+
         //Set up the menu drawer and its items
-        mDrawerList = (ListView) findViewById(R.id.navList);
-        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView)findViewById(R.id.navList);mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         addDrawerItems();
         setupDrawer();
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hamburger);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        //retrieve the height and width of screen
-        Display display = getWindowManager().getDefaultDisplay();
-        Point size = new Point();
-        display.getSize(size);
-        int width = size.x;
-        int height = size.y;
-        //set map's height and width to be 4/5 the size of screen
-        ViewGroup.LayoutParams params = mapFragment.getView().getLayoutParams();
-        params.height = (int) ( height * 0.75 );
-        params.width = (int) ( width * 0.8 );
-
-        mapFragment.getView().setLayoutParams(params);
-        mapFragment.getMapAsync(this);
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        // The coordinates for Calvin College is 42.9306° N, -85.5880° W
-        LatLng calvin = new LatLng(42.9306, -85.5880);
-        mMap.addMarker(new MarkerOptions().position(calvin).title("Marker at calvin college"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(calvin, 17));
-    }
+
+
 
     // Beginning of menu drawer configuration
+
     private void addDrawerItems() {
-        String[] menuPages = { "Home", "Profile", "Standings", "Join a Game", "Settings" };
+        String[] menuPages = { "Home", "Profile", "Map", "Standings", "Settings" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuPages);
         mDrawerList.setAdapter(mAdapter);
 
@@ -111,7 +64,7 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
             /** Called when a drawer has settled in a completely closed state. */
             public void onDrawerClosed(View view) {
                 super.onDrawerClosed(view);
-                getSupportActionBar().setTitle(R.string.title_activity_gpsmap);
+                getSupportActionBar().setTitle(R.string.profile_activity_title);
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
         };
@@ -153,12 +106,12 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
                 this.startActivity(intent);
                 break;
             case 2:
-                intent = new Intent(this, StandingsViewActivity.class);
+                intent = new Intent(this, MapCompactActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 this.startActivity(intent);
                 break;
             case 3:
-                intent = new Intent(this, GameSelectActivity.class);
+                intent = new Intent(this, StandingsViewActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 this.startActivity(intent);
                 break;

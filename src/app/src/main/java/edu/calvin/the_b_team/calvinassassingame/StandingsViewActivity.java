@@ -16,6 +16,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.android.gms.games.Game;
+
 public class StandingsViewActivity extends AppCompatActivity {
 
     private ListView mDrawerList;
@@ -47,7 +49,7 @@ public class StandingsViewActivity extends AppCompatActivity {
     // Beginning of menu drawer configuration
 
     private void addDrawerItems() {
-        String[] menuPages = { "Home", "Profile", "Map", "Settings" };
+        String[] menuPages = { "Home", "Profile", "Map", "Join a Game", "Settings" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuPages);
         mDrawerList.setAdapter(mAdapter);
 
@@ -131,6 +133,11 @@ public class StandingsViewActivity extends AppCompatActivity {
                 this.startActivity(intent);
                 break;
             case 3:
+                intent = new Intent(this, GameSelectActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                this.startActivity(intent);
+                break;
+            case 4:
                 intent = new Intent(this, SettingsActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 this.startActivity(intent);

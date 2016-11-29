@@ -47,6 +47,9 @@
     <!-- Strings related to Standings Activity -->
     <string name="standings_activity_title">Standings</string>
 
+    <!-- Strings related to Game Selection Activity -->
+    <string name="join_game_description">Available Games:</string>
+
     <!-- Strings related to Settings -->
     <string name="title_activity_settings">Settings</string>
 
