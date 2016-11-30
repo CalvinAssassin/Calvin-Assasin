@@ -11,6 +11,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.android.gms.games.Game;
+
+import java.util.ArrayList;
+
 public class GameSelectActivity extends AppCompatActivity {
 
     //Initialize Drawer and Layout things
@@ -19,18 +23,48 @@ public class GameSelectActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
 
+    private ListView upcomingGameList;
+    private ArrayList<String> upcomingListItems;
+    ArrayAdapter upcomingGameListArrayAdapter;
+
+    private ListView activeGameList;
+    private ArrayList<String> activeListItems;
+    ArrayAdapter activeGameListArrayAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_select);
 
         //Set up the menu drawer and its items
-        mDrawerList = (ListView)findViewById(R.id.navList);mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView)findViewById(R.id.navList);
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         addDrawerItems();
         setupDrawer();
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hamburger);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        //Set up other layout items
+        String[] upcomingGameObjects = {
+                //TODO: This is hardcoded until we can retrieve the list of games
+                "Game 3 - Begins: 6 December 2016 - 10 Players",
+                "Game 4 - Begins: 13 December 2016 - 2 Players"
+        };
+        upcomingGameList = (ListView)findViewById(R.id.upcomingList);
+        upcomingListItems = new ArrayList<String>();
+        upcomingGameListArrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, upcomingGameObjects);
+        upcomingGameList.setAdapter(upcomingGameListArrayAdapter);
+
+        String[] activeGameObjects = {
+                //TODO: This is hardcoded until we can retrieve the list of games
+                "Game 1 - Began: 22 November 2016 - 19 Players",
+                "Game 2 - Began: 29 November 2016 - 22 Players"
+        };
+        activeGameList = (ListView)findViewById(R.id.activeList);
+        activeListItems = new ArrayList<String>();
+        activeGameListArrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, activeGameObjects);
+        activeGameList.setAdapter(activeGameListArrayAdapter);
     }
 
 

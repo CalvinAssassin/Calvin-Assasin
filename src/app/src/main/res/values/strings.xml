@@ -48,7 +48,10 @@
     <string name="standings_activity_title">Standings</string>
 
     <!-- Strings related to Game Selection Activity -->
-    <string name="join_game_description">Available Games:</string>
+    <string name="join_game_title">Upcoming Games:</string>
+    <string name="join_game_description">Press a game to join it! You can only participate in one game at a time.</string>
+    <string name="active_game_title">Active Games:</string>
+    <string name="active_game_description">These games are currently in progress. You cannot join them.</string>
 
     <!-- Strings related to Settings -->
     <string name="title_activity_settings">Settings</string>

@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -15,18 +16,49 @@
         tools:context=".MainActivity">
 
         <TextView
+            android:id="@+id/upcomingTitle"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/join_game_description"
+            android:layout_height="wrap_content"
+            android:text="@string/join_game_title"
             android:textSize="28sp"/>
-
-        <ListView
+        <TextView
+            android:id="@+id/upcomingDescription"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="wrap_content"
+            android:layout_below="@id/upcomingTitle"
+            android:text="@string/join_game_description"
+            android:textSize="12sp"/>
+        <ListView
+            android:id="@+id/upcomingList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".5"
+            android:layout_below="@id/upcomingDescription">
         </ListView>
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/activeTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/upcomingList"
+            android:text="@string/active_game_title"
+            android:textSize="28sp"/>
+        <TextView
+            android:id="@+id/activeDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/activeTitle"
+            android:text="@string/active_game_description"
+            android:textSize="12sp"/>
+        <ListView
+            android:id="@+id/activeList"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight=".5"
+            android:layout_below="@id/activeDescription">
+        </ListView>
+
+    </LinearLayout>
 
     <!-- Side navigation drawer UI -->
     <ListView
