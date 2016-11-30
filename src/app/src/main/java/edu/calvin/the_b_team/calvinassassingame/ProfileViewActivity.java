@@ -283,13 +283,14 @@ public class ProfileViewActivity extends AppCompatActivity {
                     if (menuChoice == 4){
                         /*Dont harass the user about filling in info if they're just trying
                           to get to the settings page. */
-                        selectItem(menuChoice);
+                        selectItem(position);
                     }
                     else {
                         notFinalizedAlert.show();
                     }
                 }
                 else{
+                    selectItem(position);
                 }
             }
         });

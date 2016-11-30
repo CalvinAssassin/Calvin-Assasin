@@ -1,6 +1,10 @@
 package edu.calvin.the_b_team.calvinassassingame;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.gms.games.Game;
 
@@ -31,10 +36,18 @@ public class GameSelectActivity extends AppCompatActivity {
     private ArrayList<String> activeListItems;
     ArrayAdapter activeGameListArrayAdapter;
 
+    //Runtime Variables
+    private SharedPreferences app_preferences;
+    boolean settingsFinalized;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_select);
+
+        //Load runtime variables from app_preferences
+        app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        settingsFinalized = app_preferences.getBoolean("settingsFinalized",false);
 
         //Set up the menu drawer and its items
         mDrawerList = (ListView)findViewById(R.id.navList);
@@ -46,6 +59,46 @@ public class GameSelectActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         //Set up other layout items
+
+        //Define the confirmation dialogue to join a game
+        final AlertDialog.Builder joinConfirmAlert  = new AlertDialog.Builder(this);
+        joinConfirmAlert.setMessage(R.string.join_confirm_message);
+        joinConfirmAlert.setTitle("Join this game?");
+        joinConfirmAlert.setCancelable(true);
+        joinConfirmAlert.setPositiveButton("Join", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            /* TODO: Join the game & draw a checkmark by that game in the list to indicate that the user will participate
+             * in this game. The checkmark will also be visible when the game is active.
+             */
+                Toast.makeText(getBaseContext(), "Game Joined", Toast.LENGTH_SHORT).show();
+            }
+        });
+        joinConfirmAlert.setNegativeButton("Maybe not...", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //Dismiss confirmation message and return
+            }
+        });
+
+        //Define the confirmation dialogue to leave a game
+        final AlertDialog.Builder leaveConfirmAlert  = new AlertDialog.Builder(this);
+        leaveConfirmAlert.setMessage(R.string.leave_confirm_message);
+        leaveConfirmAlert.setTitle("Leave this game?");
+        leaveConfirmAlert.setCancelable(true);
+        leaveConfirmAlert.setPositiveButton("Leave", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+            /* TODO: Leave the game & remove the checkmark by that game in the list to indicate that the user will no longer participate
+             * in this game. If this game has already started and is in the active list, this will be a forfeit
+             */
+                Toast.makeText(getBaseContext(), "Game Left", Toast.LENGTH_SHORT).show();
+            }
+        });
+        joinConfirmAlert.setNegativeButton("Maybe not...", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                //Dismiss confirmation message and return
+            }
+        });
+
+        //Games that will start
         String[] upcomingGameObjects = {
                 //TODO: This is hardcoded until we can retrieve the list of games
                 "Game 3 - Begins: 6 December 2016 - 10 Players",
@@ -65,6 +118,26 @@ public class GameSelectActivity extends AppCompatActivity {
         activeListItems = new ArrayList<String>();
         activeGameListArrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, activeGameObjects);
         activeGameList.setAdapter(activeGameListArrayAdapter);
+
+
+        //User selects a game to join from the upcomingGameList
+        upcomingGameList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position,long id) {
+                //Toast.makeText(getBaseContext(), "Join game clicked", Toast.LENGTH_SHORT).show();
+                if (!settingsFinalized){
+                    Toast.makeText(getBaseContext(), "You must finalize your profile before joining a game!", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    // if (!user is already a part of this game){
+                        joinConfirmAlert.show();
+                    //}
+                    //else {
+                        //leaveConfirmAlert.show();
+                    //}
+                }
+            }
+        });
     }
 
 

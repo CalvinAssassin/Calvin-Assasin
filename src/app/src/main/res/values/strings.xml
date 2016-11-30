@@ -52,6 +52,8 @@
     <string name="join_game_description">Press a game to join it! You can only participate in one game at a time.</string>
     <string name="active_game_title">Active Games:</string>
     <string name="active_game_description">These games are currently in progress. You cannot join them.</string>
+    <string name="join_confirm_message">Join this upcoming game? You can leave if you change your mind.</string>
+    <string name="leave_confirm_message">Leave this game? You wont be able to rejoin after it starts!</string>
 
     <!-- Strings related to Settings -->
     <string name="title_activity_settings">Settings</string>
