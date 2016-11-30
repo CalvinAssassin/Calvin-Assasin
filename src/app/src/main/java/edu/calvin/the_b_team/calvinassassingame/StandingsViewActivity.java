@@ -17,8 +17,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.android.gms.games.Game;
+
+import java.util.ArrayList;
 
 public class StandingsViewActivity extends AppCompatActivity {
 
@@ -28,19 +32,37 @@ public class StandingsViewActivity extends AppCompatActivity {
     private String mActivityTitle;
     private ActionBarDrawerToggle mDrawerToggle;
 
+    //Player List Variables
+    private ProgressBar progressBar;
+    private TextView remainingPlayersText;
+    private ListView playerList;
+    private ArrayList<String> playerListItems;
+    ArrayAdapter playerListArrayAdapter;
+
     private SharedPreferences app_preferences;
 
+    // BEGIN DEMO VARIABLE DECLARATION
+    private boolean joinedGameThree;
+    private boolean javinDead;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_standings_view);
 
+
         //Load the stored variables
         app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        joinedGameThree = app_preferences.getBoolean("joinedGameThree",false);
+        javinDead = app_preferences.getBoolean("javinDead",false);
+
+        //Load Layout Items
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        remainingPlayersText = (TextView)findViewById(R.id.remainingPlayersText);
 
         //Set up the menu drawer and its items
-        mDrawerList = (ListView)findViewById(R.id.navList);mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView)findViewById(R.id.navList);
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
 
         addDrawerItems();
@@ -51,6 +73,44 @@ public class StandingsViewActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
         setTitle(getResources().getText(R.string.standings_activity_title));
+
+        //Games that will start
+        String[] playerObjects = {
+                //TODO: This is hardcoded until we can retrieve the list of players
+                "Nate Bender",
+                "Jesse Hulse",
+                "Paige Brinks",
+                "Frank Boye",
+                "Javin Unger",
+                "Tupac Shakur",
+                "Keither Vander Linden",
+                "Ozzy Osbourne",
+                "Brad Pitt",
+                "James Brown",
+                "Lars Ulrich",
+                "Axl Rose",
+        };
+        playerList = (ListView)findViewById(R.id.playerList);
+        playerListItems = new ArrayList<String>();
+        playerListArrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, playerObjects);
+        playerList.setAdapter(playerListArrayAdapter);
+
+        //DEMO LOGIC
+        if (!joinedGameThree){
+            playerList.setVisibility(View.INVISIBLE);
+            progressBar.setProgress(0);
+            remainingPlayersText.setText("Join a game to view player standings.");
+        }
+        else{
+            if (!javinDead){
+                remainingPlayersText.setText("0/12 Players Assassinated");
+                progressBar.setProgress(0);
+            }
+            else{
+                remainingPlayersText.setText("1/12 Players Assassinated");
+                progressBar.setProgress(1);
+            }
+        }
 
     }
     // Beginning of menu drawer configuration

@@ -28,8 +28,8 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="5/11 Players Assassinated"
-                android:id="@+id/textView2" />
+                android:text="1/12 Players Assassinated"
+                android:id="@+id/remainingPlayersText" />
 
             <ProgressBar
                 style="?android:attr/progressBarStyleHorizontal"
@@ -37,264 +37,20 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/progressBar"
                 android:layout_gravity="center_horizontal"
-                android:max="20"
-                android:progress="12" />
+                android:max="12"
+                android:progress="1" />
 
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight=".03" />
 
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Player Name"
-                    android:textStyle="bold"
-                    android:textColor="@color/wallet_holo_blue_light"
-                    android:textSize="22dp"
-                    android:layout_alignParentLeft="true"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Status"
-                    android:textStyle="bold"
-                    android:textColor="@color/wallet_holo_blue_light"
-                    android:textSize="22dp"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-
-            <Space
+            <ListView
+                android:id="@+id/playerList"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight=".05" />
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
                 android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nate Bender"
-                    android:textSize="22dp"
-                    android:layout_alignParentLeft="true"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Alive"
-                    android:textSize="22dp"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Jesse Hulse"
-                    android:textSize="22dp"
-                    android:layout_alignParentLeft="true"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Alive"
-                    android:textSize="22dp"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Paige Brinks"
-                    android:textSize="22dp"
-                    android:layout_alignParentLeft="true"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Alive"
-                    android:textSize="22dp"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Drew Vande Lune"
-                    android:textSize="22dp"
-                    android:layout_alignParentLeft="true"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Alive"
-                    android:textSize="22dp"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Frank Boye"
-                    android:textSize="22dp"
-                    android:layout_alignParentLeft="true"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Alive"
-                    android:textSize="22dp"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tupac"
-                    android:textSize="22dp"
-                    android:layout_alignParentLeft="true"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Alive"
-                    android:textSize="22dp"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Javin Unger"
-                    android:textSize="22dp"
-                    android:layout_alignParentLeft="true"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dead"
-                    android:textSize="22dp"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Christiaan Hazlett"
-                    android:textSize="22dp"
-                    android:layout_alignParentLeft="true"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dead"
-                    android:textSize="22dp"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ian Hazlett"
-                    android:textSize="22dp"
-                    android:layout_alignParentLeft="true"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dead"
-                    android:textSize="22dp"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Tristan Hazlett"
-                    android:textSize="22dp"
-                    android:layout_alignParentLeft="true"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dead"
-                    android:textSize="22dp"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="George Johnson"
-                    android:textSize="22dp"
-                    android:layout_alignParentLeft="true"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dead"
-                    android:textSize="22dp"
-                    android:layout_alignParentRight="true"/>
-
-            </RelativeLayout>
-
-
+            </ListView>
 
 
 

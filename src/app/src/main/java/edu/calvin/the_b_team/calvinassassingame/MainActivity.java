@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.media.Image;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -25,6 +27,8 @@ import android.content.Intent;
 
 import com.google.android.gms.games.Game;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -36,15 +40,25 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private String mActivityTitle;
     private ActionBarDrawerToggle mDrawerToggle;
+
     private Button killedButton;
     private AlertDialog.Builder assassinationSentAlert;
     private AlertDialog.Builder targetConfirmationAlert;
     private TextView count_down_textView;
-    private ImageView splashImage;
+    private ImageView targetImage;
+    private TextView targetNameTextView;
+    private TextView targetMajorTextView;
+    private TextView targetHomeTextView;
+
+
     private Handler handler;
     private Runnable runnable;
     private boolean targetEliminated;
-    private SharedPreferences savedValues;
+    private SharedPreferences app_preferences;
+
+    // BEGIN DEMO VARIABLE DECLARATION
+    private boolean joinedGameThree;
+    private boolean javinDead;
 
 
     @Override
@@ -53,14 +67,42 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle(getResources().getText(R.string.main_activity_title));
 
+        app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        joinedGameThree = app_preferences.getBoolean("joinedGameThree",false);
+        javinDead = app_preferences.getBoolean("javinDead",false);
+
         //Set up the menu drawer and its items
         mDrawerList = (ListView)findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
+
+        //Set up other layout items
         killedButton = (Button)findViewById(R.id.killedButton);
         count_down_textView = (TextView)findViewById(R.id.count_down_textView);
-        targetEliminated = false;
-        savedValues = getSharedPreferences("SavedValues", MODE_PRIVATE);
+        targetImage = (ImageView)findViewById(R.id.targetImage);
+        targetNameTextView = (TextView)findViewById(R.id.targetNameTextView);
+        targetMajorTextView = (TextView)findViewById(R.id.targetMajorTextView);
+        targetHomeTextView = (TextView)findViewById(R.id.targetHomeTextView);
+
+
+        //DEMO LOGIC
+        if (!joinedGameThree){
+            targetImage.setColorFilter(Color.BLACK);
+            targetNameTextView.setText("Unknown Name");
+            targetMajorTextView.setText("Unknown Major");
+            targetHomeTextView.setText("Unknown Residence");
+            killedButton.setEnabled(false);
+        }
+        else{
+            targetImage.setVisibility(View.VISIBLE);
+            targetNameTextView.setText("Javin Unger");
+            targetMajorTextView.setText("Computer Science");
+            targetHomeTextView.setText("KE Apartments");
+            killedButton.setEnabled(true);
+            if (javinDead){
+                killedButton.setEnabled(false);
+            }
+        }
 
         addDrawerItems();
         setupDrawer();
@@ -98,6 +140,10 @@ public class MainActivity extends AppCompatActivity {
                         if(this!=null && !isFinishing()){
                             // show pop up that target has confirmed the assassination
                             targetConfirmationAlert.show();
+                            javinDead = true;
+                            SharedPreferences.Editor editor = app_preferences.edit();
+                            editor.putBoolean("javinDead", javinDead);
+                            editor.commit(); // Commit the changes to the preferences file
                         }
                     }
                 }, 5000);
@@ -132,10 +178,15 @@ public class MainActivity extends AppCompatActivity {
                     // update it every second
                     if (currentDate.after(futureDate)) {
                         count_down_textView.setText("TIME UP");
-                    } else if (targetEliminated) {
+                    }
+                    else if (javinDead) {
                         count_down_textView.setTextColor(Color.RED);
                         count_down_textView.setText("TARGET\nELIMINATED");
-                    } else {
+                    }
+                    else if (!joinedGameThree){
+                            count_down_textView.setText("--:--:--:--");
+                    }
+                    else {
                         long diff = futureDate.getTime() - currentDate.getTime();
                         long days = diff / (24 * 60 * 60 * 1000);
                         diff -= days * (24 * 60 * 60 * 1000);
@@ -261,20 +312,6 @@ public class MainActivity extends AppCompatActivity {
     }
     // End of menu drawer configuration
 
-    @Override
-    public void onPause() {
-        SharedPreferences.Editor editor = savedValues.edit();
-        editor.putBoolean("targetEliminatedBool", targetEliminated);
-        editor.commit();
-
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        targetEliminated = savedValues.getBoolean("targetEliminatedBool", false);
-    }
 
 
 

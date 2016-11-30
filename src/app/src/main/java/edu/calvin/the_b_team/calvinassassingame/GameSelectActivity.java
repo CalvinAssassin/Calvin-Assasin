@@ -115,7 +115,7 @@ public class GameSelectActivity extends AppCompatActivity {
         //Games that will start
         String[] upcomingGameObjects = {
                 //TODO: This is hardcoded until we can retrieve the list of games
-                "Game 3 - Begins: 6 December 2016 - 10 Players",
+                "Game 3 - Begins: VERY SOON - 16 Players",
         };
         upcomingGameList = (ListView)findViewById(R.id.upcomingList);
         upcomingListItems = new ArrayList<String>();

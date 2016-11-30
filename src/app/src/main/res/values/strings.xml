@@ -46,6 +46,19 @@
 
     <!-- Strings related to Standings Activity -->
     <string name="standings_activity_title">Standings</string>
+    <string name="demo_player1">Nate Bender</string>
+    <string name="demo_player2">Jesse Hulse</string>
+    <string name="demo_player3">Paige Brinks</string>
+    <string name="demo_player4">Frank Boye</string>
+    <string name="demo_player5">Javin Unger</string>
+    <string name="demo_player6">Tupac Shakur</string>
+    <string name="demo_player7">Keith Vander Linden</string>
+    <string name="demo_player8">Ozzy Osbourne</string>
+    <string name="demo_player9">Brad Pitt</string>
+    <string name="demo_player10">James Brown</string>
+    <string name="demo_player11">Lars Ulrich</string>
+    <string name="demo_player12">Axl Rose</string>
+
 
     <!-- Strings related to Game Selection Activity -->
     <string name="join_game_title">Upcoming Games:</string>

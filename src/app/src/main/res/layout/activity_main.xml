@@ -21,14 +21,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="28sp"
-            android:id="@+id/myTarget"/>
+            android:id="@+id/myTargetIs"/>
 
         <ImageView
             android:layout_width="100dp"
             android:layout_height="200dp"
             app:srcCompat="@drawable/targetphoto"
             android:id="@+id/targetImage"
-            android:layout_below="@+id/myTarget"
+            android:layout_below="@+id/myTargetIs"
             android:layout_alignParentStart="true"
             android:layout_marginTop="20dp"
             android:layout_toStartOf="@+id/targetMajorTextView" />
