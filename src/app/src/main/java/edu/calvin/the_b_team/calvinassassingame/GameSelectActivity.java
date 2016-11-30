@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -40,6 +42,9 @@ public class GameSelectActivity extends AppCompatActivity {
     private SharedPreferences app_preferences;
     boolean settingsFinalized;
 
+    // BEGIN DEMO VARIABLE DECLARATION
+    private boolean joinedGameThree = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +53,7 @@ public class GameSelectActivity extends AppCompatActivity {
         //Load runtime variables from app_preferences
         app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
         settingsFinalized = app_preferences.getBoolean("settingsFinalized",false);
+        joinedGameThree = app_preferences.getBoolean("joinedGameThree",false);
 
         //Set up the menu drawer and its items
         mDrawerList = (ListView)findViewById(R.id.navList);
@@ -70,7 +76,10 @@ public class GameSelectActivity extends AppCompatActivity {
             /* TODO: Join the game & draw a checkmark by that game in the list to indicate that the user will participate
              * in this game. The checkmark will also be visible when the game is active.
              */
-                Toast.makeText(getBaseContext(), "Game Joined", Toast.LENGTH_SHORT).show();
+                joinedGameThree = true;
+                SharedPreferences.Editor editor = app_preferences.edit();
+                editor.putBoolean("joinedGameThree", joinedGameThree);
+                editor.commit(); // Commit the changes to the preferences file
             }
         });
         joinConfirmAlert.setNegativeButton("Maybe not...", new DialogInterface.OnClickListener() {
@@ -89,6 +98,10 @@ public class GameSelectActivity extends AppCompatActivity {
             /* TODO: Leave the game & remove the checkmark by that game in the list to indicate that the user will no longer participate
              * in this game. If this game has already started and is in the active list, this will be a forfeit
              */
+                joinedGameThree = false;
+                SharedPreferences.Editor editor = app_preferences.edit();
+                editor.putBoolean("joinedGameThree", joinedGameThree);
+                editor.commit(); // Commit the changes to the preferences file
                 Toast.makeText(getBaseContext(), "Game Left", Toast.LENGTH_SHORT).show();
             }
         });
@@ -102,7 +115,6 @@ public class GameSelectActivity extends AppCompatActivity {
         String[] upcomingGameObjects = {
                 //TODO: This is hardcoded until we can retrieve the list of games
                 "Game 3 - Begins: 6 December 2016 - 10 Players",
-                "Game 4 - Begins: 13 December 2016 - 2 Players"
         };
         upcomingGameList = (ListView)findViewById(R.id.upcomingList);
         upcomingListItems = new ArrayList<String>();
@@ -129,19 +141,16 @@ public class GameSelectActivity extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), "You must finalize your profile before joining a game!", Toast.LENGTH_LONG).show();
                 }
                 else {
-                    // if (!user is already a part of this game){
+                     if (!joinedGameThree){
                         joinConfirmAlert.show();
-                    //}
-                    //else {
-                        //leaveConfirmAlert.show();
-                    //}
+                    }
+                    else {
+                        leaveConfirmAlert.show();
+                    }
                 }
             }
         });
     }
-
-
-
 
     // Beginning of menu drawer configuration
 
