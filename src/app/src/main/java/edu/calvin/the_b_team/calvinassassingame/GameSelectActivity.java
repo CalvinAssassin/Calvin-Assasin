@@ -97,6 +97,9 @@ public class GameSelectActivity extends AppCompatActivity {
                 editor.putBoolean("joinedGameThree", joinedGameThree);
                 editor.commit(); // Commit the changes to the preferences file
                 Toast.makeText(getBaseContext(), "Game Joined", Toast.LENGTH_SHORT).show();
+
+                activeGameListArrayAdapter.notifyDataSetChanged();
+                upcomingGameListArrayAdapter.notifyDataSetChanged();
             }
         });
         joinConfirmAlert.setNegativeButton("Maybe not...", new DialogInterface.OnClickListener() {

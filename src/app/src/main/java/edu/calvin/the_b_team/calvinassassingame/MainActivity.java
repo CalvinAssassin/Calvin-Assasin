@@ -147,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
                             editor.commit(); // Commit the changes to the preferences file
                         }
                     }
-                }, 5000);
+                }, 3000);
             }
         });
         killedButton.setOnClickListener(new View.OnClickListener() {
