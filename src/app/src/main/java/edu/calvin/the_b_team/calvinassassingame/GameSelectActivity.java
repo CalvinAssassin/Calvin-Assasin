@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.google.android.gms.games.Game;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class GameSelectActivity extends AppCompatActivity {
 
@@ -32,11 +33,26 @@ public class GameSelectActivity extends AppCompatActivity {
 
     private ListView upcomingGameList;
     private ArrayList<String> upcomingListItems;
-    ArrayAdapter upcomingGameListArrayAdapter;
+    private ArrayAdapter upcomingGameListArrayAdapter;
+    private String[] upcomingGameObjects = {
+            //TODO: This is hardcoded until we can retrieve the list of games
+            "Game 3 - Begins: VERY SOON - 11 Players",
+    };
+    private String[] upcomingGameObjects2 = {};
 
     private ListView activeGameList;
     private ArrayList<String> activeListItems;
-    ArrayAdapter activeGameListArrayAdapter;
+    private ArrayAdapter activeGameListArrayAdapter;
+    private String[] activeGameObjects = {
+            //TODO: This is hardcoded until we can retrieve the list of games
+            "Game 1 - Began: 22 November 2016 - 19 Players",
+            "Game 2 - Began: 29 November 2016 - 22 Players"
+    };
+    private String[] activeGameObjects2 = {
+            "Game 1 - Began: 22 November 2016 - 19 Players",
+            "Game 2 - Began: 29 November 2016 - 22 Players",
+            "Game 3 - Began: Recently - 12 Players"
+    };
 
     //Runtime Variables
     private SharedPreferences app_preferences;
@@ -113,23 +129,26 @@ public class GameSelectActivity extends AppCompatActivity {
         });
 
         //Games that will start
-        String[] upcomingGameObjects = {
-                //TODO: This is hardcoded until we can retrieve the list of games
-                "Game 3 - Begins: VERY SOON - 16 Players",
-        };
+
         upcomingGameList = (ListView)findViewById(R.id.upcomingList);
         upcomingListItems = new ArrayList<String>();
-        upcomingGameListArrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, upcomingGameObjects);
+        if (!joinedGameThree) {
+            upcomingGameListArrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, upcomingGameObjects);
+        }
+        else{
+            upcomingGameListArrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, upcomingGameObjects2);
+        }
         upcomingGameList.setAdapter(upcomingGameListArrayAdapter);
 
-        String[] activeGameObjects = {
-                //TODO: This is hardcoded until we can retrieve the list of games
-                "Game 1 - Began: 22 November 2016 - 19 Players",
-                "Game 2 - Began: 29 November 2016 - 22 Players"
-        };
+
         activeGameList = (ListView)findViewById(R.id.activeList);
         activeListItems = new ArrayList<String>();
-        activeGameListArrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, activeGameObjects);
+        if (!joinedGameThree) {
+            activeGameListArrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, activeGameObjects);
+        }
+        else{
+            activeGameListArrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, activeGameObjects2);
+        }
         activeGameList.setAdapter(activeGameListArrayAdapter);
 
 

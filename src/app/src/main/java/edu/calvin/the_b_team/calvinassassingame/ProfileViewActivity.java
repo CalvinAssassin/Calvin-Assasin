@@ -122,8 +122,8 @@ public class ProfileViewActivity extends AppCompatActivity {
         });
         //Set up a greeting to firstRun users
         firstRunAlert = new AlertDialog.Builder(ProfileViewActivity.this);
-        firstRunAlert.setTitle("Welcome to Calvin Assassin!");
-        firstRunAlert.setMessage("Before you start playing, enter some information about yourself so other players can find you!");
+        firstRunAlert.setTitle(R.string.welcome_message_title);
+        firstRunAlert.setMessage(R.string.welcome_message);
         firstRunAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
             public void onClick (DialogInterface dialog, int id) {
 

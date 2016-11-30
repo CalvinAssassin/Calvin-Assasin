@@ -21,6 +21,10 @@
     <string name="user_year_label">Player class: </string>
     <string name="user_home_label">Residence: </string>
     <string name="finalize_button">FINALIZE</string>
+    <string name="welcome_message">Before you start playing, enter some information about yourself so other players can find you! When you\'re done,
+        press the menu button on the left to navigate.
+    </string>
+    <string name="welcome_message_title">"Welcome to Calvin Assassin!"</string>
     <string name="finalize_message">You will not be able to change you profile after finalizing. Continue?</string>
     <string-array name="class_array">
         <item>Freshman</item>
@@ -43,21 +47,10 @@
 
     <!-- Strings related to Map Activity-->
     <string name="title_activity_gpsmap">Map</string>
+    <string name="map_activity_description">Target\'s last known location:</string>
 
     <!-- Strings related to Standings Activity -->
     <string name="standings_activity_title">Standings</string>
-    <string name="demo_player1">Nate Bender</string>
-    <string name="demo_player2">Jesse Hulse</string>
-    <string name="demo_player3">Paige Brinks</string>
-    <string name="demo_player4">Frank Boye</string>
-    <string name="demo_player5">Javin Unger</string>
-    <string name="demo_player6">Tupac Shakur</string>
-    <string name="demo_player7">Keith Vander Linden</string>
-    <string name="demo_player8">Ozzy Osbourne</string>
-    <string name="demo_player9">Brad Pitt</string>
-    <string name="demo_player10">James Brown</string>
-    <string name="demo_player11">Lars Ulrich</string>
-    <string name="demo_player12">Axl Rose</string>
 
 
     <!-- Strings related to Game Selection Activity -->

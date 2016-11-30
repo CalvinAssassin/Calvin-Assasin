@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Handler handler;
     private Runnable runnable;
-    private boolean targetEliminated;
+
     private SharedPreferences app_preferences;
 
     // BEGIN DEMO VARIABLE DECLARATION
@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
 
         targetConfirmationAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick (DialogInterface dialog2, int id2) {
-                targetEliminated = true;
+                javinDead = true;
             }
         });
         assassinationSentAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
                             // show pop up that target has confirmed the assassination
                             targetConfirmationAlert.show();
                             javinDead = true;
+                            killedButton.setEnabled(false);
                             SharedPreferences.Editor editor = app_preferences.edit();
                             editor.putBoolean("javinDead", javinDead);
                             editor.commit(); // Commit the changes to the preferences file

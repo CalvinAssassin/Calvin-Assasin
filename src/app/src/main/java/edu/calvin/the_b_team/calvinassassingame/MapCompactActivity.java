@@ -1,8 +1,10 @@
 package edu.calvin.the_b_team.calvinassassingame;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,11 +29,18 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MapCompactActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private GoogleMap mMap;
+
     //Initialize Drawer and Layout things
     private ListView mDrawerList;
     private ArrayAdapter<String> mAdapter;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+
+    private SharedPreferences app_preferences;
+
+    // BEGIN DEMO VARIABLE DECLARATION
+    private boolean joinedGameThree;
+    private boolean javinDead;
 
 
     @Override
@@ -39,14 +48,22 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.compact_activity_map);
+
         //Set up the menu drawer and its items
         mDrawerList = (ListView) findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         addDrawerItems();
         setupDrawer();
+
+        //Other layout items setup
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hamburger);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        //Load variables from sharedPreferences
+        app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        joinedGameThree = app_preferences.getBoolean("joinedGameThree",false);
+        javinDead = app_preferences.getBoolean("javinDead",false);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -79,9 +96,12 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         // The coordinates for Calvin College is 42.9306° N, -85.5880° W
-        LatLng calvin = new LatLng(42.9306, -85.5880);
-        mMap.addMarker(new MarkerOptions().position(calvin).title("Marker at calvin college"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(calvin, 17));
+
+        if (joinedGameThree) {
+            LatLng calvin = new LatLng(42.9306, -85.5880);
+            mMap.addMarker(new MarkerOptions().position(calvin).title("Targets Location"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(calvin, 17));
+        }
     }
 
     // Beginning of menu drawer configuration
