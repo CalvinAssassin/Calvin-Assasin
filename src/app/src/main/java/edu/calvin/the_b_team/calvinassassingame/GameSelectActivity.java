@@ -80,6 +80,7 @@ public class GameSelectActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = app_preferences.edit();
                 editor.putBoolean("joinedGameThree", joinedGameThree);
                 editor.commit(); // Commit the changes to the preferences file
+                Toast.makeText(getBaseContext(), "Game Joined", Toast.LENGTH_SHORT).show();
             }
         });
         joinConfirmAlert.setNegativeButton("Maybe not...", new DialogInterface.OnClickListener() {
