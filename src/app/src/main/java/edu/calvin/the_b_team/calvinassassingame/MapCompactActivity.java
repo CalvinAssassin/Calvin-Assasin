@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -35,6 +36,8 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
     private ArrayAdapter<String> mAdapter;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+
+    private TextView mapText;
 
     private SharedPreferences app_preferences;
 
@@ -59,6 +62,7 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hamburger);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        mapText = (TextView)findViewById(R.id.mapText);
 
         //Load variables from sharedPreferences
         app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -98,9 +102,13 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
         // The coordinates for Calvin College is 42.9306° N, -85.5880° W
 
         if (joinedGameThree) {
+            mapText.setText(R.string.map_activity_description);
             LatLng calvin = new LatLng(42.9306, -85.5880);
             mMap.addMarker(new MarkerOptions().position(calvin).title("Targets Location"));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(calvin, 17));
+        }
+        else{
+            mapText.setText("No Target. Join a game.");
         }
     }
 
