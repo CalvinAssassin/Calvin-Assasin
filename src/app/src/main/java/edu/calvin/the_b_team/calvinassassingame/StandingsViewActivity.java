@@ -6,6 +6,8 @@
 package edu.calvin.the_b_team.calvinassassingame;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -26,11 +28,16 @@ public class StandingsViewActivity extends AppCompatActivity {
     private String mActivityTitle;
     private ActionBarDrawerToggle mDrawerToggle;
 
+    private SharedPreferences app_preferences;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_standings_view);
+
+        //Load the stored variables
+        app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         //Set up the menu drawer and its items
         mDrawerList = (ListView)findViewById(R.id.navList);mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);

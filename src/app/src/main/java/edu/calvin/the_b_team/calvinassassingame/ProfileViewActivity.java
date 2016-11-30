@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -51,9 +52,15 @@ public class ProfileViewActivity extends AppCompatActivity {
 
     //Initialize State Variables
     private boolean settingsFinalized = false;
+    private boolean firstRun = false;
     private ImageView profileImage;
 
     private SharedPreferences app_preferences;
+    private AlertDialog.Builder notFinalizedAlert;
+    private int notFinalizedAlertChoice;
+    private int menuChoice = 0;
+    private AlertDialog.Builder firstRunAlert;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +83,7 @@ public class ProfileViewActivity extends AppCompatActivity {
         playerNameEditable = (EditText) findViewById(R.id.player_name_editable);
         playerClassEditable = (Spinner) findViewById(R.id.player_class_editable);
         playerHomeEditable = (Spinner) findViewById(R.id.player_home_editable);
+        
         app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
         ArrayAdapter<CharSequence> classList, homeList;
@@ -94,6 +102,41 @@ public class ProfileViewActivity extends AppCompatActivity {
         playerHomeEditable.setSelection(app_preferences.getInt("playerHome",0));
         loadProfileImage(app_preferences.getString("playerPhotoPath","android.resource://edu.calvin.the_b_team.calvinassassingame/" + R.mipmap.ic_profile_placeholder));
         settingsFinalized = app_preferences.getBoolean("settingsFinalized",false);
+        firstRun = app_preferences.getBoolean("firstRun", true);
+
+        //Set up the alert that warns that settings arent finalized when users leave the activity
+        notFinalizedAlert = new AlertDialog.Builder(ProfileViewActivity.this);
+        notFinalizedAlert.setTitle("Profile not finalized!");
+        notFinalizedAlert.setMessage("You will need to fill out and finalize your profile before you can join any games!");
+        notFinalizedAlert.setNeutralButton("I'll do it later", new DialogInterface.OnClickListener() {
+            //If the settings arent finalized but the user doesn't care, let them leave the page
+            public void onClick (DialogInterface dialog, int id) {
+                selectItem(menuChoice);
+            }
+        });
+        notFinalizedAlert.setNegativeButton("I'll do it now", new DialogInterface.OnClickListener() {
+            //If the info insn't finalized and the user decides to enter it, just close the drawer
+            public void onClick (DialogInterface dialog, int id) {
+                mDrawerLayout.closeDrawer(Gravity.LEFT);
+            }
+        });
+        //Set up a greeting to firstRun users
+        firstRunAlert = new AlertDialog.Builder(ProfileViewActivity.this);
+        firstRunAlert.setTitle("Welcome to Calvin Assassin!");
+        firstRunAlert.setMessage("Before you start playing, enter some information about yourself so other players can find you!");
+        firstRunAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
+            public void onClick (DialogInterface dialog, int id) {
+
+            }
+        });
+
+        if (firstRun){
+            SharedPreferences.Editor editor = app_preferences.edit();
+            firstRun = false;
+            editor.putBoolean("firstRun", false);
+            editor.commit(); //Store that this is no longer the first run
+            firstRunAlert.show();
+        }
 
         //Disable editing the fields if they've previously been finalized
         if (settingsFinalized == true){
@@ -235,7 +278,19 @@ public class ProfileViewActivity extends AppCompatActivity {
         mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectItem(position);
+                if (!settingsFinalized) {
+                    menuChoice = position;
+                    if (menuChoice == 4){
+                        /*Dont harass the user about filling in info if they're just trying
+                          to get to the settings page. */
+                        selectItem(menuChoice);
+                    }
+                    else {
+                        notFinalizedAlert.show();
+                    }
+                }
+                else{
+                }
             }
         });
     }
@@ -280,7 +335,6 @@ public class ProfileViewActivity extends AppCompatActivity {
     }
 
     private void selectItem(int position) {
-
         // Handle Navigation Options
         Intent intent;
         switch (position) {
