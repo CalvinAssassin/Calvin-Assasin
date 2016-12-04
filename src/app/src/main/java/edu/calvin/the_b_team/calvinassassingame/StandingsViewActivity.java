@@ -56,7 +56,7 @@ public class StandingsViewActivity extends AppCompatActivity {
     // Beginning of menu drawer configuration
 
     private void addDrawerItems() {
-        String[] menuPages = { "Home", "Profile", "Map", "Join a Game", "Settings" };
+        String[] menuPages = { "Target", "Profile", "Map", "Join a Game", "Settings" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuPages);
         mDrawerList.setAdapter(mAdapter);
 

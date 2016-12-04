@@ -164,6 +164,7 @@ public class ProfileViewActivity extends AppCompatActivity {
                 //Disable the info fields
                 disableTextFields();
                 finalizeTextFields();
+                Toast.makeText(getBaseContext(), "Profile Finalized", Toast.LENGTH_SHORT).show();
             }
         });
         finalizeAlert.setNegativeButton("Not yet", new DialogInterface.OnClickListener() {
@@ -271,7 +272,7 @@ public class ProfileViewActivity extends AppCompatActivity {
     // Beginning of menu drawer configuration
 
     private void addDrawerItems() {
-        String[] menuPages = { "Home", "Map", "Standings", "Join a Game", "Settings" };
+        String[] menuPages = { "Target", "Map", "Standings", "Join a Game", "Settings" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuPages);
         mDrawerList.setAdapter(mAdapter);
 
