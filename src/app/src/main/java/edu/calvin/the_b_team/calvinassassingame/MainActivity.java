@@ -8,8 +8,10 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v4.widget.DrawerLayout;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     private Runnable runnable;
     private boolean targetEliminated;
     private SharedPreferences savedValues;
+    Context context = this;
 
 
     @Override
