@@ -60,9 +60,7 @@ public class Player {
             String json = gson.toJson(playerInfo);
             editor.putString("playerInfo", json);
             editor.commit();
-
             this.playerInfo = playerInfo;
-
         }
         else
         {
@@ -156,7 +154,6 @@ public class Player {
         editor.putString("playerInfo", json);
         editor.commit();
         return true;
-
     }
 
     /**
@@ -165,50 +162,50 @@ public class Player {
      *  The arraylist containing the data
      * @return
      */
-//    public boolean saveInfo(  ArrayList<JSONObject> jsonObjectList )
-//    {
-//        for (int i=0;  i< jsonObjectList.size(); i++ )
-//        {
-//            JSONObject jsonObject = jsonObjectList.get(i);
-//            Iterator<String> iter = jsonObject.keys();
-//            //go through each JSON object
-//            while (iter.hasNext()) {
-//                String key = iter.next();
-//                //if the server responds with error, break and
-//                //TODO, what should be done in the case of an error
-//                if ( key.equals("err")){
-//                    return false;
-//                }
-//                if( Arrays.asList(this.playerInfo.fieldNames).contains(key))
-//                {
-//                    try {
-//                        Object value = jsonObject.get(key);
-//                        Log.i( "the key is ", key );
-//                        Log.i( " the value is ", value.toString() );
-//                        //store the value
-//                        Field field = PlayerInfo.class.getField( key );
-//                        field.set(this.playerInfo, value );
-//                    } catch (Exception e) {
-//                        // Something went wrong!
-//                        Log.i( "exception in saveInfo", e.toString());
-//                        return false;
-//                    }
-//                }
-//                else
-//                    return false;
-//
-//            }
-//        }
-//        //initialize the editor to save values
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-//        SharedPreferences.Editor editor = preferences.edit();
-//        Gson gson = new Gson();
-//        String json = gson.toJson(this.playerInfo);
-//        //save values
-//        editor.putString("gameInfo", json);
-//        editor.commit();
-//        return true;
-//    }
+    public boolean saveInfo(  ArrayList<JSONObject> jsonObjectList )
+    {
+        for (int i=0;  i< jsonObjectList.size(); i++ )
+        {
+            JSONObject jsonObject = jsonObjectList.get(i);
+            Iterator<String> iter = jsonObject.keys();
+            //go through each JSON object
+            while (iter.hasNext()) {
+                String key = iter.next();
+                //if the server responds with error, break and
+                //TODO, what should be done in the case of an error
+                if ( key.equals("err")){
+                    return false;
+                }
+                if( Arrays.asList(this.playerInfo.fieldNames).contains(key))
+                {
+                    try {
+                        Object value = jsonObject.get(key);
+                        Log.i( "the key is ", key );
+                        Log.i( " the value is ", value.toString() );
+                        //store the value
+                        Field field = PlayerInfo.class.getField( key );
+                        field.set(this.playerInfo, value );
+                    } catch (Exception e) {
+                        // Something went wrong!
+                        Log.i( "exception in saveInfo", e.toString());
+                        return false;
+                    }
+                }
+                else
+                    return false;
+
+            }
+        }
+        //initialize the editor to save values
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(this.playerInfo);
+        //save values
+        editor.putString("playerInfo", json);
+        editor.commit();
+        return true;
+    }
 
     /**
      * a generic accessor for the fields in the PlayerInfo data structure
@@ -221,9 +218,6 @@ public class Player {
     {
         if( Arrays.asList(this.playerInfo.fieldNames).contains(fieldName) ) {
             try {
-
-
-
                 Class c = this.playerInfo.getClass();
                 Field field = c.getField(fieldName);
                 Object value = field.get(this.playerInfo);
@@ -234,7 +228,6 @@ public class Player {
                 return e.toString();
             }
         }
-
         return "err";
     }
 

@@ -109,30 +109,30 @@ public class GameClass {
      *  the value being saved
      * @return
      */
-//    public boolean saveValue( String key, String value )
-//    {
-//        if( Arrays.asList(this.gameInfo.fieldNames).contains(key))
-//        {
-//            try {
-//                Field field = GameInfo.class.getField(key);
-//                field.set(this.gameInfo, value);
-//            }
-//            catch (Exception e)
-//            {
-//                return false;
-//            }
-//
-//            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-//            SharedPreferences.Editor editor = preferences.edit();
-//            Gson gson = new Gson();
-//            String json = gson.toJson(this.gameInfo);
-//            //save values
-//            editor.putString("gameInfo", json);
-//            editor.commit();
-//            return true;
-//        }
-//        return false;
-//    }
+    public boolean saveValue( String key, String value )
+    {
+        if( Arrays.asList(this.gameInfo.fieldNames).contains(key))
+        {
+            try {
+                Field field = GameInfo.class.getField(key);
+                field.set(this.gameInfo, value);
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = preferences.edit();
+            Gson gson = new Gson();
+            String json = gson.toJson(this.gameInfo);
+            //save values
+            editor.putString("gameInfo", json);
+            editor.commit();
+            return true;
+        }
+        return false;
+    }
 
 
     /**
@@ -263,11 +263,7 @@ public class GameClass {
         editor.putString("gameInfo", json);
         editor.commit();
         return true;
-
     }
-
-
-
 
     /**
      * save information passed as a arrayList of json objects
@@ -275,49 +271,49 @@ public class GameClass {
      *  The arraylist containing the data
      * @return
      */
-//    public boolean saveInfo(  ArrayList<JSONObject> jsonObjectList )
-//    {
-//        for (int i=0;  i< jsonObjectList.size(); i++ )
-//        {
-//            JSONObject jsonObject = jsonObjectList.get(i);
-//            Iterator<String> iter = jsonObject.keys();
-//            //go through each JSON object
-//            while (iter.hasNext()) {
-//                String key = iter.next();
-//                //if the server responds with error, break and
-//                //TODO, what should be done in the case of an error
-//                if ( key.equals("err")){
-//                    return false;
-//                }
-//                if( Arrays.asList(this.gameInfo.fieldNames).contains(key))
-//                {
-//                    try {
-//                        Object value = jsonObject.get(key);
+    public boolean saveInfo(  ArrayList<JSONObject> jsonObjectList )
+    {
+        for (int i=0;  i< jsonObjectList.size(); i++ )
+        {
+            JSONObject jsonObject = jsonObjectList.get(i);
+            Iterator<String> iter = jsonObject.keys();
+            //go through each JSON object
+            while (iter.hasNext()) {
+                String key = iter.next();
+                //if the server responds with error, break and
+                //TODO, what should be done in the case of an error
+                if ( key.equals("err")){
+                    return false;
+                }
+                if( Arrays.asList(this.gameInfo.fieldNames).contains(key))
+                {
+                    try {
+                        Object value = jsonObject.get(key);
 //                        Log.i( "the key is ", key );
 //                        Log.i( " the value is ", value.toString() );
-//                        //store the value
-//                        Field field = GameInfo.class.getField( key );
-//                        field.set(gameInfo, value );
-//                    } catch (Exception e) {
-//                        // Something went wrong!
-//                        return false;
-//                    }
-//                }
-//                else
-//                    return false;
-//
-//            }
-//        }
-//        //initialize the editor to save values
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-//        SharedPreferences.Editor editor = preferences.edit();
-//        Gson gson = new Gson();
-//        String json = gson.toJson(this.gameInfo);
-//        //save values
-//        editor.putString("gameInfo", json);
-//        editor.commit();
-//        return true;
-//    }
+                        //store the value
+                        Field field = GameInfo.class.getField( key );
+                        field.set(gameInfo, value );
+                    } catch (Exception e) {
+                        // Something went wrong!
+                        return false;
+                    }
+                }
+                else
+                    return false;
+
+            }
+        }
+        //initialize the editor to save values
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(this.gameInfo);
+        //save values
+        editor.putString("gameInfo", json);
+        editor.commit();
+        return true;
+    }
 
     /**
      * a generic accessor for the fields in the GameInfo data structure
