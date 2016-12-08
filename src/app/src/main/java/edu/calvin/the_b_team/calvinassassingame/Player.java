@@ -71,6 +71,18 @@ public class Player {
         }
     }
 
+    /**
+     * This method will refresh the memory by pulling the latest from
+     * the disk and saving it to the current object.
+     */
+    public void refreshMemory()
+    {
+        Gson gson = new Gson();
+        String json = app_preferences.getString("playerInfo", "");
+        PlayerInfo gameInformation = gson.fromJson(json, PlayerInfo.class);
+        this.playerInfo = gameInformation;
+    }
+
 
     /**
      * The following methods are overloads of public boolean save(...) for different types
@@ -157,7 +169,7 @@ public class Player {
     }
 
     /**
-     * save information passed as a arrayList of json objects
+     * save information passed as a arrayList of json objects, used by ServerCommunication
      * @param jsonObjectList
      *  The arraylist containing the data
      * @return
@@ -180,8 +192,8 @@ public class Player {
                 {
                     try {
                         Object value = jsonObject.get(key);
-                        Log.i( "the key is ", key );
-                        Log.i( " the value is ", value.toString() );
+                        //Log.i( "the key is ", key );
+                        //Log.i( " the value is ", value.toString() );
                         //store the value
                         Field field = PlayerInfo.class.getField( key );
                         field.set(this.playerInfo, value );
@@ -196,14 +208,7 @@ public class Player {
 
             }
         }
-        //initialize the editor to save values
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = preferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(this.playerInfo);
-        //save values
-        editor.putString("playerInfo", json);
-        editor.commit();
+        saveToDrive();
         return true;
     }
 
@@ -216,6 +221,7 @@ public class Player {
      */
     public Object getValue( String fieldName )
     {
+        refreshMemory();
         if( Arrays.asList(this.playerInfo.fieldNames).contains(fieldName) ) {
             try {
                 Class c = this.playerInfo.getClass();
@@ -234,6 +240,7 @@ public class Player {
     /**
      * thre following accessors give access to the saved info
      * @return
+     *  the value from the disk
      */
     public int getID()
     {

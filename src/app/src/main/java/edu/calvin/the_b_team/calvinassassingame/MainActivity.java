@@ -110,7 +110,19 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //when this button is clicked, show the alert
-                assassinationSentAlert.show();
+                //assassinationSentAlert.show();
+                ServerCommunication server = new ServerCommunication(context);
+                Player player = new Player(context);
+                GameClass game = new GameClass(context);
+                Log.i("the old id is, ", String.valueOf(player.getID()));
+                server.createUserProfile();
+                Log.i("the new ID is ", String.valueOf( player.getID() ) );
+
+
+//                player.save("ID", 3);
+//                server.updateUserProfile("ID", 3);
+//                player.refreshMemory();
+//                game.refreshMemory();
             }
         });
 

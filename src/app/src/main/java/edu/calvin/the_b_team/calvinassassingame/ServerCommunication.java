@@ -44,7 +44,7 @@ import android.os.Handler;
 
 public class ServerCommunication {
     //the base URL for our Server
-    private final String baseUrl = "http://153.106.116.78:8082/api";
+    private final String baseUrl = "http://153.106.116.75:8082/api";
     private SharedPreferences app_preferences;
     private Context context;
 
@@ -72,25 +72,39 @@ public class ServerCommunication {
      */
     private void runQuery( String url, String request, String typeOfInfo, String jsonString )
     {
-        //launch the network task
-        //new ConnectToServer().execute( url, request, typeOfInfo, jsonString );
+        //launch the network task based on type of http request
         switch (request)
         {
             case "GET":
-                new GetTask().execute(url, typeOfInfo);
+                try {
+                    //the .get() delays the execution until the network call has finished
+                    new GetTask().execute(url, typeOfInfo).get();
+                }
+                catch (Exception e)
+                {
+                    //if the .get() throws an exception, just run the task normally
+                    new GetTask().execute(url, typeOfInfo);
+                }
                 break;
             case "POST":
-                new PostTask().execute(url, typeOfInfo, jsonString);
+                try {
+                    new PostTask().execute(url, typeOfInfo, jsonString).get();
+                }
+                catch (Exception e)
+                {
+                    Log.i( " ", "exception was thrown in .get method");
+                    new PostTask().execute(url, typeOfInfo);
+                }
                 break;
             case "PUT":
-                new PutTask().execute(url, typeOfInfo, jsonString);
+                try {
+                    new PutTask().execute(url, typeOfInfo, jsonString).get();
+                }
+                catch (Exception e)
+                {
+                    new PutTask().execute(url, typeOfInfo);
+                }
         }
-        //delay the app so that the server has time to respond
-        new Handler().postDelayed(new Runnable(){
-            @Override
-            public void run() {
-            }
-        }, 1000);
     }
 
     /**
@@ -129,9 +143,43 @@ public class ServerCommunication {
      * @param key
      *  The name of the field being updated
      * @param value
-     *  the value of the field
+     *  the string value of the field
      */
     public void updateUserProfile( String key, String value)
+    {
+        HashMap hm = new HashMap();
+        hm.put(key, value);
+        Player player = new Player(context);
+        int playerID = player.getID();
+        String url = baseUrl + "/profile/" + playerID;
+        runQuery(url, "PUT", "player", jsonGenerator(hm));
+    }
+
+    /**
+     * sends an updated value for the user profile to the server
+     * @param key
+     *  The name of the field being updated
+     * @param value
+     *  the int value of the field
+     */
+    public void updateUserProfile( String key, int value)
+    {
+        HashMap hm = new HashMap();
+        hm.put(key, value);
+        Player player = new Player(context);
+        int playerID = player.getID();
+        String url = baseUrl + "/profile/" + playerID;
+        runQuery(url, "PUT", "player", jsonGenerator(hm));
+    }
+
+    /**
+     * sends an updated value for the user profile to the server
+     * @param key
+     *  The name of the field being updated
+     * @param value
+     *  the double value of the field
+     */
+    public void updateUserProfile( String key, double value)
     {
         HashMap hm = new HashMap();
         hm.put(key, value);
@@ -203,8 +251,6 @@ public class ServerCommunication {
         }
 
     }
-
-
 
     /**
      * This inner class handles post request.
@@ -334,6 +380,7 @@ public class ServerCommunication {
     /**
      * Inner class for DELETEing
      * From professor VanderLinden,Thanks!
+     * TODO: DOES NOT WORK!!!
      */
 //    private class DeleteTask extends AsyncTask<String, Void, JSONArray> {
 //
@@ -377,18 +424,18 @@ public class ServerCommunication {
 //            return result;
 //        }
 //
-////        @Override
-////        protected void onPostExecute(JSONArray players) {
-////            playerList.clear();
-////            if (players == null) {
-////                Toast.makeText(MainActivity.this, getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
-////            } else if (players.length() == 0) {
-////                Toast.makeText(MainActivity.this, getString(R.string.no_results_error), Toast.LENGTH_SHORT).show();
-////            } else {
-////                convertJSONtoArrayList(players);
-////            }
-////            MainActivity.this.updateDisplay();
-////        }
+//        @Override
+//        protected void onPostExecute(JSONArray players) {
+//            playerList.clear();
+//            if (players == null) {
+//                Toast.makeText(MainActivity.this, getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+//            } else if (players.length() == 0) {
+//                Toast.makeText(MainActivity.this, getString(R.string.no_results_error), Toast.LENGTH_SHORT).show();
+//            } else {
+//                convertJSONtoArrayList(players);
+//            }
+//            MainActivity.this.updateDisplay();
+//        }
 //
 //    }
 

@@ -37,7 +37,7 @@ public class GameClass {
                 "lastName", "residence", "major", "players", "games", "active",
                 "alive", "dead"
         };
-
+        //used to see if types are correct when saving
         public String[] doubleFieldNames = { "latitude", "longitude"};
         public String[] integerFieldNames = { "currentGame", "creatorID"};
         public String[] stringFieldNames = { "gameName", "startDate", "endDate", "firstName",
@@ -60,14 +60,12 @@ public class GameClass {
 
     }
 
-
     /**
      * This method will find the GameInfo data structure for the class to use/manipulate
      * @param classContext
      */
     GameClass(Context classContext ){
         context = classContext;
-
         app_preferences = PreferenceManager.getDefaultSharedPreferences(context);
 
         //if the gameInfo data structure is not on the disk, create and save one
@@ -102,38 +100,16 @@ public class GameClass {
     }
 
     /**
-     * This method allows someone to save a single value
-     * @param key
-     *  The field name of the value being saved
-     * @param value
-     *  the value being saved
-     * @return
+     * This method will refresh the memory by pulling the latest from
+     * the disk and saving it to the current object.
      */
-    public boolean saveValue( String key, String value )
+    public void refreshMemory()
     {
-        if( Arrays.asList(this.gameInfo.fieldNames).contains(key))
-        {
-            try {
-                Field field = GameInfo.class.getField(key);
-                field.set(this.gameInfo, value);
-            }
-            catch (Exception e)
-            {
-                return false;
-            }
-
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-            SharedPreferences.Editor editor = preferences.edit();
-            Gson gson = new Gson();
-            String json = gson.toJson(this.gameInfo);
-            //save values
-            editor.putString("gameInfo", json);
-            editor.commit();
-            return true;
-        }
-        return false;
+        Gson gson = new Gson();
+        String json = app_preferences.getString("gameInfo", "");
+        GameInfo gameInformation = gson.fromJson(json, GameInfo.class);
+        this.gameInfo = gameInformation;
     }
-
 
     /**
      * The following methods are overloads of public boolean save(...) for different types
@@ -304,14 +280,7 @@ public class GameClass {
 
             }
         }
-        //initialize the editor to save values
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = preferences.edit();
-        Gson gson = new Gson();
-        String json = gson.toJson(this.gameInfo);
-        //save values
-        editor.putString("gameInfo", json);
-        editor.commit();
+        saveToDrive();
         return true;
     }
 
@@ -324,6 +293,7 @@ public class GameClass {
      */
     public Object getValue( String fieldName )
     {
+        refreshMemory();
         if( Arrays.asList(this.gameInfo.fieldNames).contains(fieldName) ) {
             try {
                 Class c = this.gameInfo.getClass();
