@@ -86,7 +86,7 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
 
     // Beginning of menu drawer configuration
     private void addDrawerItems() {
-        String[] menuPages = { "Home", "Profile", "Standings", "Join a Game", "Settings" };
+        String[] menuPages = { "Target", "Profile", "Standings", "Join a Game", "Settings" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuPages);
         mDrawerList.setAdapter(mAdapter);
 
