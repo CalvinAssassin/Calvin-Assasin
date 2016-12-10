@@ -112,29 +112,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //when this button is clicked, show the alert
-                //assassinationSentAlert.show();
-//                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-//                SharedPreferences.Editor editor = preferences.edit();
-//                editor.remove("gameInfo");
-//                editor.commit();
-
-                Player player = new Player(context);
-                GameClass game = new GameClass(context);
-                //player.save("firstName", "jesse!!!");
-                game.save("ID", 1);
-                ServerCommunication server = new ServerCommunication(context);
-                server.getGame();
-
-                Log.i( " the josnarray is ", String.valueOf( game.getPlayers() ));
-               Log.i( " player object ", game.getPlayerInfo(104).toString());
-                try {
-                    Log.i("residens from player ob", game.getPlayerInfo(104).getString("residense"));
-                }
-                catch (Exception e)
-                {
-
-                }
-
+                assassinationSentAlert.show();
             }
         });
 

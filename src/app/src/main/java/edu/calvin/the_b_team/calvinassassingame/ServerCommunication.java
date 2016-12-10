@@ -120,8 +120,15 @@ public class ServerCommunication {
         runQuery( baseUrl + "/game/" + gameID , "GET", "game", "");
     }
 
-
-
+    /**
+     * the method will return the target's information
+     */
+    public void getTargetID()
+    {
+        Player player = new Player(this.context);
+        String url = baseUrl + "/profile/" + 10 + "/target";
+        runQuery(url,"GET", "game", "");
+    }
 
     /**
      * Queries the database for profile information and saves info.

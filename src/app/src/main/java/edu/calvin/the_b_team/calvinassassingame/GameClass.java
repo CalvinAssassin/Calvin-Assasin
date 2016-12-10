@@ -35,17 +35,16 @@ public class GameClass {
 
         //used to see if types are correct when saving
         public String[] integerFieldNames = { "ID", "targetID"};
-        public String[] stringFieldNames = { "gameName", "startDate", "targetTimeLeft" };
-        //public String[] JSONArrayFieldNames = { "players"};
+        public String[] stringFieldNames = { "gameName", "targetStartTime", "startDate","targetTimeLeft", "targetTimeoutTime" };
         public String[] booleanFieldNames = {"inPlay"};
 
         //allows one to find out if a field exists
-        public String[] fieldNames = {"ID", "gameName", "inPlay",
-                "startDate", "players", "targetID", "targetTimeLeft"
+        public String[] fieldNames = {"ID", "gameName", "inPlay", "startDate",
+                "targetStartTime", "players", "targetID", "targetTimeLeft", "targetTimeoutTime"
         };
         //current game items
         public int ID, targetID;
-        public String gameName, targetTimeLeft, startDate, players;
+        public String gameName, targetTimeLeft, targetStartTime, players, targetTimeoutTime, startDate;
         public boolean inPlay;
 
     }
@@ -61,12 +60,14 @@ public class GameClass {
         //if the gameInfo data structure is not on the disk, create and save one
         if( !app_preferences.contains("gameInfo") )
         {
+            //initialize default values
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = preferences.edit();
             GameInfo gameInfo = new GameInfo();
             gameInfo.ID = gameInfo.targetID = 0;
             gameInfo.inPlay = false;
-            gameInfo.startDate = gameInfo.players = gameInfo.gameName = gameInfo.targetTimeLeft = "";
+            gameInfo.targetStartTime = gameInfo.players = gameInfo.startDate =
+                    gameInfo.targetTimeoutTime = gameInfo.gameName = gameInfo.targetTimeLeft = "";
             Gson gson = new Gson();
             String json = gson.toJson(gameInfo);
             editor.putString("gameInfo", json);
@@ -199,7 +200,7 @@ public class GameClass {
                 if ( key.equals("err")){
                     return false;
                 }
-                if(true )//Arrays.asList(this.gameInfo.fieldNames).contains(key)
+                if(Arrays.asList(this.gameInfo.fieldNames).contains(key) )
                 {
                     try {
                         Object value = jsonObject.get(key);
@@ -285,10 +286,10 @@ public class GameClass {
         return false;
     }
 
-    public String getStartDate()
+    public String getTargetStartTime()
     {
-        if ( !getValue( "startDate" ).equals("err") )
-            return (String) getValue("startDate");
+        if ( !getValue( "targetStartTime" ).equals("err") )
+            return (String) getValue("targetStartTime");
         return "error!";
     }
     public String getTargetTimeLeft()
@@ -298,11 +299,25 @@ public class GameClass {
         return "error!";
     }
 
+    public String getTargetTimeoutTime()
+    {
+        if ( !getValue( "targetTimeoutTime" ).equals("err") )
+            return (String) getValue("targetTimeoutTime");
+        return "error!";
+    }
+
     public int getTargetID()
     {
         if ( !getValue( "targetID" ).equals("err") )
             return (int) getValue("targetID");
         return 0;
+    }
+
+    public String getStartDate()
+    {
+        if ( !getValue( "startDate" ).equals("err") )
+            return (String) getValue("startDate");
+        return "error!";
     }
 
     public JSONArray getPlayers()

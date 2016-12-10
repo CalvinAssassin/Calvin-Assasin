@@ -236,7 +236,6 @@ public class Player {
                     Log.i("bad name", " here 1");
                     return false;
                 }
-
             }
         }
         saveToDrive();
@@ -259,7 +258,6 @@ public class Player {
                 Field field = c.getField(fieldName);
                 Object value = field.get(this.playerInfo);
                 return value;
-                //return value.toString();
 
             } catch (Exception e) {
                 return e.toString();
