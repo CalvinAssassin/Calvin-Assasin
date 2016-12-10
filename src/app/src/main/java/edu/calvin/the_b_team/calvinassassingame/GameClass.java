@@ -6,12 +6,14 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -22,7 +24,6 @@ import java.util.Iterator;
  */
 
 public class GameClass {
-
     private SharedPreferences app_preferences;
     private Context context;
     private GameInfo gameInfo;
@@ -31,65 +32,47 @@ public class GameClass {
      * this class is the data structure that saves the game information, doesn't work timeLeft and gameName
      */
     public class GameInfo {
-        //allows one to find out if a field exists
-        public String[] fieldNames = {"currentGame", "gameName", "inPlay", "creatorID",
-              "startDate", "endDate", "latitude", "timeLeft", "longitude", "firstName",
-                "lastName", "residence", "major", "players", "games", "active",
-                "alive", "dead"
-        };
 
-        public String[] doubleFieldNames = { "latitude", "longitude"};
-        public String[] integerFieldNames = { "currentGame", "creatorID"};
-        public String[] stringFieldNames = { "gameName", "startDate", "endDate", "firstName",
-                "lastName", "residence", "major", "timeLeft" };
-        public String[] intArrayFieldNames = {"players", "games", "active", "alive","dead"};
+        //used to see if types are correct when saving
+        public String[] integerFieldNames = { "ID", "targetID"};
+        public String[] stringFieldNames = { "gameName", "targetStartTime", "startDate","targetTimeLeft", "targetTimeoutTime" };
         public String[] booleanFieldNames = {"inPlay"};
 
+        //allows one to find out if a field exists
+        public String[] fieldNames = {"ID", "gameName", "inPlay", "startDate",
+                "targetStartTime", "players", "targetID", "targetTimeLeft", "targetTimeoutTime"
+        };
         //current game items
-        public int currentGame ;
-        public String gameName;
+        public int ID, targetID;
+        public String gameName, targetTimeLeft, targetStartTime, players, targetTimeoutTime, startDate;
         public boolean inPlay;
-        public int creatorID;
-        public String startDate;
-        public String endDate;
-
-        public Double latitude, longitude;
-        public String firstName, lastName, residence, major, timeLeft;
-
-        public int[] players, games, active,alive,dead;
 
     }
-
 
     /**
      * This method will find the GameInfo data structure for the class to use/manipulate
      * @param classContext
      */
     GameClass(Context classContext ){
-        context = classContext;
-
-        app_preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        this.context = classContext;
+        app_preferences = PreferenceManager.getDefaultSharedPreferences(this.context);
 
         //if the gameInfo data structure is not on the disk, create and save one
         if( !app_preferences.contains("gameInfo") )
         {
+            //initialize default values
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = preferences.edit();
-            GameInfo gameInformation = new GameInfo();
-            gameInformation.currentGame = gameInformation.creatorID = 0;
-            gameInformation.latitude = gameInformation.longitude = 0.0;
-            gameInformation.inPlay = false;
-            gameInformation.startDate = gameInformation.endDate = gameInformation.firstName =
-                    gameInformation.lastName = gameInformation.residence =
-                    gameInformation.major = gameInformation.timeLeft = gameInformation.gameName = "";
-            int[] emptyArray = new int[] {};
-            gameInformation.players = gameInformation.games = gameInformation.active =
-                    gameInformation.alive = gameInformation.dead = emptyArray;
+            GameInfo gameInfo = new GameInfo();
+            gameInfo.ID = gameInfo.targetID = 0;
+            gameInfo.inPlay = false;
+            gameInfo.targetStartTime = gameInfo.players = gameInfo.startDate =
+                    gameInfo.targetTimeoutTime = gameInfo.gameName = gameInfo.targetTimeLeft = "";
             Gson gson = new Gson();
-            String json = gson.toJson(gameInformation);
+            String json = gson.toJson(gameInfo);
             editor.putString("gameInfo", json);
             editor.commit();
-            this.gameInfo = gameInformation;
+            this.gameInfo = gameInfo;
         }
         else
         {
@@ -102,42 +85,16 @@ public class GameClass {
     }
 
     /**
-     * This method allows someone to save a single value
-     * @param key
-     *  The field name of the value being saved
-     * @param value
-     *  the value being saved
-     * @return
+     * This method will refresh the memory by pulling the latest from
+     * the disk and saving it to the current object.
      */
-//    public boolean saveValue( String key, String value )
-//    {
-//        if( Arrays.asList(this.gameInfo.fieldNames).contains(key))
-//        {
-//            try {
-//                Field field = GameInfo.class.getField(key);
-//                field.set(this.gameInfo, value);
-//            }
-//            catch (Exception e)
-//            {
-//                return false;
-//            }
-//
-//            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-//            SharedPreferences.Editor editor = preferences.edit();
-//            Gson gson = new Gson();
-//            String json = gson.toJson(this.gameInfo);
-//            //save values
-//            editor.putString("gameInfo", json);
-//            editor.commit();
-//            return true;
-//        }
-//        return false;
-//    }
-
-
-    /**
-     * The following methods are overloads of public boolean save(...) for different types
-     */
+    public void refreshMemory()
+    {
+        Gson gson = new Gson();
+        String json = app_preferences.getString("gameInfo", "");
+        GameInfo gameInformation = gson.fromJson(json, GameInfo.class);
+        this.gameInfo = gameInformation;
+    }
 
     /**
      * This method allows someone to save a single value
@@ -183,27 +140,6 @@ public class GameClass {
         return false;
     }
 
-    /**
-     * This method allows someone to save a single value
-     * @param key
-     *  The field name of the value being saved
-     * @param value
-     *  the value being saved
-     * @return
-     */
-    public boolean save( String key, double value ) {
-        if (Arrays.asList(this.gameInfo.doubleFieldNames).contains(key)) {
-            try {
-                Field field = GameInfo.class.getField(key);
-                field.set(this.gameInfo, value);
-            } catch (Exception e) {
-                return false;
-            }
-            saveToDrive();
-            return true;
-        }
-        return false;
-    }
 
     /**
      * This method allows someone to save a single value
@@ -215,28 +151,6 @@ public class GameClass {
      */
     public boolean save( String key, boolean value ) {
         if (Arrays.asList(this.gameInfo.booleanFieldNames).contains(key)) {
-            try {
-                Field field = GameInfo.class.getField(key);
-                field.set(this.gameInfo, value);
-            } catch (Exception e) {
-                return false;
-            }
-            saveToDrive();
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * This method allows someone to save a single value
-     * @param key
-     *  The field name of the value being saved
-     * @param value
-     *  the value being saved
-     * @return
-     */
-    public boolean save( String key, int[] value ) {
-        if (Arrays.asList(this.gameInfo.intArrayFieldNames).contains(key)) {
             try {
                 Field field = GameInfo.class.getField(key);
                 field.set(this.gameInfo, value);
@@ -263,11 +177,7 @@ public class GameClass {
         editor.putString("gameInfo", json);
         editor.commit();
         return true;
-
     }
-
-
-
 
     /**
      * save information passed as a arrayList of json objects
@@ -275,49 +185,56 @@ public class GameClass {
      *  The arraylist containing the data
      * @return
      */
-//    public boolean saveInfo(  ArrayList<JSONObject> jsonObjectList )
-//    {
-//        for (int i=0;  i< jsonObjectList.size(); i++ )
-//        {
-//            JSONObject jsonObject = jsonObjectList.get(i);
-//            Iterator<String> iter = jsonObject.keys();
-//            //go through each JSON object
-//            while (iter.hasNext()) {
-//                String key = iter.next();
-//                //if the server responds with error, break and
-//                //TODO, what should be done in the case of an error
-//                if ( key.equals("err")){
-//                    return false;
-//                }
-//                if( Arrays.asList(this.gameInfo.fieldNames).contains(key))
-//                {
-//                    try {
-//                        Object value = jsonObject.get(key);
-//                        Log.i( "the key is ", key );
-//                        Log.i( " the value is ", value.toString() );
-//                        //store the value
-//                        Field field = GameInfo.class.getField( key );
-//                        field.set(gameInfo, value );
-//                    } catch (Exception e) {
-//                        // Something went wrong!
-//                        return false;
-//                    }
-//                }
-//                else
-//                    return false;
-//
-//            }
-//        }
-//        //initialize the editor to save values
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-//        SharedPreferences.Editor editor = preferences.edit();
-//        Gson gson = new Gson();
-//        String json = gson.toJson(this.gameInfo);
-//        //save values
-//        editor.putString("gameInfo", json);
-//        editor.commit();
-//        return true;
-//    }
+    public boolean saveInfo(  ArrayList<JSONObject> jsonObjectList )
+    {
+        for (int i=0;  i< jsonObjectList.size(); i++ )
+        {
+            JSONObject jsonObject = jsonObjectList.get(i);
+            Iterator<String> iter = jsonObject.keys();
+            //go through each JSON object
+            while (iter.hasNext()) {
+                String key = iter.next();
+                //Log.i("key in player class ", key );
+                //if the server responds with error, break and
+                //TODO, what should be done in the case of an error
+                if ( key.equals("err")){
+                    return false;
+                }
+                if(Arrays.asList(this.gameInfo.fieldNames).contains(key) )
+                {
+                    try {
+                        Object value = jsonObject.get(key);
+                        Log.i( "the key is ", key );
+                        Log.i( " the value is ", value.toString() );
+                        //store the value
+                        if( key.equals("players")) {
+                            //before saving the players JSONArray, change it to a string
+                            String playersString = value.toString();
+                            Field field = GameInfo.class.getField(key);
+                            field.set(this.gameInfo, playersString);
+                        }
+                        else {
+                            Field field = GameInfo.class.getField(key);
+                            field.set(this.gameInfo, value);
+                        }
+
+                    } catch (Exception e) {
+                        // Something went wrong!
+                        e.printStackTrace();
+                       // Log.i( "exception in saveInfo", e.toString());
+                        return false;
+                    }
+                }
+                else {
+                    Log.i("bad name", " here 1");
+                    return false;
+                }
+
+            }
+        }
+        saveToDrive();
+        return true;
+    }
 
     /**
      * a generic accessor for the fields in the GameInfo data structure
@@ -328,6 +245,7 @@ public class GameClass {
      */
     public Object getValue( String fieldName )
     {
+        refreshMemory();
         if( Arrays.asList(this.gameInfo.fieldNames).contains(fieldName) ) {
             try {
                 Class c = this.gameInfo.getClass();
@@ -347,10 +265,10 @@ public class GameClass {
      * @return
      *  the value being retrieved
      */
-    public int getCurrentGame()
+    public int getID()
     {
-        if ( !getValue( "currentGame" ).equals("err") )
-            return (int) getValue("currentGame");
+        if ( !getValue( "ID" ).equals("err") )
+            return (int) getValue("ID");
         return 0;
     }
 
@@ -368,10 +286,30 @@ public class GameClass {
         return false;
     }
 
-    public int getCreatorID()
+    public String getTargetStartTime()
     {
-        if ( !getValue( "creatorID" ).equals("err") )
-            return (int) getValue("creatorID");
+        if ( !getValue( "targetStartTime" ).equals("err") )
+            return (String) getValue("targetStartTime");
+        return "error!";
+    }
+    public String getTargetTimeLeft()
+    {
+        if ( !getValue( "targetTimeLeft" ).equals("err") )
+            return (String) getValue("targetTimeLeft");
+        return "error!";
+    }
+
+    public String getTargetTimeoutTime()
+    {
+        if ( !getValue( "targetTimeoutTime" ).equals("err") )
+            return (String) getValue("targetTimeoutTime");
+        return "error!";
+    }
+
+    public int getTargetID()
+    {
+        if ( !getValue( "targetID" ).equals("err") )
+            return (int) getValue("targetID");
         return 0;
     }
 
@@ -379,85 +317,67 @@ public class GameClass {
     {
         if ( !getValue( "startDate" ).equals("err") )
             return (String) getValue("startDate");
-        return "error";
+        return "error!";
     }
 
-    public String getEndDate()
+    public JSONArray getPlayers()
     {
-        if ( !getValue( "endDate" ).equals("err") )
-            return (String) getValue("endDate");
-        return "error";
+        try {
+            Log.i("json string from mem", this.gameInfo.players);
+            return new JSONArray(this.gameInfo.players);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return new JSONArray();
+        }
     }
 
-    public double getLatitude()
-    {
-        if ( !getValue( "latitude" ).equals("err") )
-            return (double) getValue("latitude");
-        return 0.0;
+    /**
+     * This will return the jsonObject that corrolates with the ID
+     * @param ID
+     *  The ID of the player being retreived
+     * @return
+     *  The playeri info
+     */
+    public JSONObject getPlayerInfo( int ID ) {
+        //first convert jsonArray String to arrayList
+        ArrayList<JSONObject> list = new ArrayList();
+        try {
+            JSONArray jsonArray = new JSONArray(this.gameInfo.players);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                list.add(jsonObject);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        //iterate through the arrayList and looking for a matching ID
+        for(int i = 0; i<list.size();i++)
+        {
+            try {
+                //return the JSONObject if match is found
+                if (list.get(i).getInt("ID") == ID) {
+                    return list.get(i);
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        JSONObject error = new JSONObject();
+        try {
+            //no matching ID, return error object
+            return error.put("error", "error");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return new JSONObject();
+        }
     }
-
-    public double getLongitude()
-    {
-        if ( !getValue( "longitude" ).equals("err") )
-            return (double) getValue("longitude");
-        return 0.0;
-    }
-
-    public String getFirstName()
-    {
-        if ( !getValue( "firstName" ).equals("err") )
-            return (String) getValue("firstName");
-        return "error";
-    }
-
-    public String getLastName()
-    {
-        if ( !getValue( "lastName" ).equals("err") )
-            return (String) getValue("lastName");
-        return "error";
-    }
-
-    public String getResidence()
-    {
-        if ( !getValue( "residence" ).equals("err") )
-            return (String) getValue("residence");
-        return "error";
-    }
-
-    public String getMajor()
-    {
-        if ( !getValue( "major" ).equals("err") )
-            return (String) getValue("major");
-        return "error";
-    }
-
-    public String getTimeLeft()
-    {
-        if ( !getValue( "timeLeft" ).equals("err") )
-            return (String) getValue("timeLeft");
-        return "error";
-    }
-
-    public int[] getPlayers()
-    {
-        return (int[]) getValue("players");
-    }
-    public int[] getGames()
-    {
-        return (int[]) getValue("games");
-    }
-    public int[] getActive()
-    {
-        return (int[]) getValue("active");
-    }
-    public int[] getAlive()
-    {
-        return (int[]) getValue("alive");
-    }
-    public int[] getDead()
-    {
-        return (int[]) getValue("dead");
-    }
-
 
 }

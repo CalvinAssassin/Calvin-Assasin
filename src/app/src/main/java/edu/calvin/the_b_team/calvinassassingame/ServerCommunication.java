@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -43,7 +44,7 @@ import android.os.Handler;
 
 public class ServerCommunication {
     //the base URL for our Server
-    private final String baseUrl = "http://153.106.116.70:8082/api";
+    private final String baseUrl = "http://153.106.116.80:8082/api";
     private SharedPreferences app_preferences;
     private Context context;
 
@@ -57,6 +58,7 @@ public class ServerCommunication {
         context = contextFromActivity;
         //allows information to be pulled from shared preferences
         app_preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
     }
 
     /**
@@ -69,155 +71,169 @@ public class ServerCommunication {
      * @param typeOfInfo
      *  The type of information (player or game)
      */
-//    private void runQuery( String url, String request, String typeOfInfo )
-//    {
-//        //launch the network task
-//        new ConnectToServer().execute( url, request, typeOfInfo );
-//        //delay the app so that the server has time to respond
-//        new Handler().postDelayed(new Runnable(){
-//            @Override
-//            public void run() {
-//            }
-//        }, 1000);
-//    }
-
-    /**
-     * getTargetLocation will retrieve and update the coordinates of the target
-     */
-//    public void getTargetLocation()
-//    {
-//        int targetID = app_preferences.getInt("targetID",0);
-//        runQuery(baseUrl + "/location/?playerid=" + targetID, "GET");
-//    }
-
-    /**
-     * This method will retrieve the id of the target and update.
-     */
-//    public void getTargetID()
-//    {
-//        int playerID = app_preferences.getInt("playerID",0);
-//        runQuery( baseUrl + "/targetid/?assassinID=" + playerID, "GET"  );
-//    }
-
-
-    /**
-     * Queries the database for profile information.
-     */
-//    public void getProfile()
-//    {
-//        HashMap hm = new HashMap();
-//        Player player = new Player(context);
-//        int playerID = player.getID();
-//        hm.put("id", playerID );
-//        String url = baseUrl + "/profile/" + 100;
-//        Log.i("url is ", url);
-//        runQuery( url, "GET", "player");
-//    }
-
-//    public void getHello()
-//    {
-//        String url = baseUrl + "/hello";
-//        runQuery( url, "GET", "player");
-//    }
-
-    /**
-     * This method will update the a profile via a PUT request
-     */
-//    public void updateProfile( )
-//    {
-//
-//    }
-
-    /**
-     * This will create a profile and save a permanent user id to shared preferences
-     */
-//    public void createProfile()
-//    {
-//        HashMap hm = new HashMap();
-//        Player player = new Player(context);
-//        String firstName = player.getFirstName();
-//        String lastName = player.getLastName();
-//        String major = player.getMajor();
-//        String residence = player.getResidence();
-//        hm.put("firstName", firstName);
-//        hm.put("lastName", lastName);
-//        hm.put("major", major);
-//        hm.put("residence", residence);
-//        String url = baseUrl + "/profile/" + jsonGenerator( hm );
-//        runQuery(url, "POST", "player");
-//
-//    }
-
-//    //a test function. Will this be needed?
-//    public void getPlayers()
-//    {
-//        runQuery( "http://153.106.116.65:9998/calvinassassin/players", "players" );
-//    }
-
-    //the following queries are for game info
-
-    /**
-     * createGame will create a game via a POST request
-     *
-     * @param gameName
-     *  The name of the game to be created
-     */
-//    public void createGame( String gameName )
-//    {
-//        HashMap hm = new HashMap();
-//        hm.put("gameName", gameName);
-//        hm.put("inPlay", false);
-//        hm.put("creatorID", "");
-//        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-//        Date date = new Date();
-//        hm.put("StartDate", dateFormat.format(date));
-//        //TODO, let serer handle end date?
-//        hm.put("endDate", "");
-//        runQuery(baseUrl + "/games/" + jsonGenerator(hm), "POST", "game");
-//    }
-
-    /**
-     * update an already existing game
-     * TODO
-     */
-//    public void updateGame()
-//    {
-//
-//    }
-
-    //get a list all of game IDs
-//    public void getAllGames()
-//    {
-//        runQuery(baseUrl + "/games/all", "GET", "game");
-//    }
-
+    private void runQuery( String url, String request, String typeOfInfo, String jsonString )
+    {
+        //launch the network task based on type of http request
+        switch (request)
+        {
+            case "GET":
+                try {
+                    //the .get() delays the execution until the network call has finished
+                    Log.i( "here", " in runQuery");
+                    new GetTask().execute(url, typeOfInfo).get();
+                }
+                catch (Exception e)
+                {
+                    //if the .get() throws an exception, just run the task normally
+                    new GetTask().execute(url, typeOfInfo);
+                }
+                break;
+            case "POST":
+                try {
+                    new PostTask().execute(url, typeOfInfo, jsonString).get();
+                }
+                catch (Exception e)
+                {
+                    new PostTask().execute(url, typeOfInfo);
+                }
+                break;
+            case "PUT":
+                try {
+                    new PutTask().execute(url, typeOfInfo, jsonString).get();
+                }
+                catch (Exception e)
+                {
+                    new PutTask().execute(url, typeOfInfo);
+                }
+        }
+    }
 
 
     /**
-     *
+     * This method will retrieve the values from the server and save them to shared preferences
      */
+    public void getGame()
+    {
+        GameClass game = new GameClass(this.context);
+        int gameID = game.getID();
+        Log.i("the game url", baseUrl + "/game/" + gameID);
+        runQuery( baseUrl + "/game/" + gameID , "GET", "game", "");
+    }
+
+    /**
+     * the method will return the target's information
+     */
+    public void getTargetID()
+    {
+        Player player = new Player(this.context);
+        String url = baseUrl + "/profile/" + 10 + "/target";
+        runQuery(url,"GET", "game", "");
+    }
+
+    /**
+     * Queries the database for profile information and saves info.
+     */
+    public void getUserProfile()
+    {
+        Player player = new Player(context);
+        int playerID = player.getID();
+        String url = baseUrl + "/profile/" + playerID;
+        Log.i("url is ", url);
+        Log.i("the url for userProfile", url);
+        runQuery( url, "GET", "player", "");
+    }
+
+    /**
+     * Creates a new user profile and recieves userID from server
+     */
+    public void createUserProfile()
+    {
+        HashMap hm = new HashMap();
+        Player player = new Player(context);
+        String firstName = player.getFirstName();
+        String lastName = player.getLastName();
+        String major = player.getMajor();
+        String residence = player.getResidence();
+        hm.put("firstName", firstName);
+        hm.put("lastName", lastName);
+        hm.put("major", major);
+        hm.put("residence", residence);
+        String url = baseUrl + "/profile";
+        runQuery(url, "POST", "player", jsonGenerator(hm));
+    }
+
+    /**
+     * sends an updated value for the user profile to the server
+     * @param key
+     *  The name of the field being updated
+     * @param value
+     *  the string value of the field
+     */
+    public void updateUserProfile( String key, String value)
+    {
+        HashMap hm = new HashMap();
+        hm.put(key, value);
+        Player player = new Player(context);
+        int playerID = player.getID();
+        String url = baseUrl + "/profile/" + playerID;
+        runQuery(url, "PUT", "player", jsonGenerator(hm));
+    }
+
+    /**
+     * sends an updated value for the user profile to the server
+     * @param key
+     *  The name of the field being updated
+     * @param value
+     *  the int value of the field
+     */
+    public void updateUserProfile( String key, int value)
+    {
+        HashMap hm = new HashMap();
+        hm.put(key, value);
+        Player player = new Player(context);
+        int playerID = player.getID();
+        String url = baseUrl + "/profile/" + playerID;
+        runQuery(url, "PUT", "player", jsonGenerator(hm));
+    }
+
+    /**
+     * sends an updated value for the user profile to the server
+     * @param key
+     *  The name of the field being updated
+     * @param value
+     *  the double value of the field
+     */
+    public void updateUserProfile( String key, double value)
+    {
+        HashMap hm = new HashMap();
+        hm.put(key, value);
+        Player player = new Player(context);
+        int playerID = player.getID();
+        String url = baseUrl + "/profile/" + playerID;
+        runQuery(url, "PUT", "player", jsonGenerator(hm));
+    }
 
     /**
      * This method creates json and returns it as a string
      * @param values
      *  A hashmap with a key/value for the json
      */
-//    public String jsonGenerator(HashMap values)
-//    {
-//        Iterator iterator = values.entrySet().iterator();
-//        JSONObject jsonObject = new JSONObject();
-//        while ( iterator.hasNext())
-//        {
-//            Map.Entry pair = (Map.Entry)iterator.next();
-//            try {
-//                jsonObject.put(pair.getKey().toString(), pair.getValue().toString());
-//            } catch (JSONException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//        }
-//        return jsonObject.toString();
-//    }
+    public String jsonGenerator(HashMap values)
+    {
+        Iterator iterator = values.entrySet().iterator();
+        JSONObject jsonObject = new JSONObject();
+        while ( iterator.hasNext())
+        {
+            Map.Entry pair = (Map.Entry)iterator.next();
+            try {
+                jsonObject.put(pair.getKey().toString(), pair.getValue().toString());
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+        return jsonObject.toString();
+    }
 
     /**
      * This class launches an asynchronous task to do a network request. It will contact
@@ -227,49 +243,226 @@ public class ServerCommunication {
      *
      * @String request, the type of resource requested
      */
-//    private class ConnectToServer extends AsyncTask<String, Void, JSONArray> {
+    private class GetTask extends AsyncTask<String, Void, JSONArray> {
+        @Override
+        protected JSONArray doInBackground(String... params) {
+            HttpURLConnection connection = null;
+            StringBuilder result = new StringBuilder();
+            Log.i("made", " it here");
+            try {
+                URL url = new URL(params[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(connection.getInputStream()));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        result.append(line);
+                    }
+                    //save the values
+                    Log.i("server response", result.toString());
+                    save(new JSONArray( "["+ result.toString() + "]"), params[1]);
+                    return new JSONArray("["+ result.toString() + "]");
+                } else {
+                    throw new Exception();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                assert connection != null;
+                connection.disconnect();
+            }
+           return null;
+        }
+
+    }
+
+    /**
+     * This inner class handles post request.
+     * The skeleton for this class is borrowed from Prof VanderLinden's code. Thanks!
+     *
+     */
+    private class PostTask extends AsyncTask<String, Void, JSONArray> {
+
+        @Override
+        protected JSONArray doInBackground(String... params) {
+            HttpURLConnection connection = null;
+            StringBuilder jsonText = new StringBuilder();
+            JSONArray result = null;
+            try {
+                // Hard-code json.
+                //String jsonString = params[2];
+                JSONObject jsonData = new JSONObject(params[2]);
+                //jsonData.put("emailaddress", "kvlinden@calvin.edu");
+                // Open the connection as usual.
+                URL url = new URL(params[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                // Configure the connection for a POST, including outputing streamed JSON data.
+                connection.setRequestMethod("POST");
+                connection.setDoOutput(true);
+                connection.setRequestProperty("Content-Type","application/json");
+                connection.setFixedLengthStreamingMode(jsonData.toString().length());
+                DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+                out.writeBytes(jsonData.toString());
+                out.flush();
+                out.close();
+                // Handle the response from the (Lab09) server as usual.
+                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(connection.getInputStream()));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        jsonText.append(line);
+                    }
+                    //Log.d(TAG, jsonText.toString());
+                    if (jsonText.charAt(0) == '[') {
+                        Log.i("1st if", jsonText.toString());
+                        save(new JSONArray(jsonText.toString()), params[1]);
+                        result = new JSONArray(jsonText.toString());
+                    } else if (jsonText.toString().equals("null")) {
+                        Log.i("2st if", jsonText.toString());
+                        result = new JSONArray();
+                    } else {
+                        Log.i("3st if", jsonText.toString());
+                        save(new JSONArray("[" + jsonText.toString() + "]"), params[1]);
+                        result = new JSONArray().put(new JSONObject(jsonText.toString()));
+                    }
+                } else {
+                    throw new Exception();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+            }
+            return result;
+        }
+    }
+
+
+    /**
+     * This inner class handles put requests.
+     * The skeleton for this class is borrowed from Prof VanderLinden's code. Thanks!
+     *
+     */
+    private class PutTask extends AsyncTask<String, Void, JSONArray> {
+
+        @Override
+        protected JSONArray doInBackground(String... params) {
+            HttpURLConnection connection = null;
+            StringBuilder jsonText = new StringBuilder();
+            JSONArray result = null;
+            try {
+                String jsonString = params[2];
+                JSONObject jsonData = new JSONObject(jsonString);
+                //jsonData.put("emailaddress", "new@calvin.edu");
+                URL url = new URL(params[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("PUT");
+                connection.setDoOutput(true);
+                connection.setRequestProperty("Content-Type", "application/json");
+                connection.setFixedLengthStreamingMode(jsonData.toString().length());
+                DataOutputStream out = new DataOutputStream(connection.getOutputStream());
+                out.writeBytes(jsonData.toString());
+                out.flush();
+                out.close();
+                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+                    BufferedReader reader = new BufferedReader(
+                            new InputStreamReader(connection.getInputStream()));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        jsonText.append(line);
+                    }
+                    //Log.d(TAG, jsonText.toString());
+                    if (jsonText.charAt(0) == '[') {
+                        Log.i("1st if", jsonText.toString());
+                        result = new JSONArray(jsonText.toString());
+                        save(new JSONArray( jsonText.toString()), params[1]);
+                    } else if (jsonText.toString().equals("null")) {
+                        Log.i("2st if", jsonText.toString());
+                        result = new JSONArray();
+                    } else {
+                        Log.i("3st if", jsonText.toString());
+                        save(new JSONArray( "["+ jsonText.toString() + "]"), params[1]);
+                        result = new JSONArray().put(new JSONObject(jsonText.toString()));
+                    }
+                } else {
+                    throw new Exception();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
+            }
+            return result;
+        }
+    }
+
+    /**
+     * Inner class for DELETEing
+     * From professor VanderLinden,Thanks!
+     * TODO: DOES NOT WORK!!!
+     */
+//    private class DeleteTask extends AsyncTask<String, Void, JSONArray> {
+//
 //        @Override
 //        protected JSONArray doInBackground(String... params) {
 //            HttpURLConnection connection = null;
-//            StringBuilder result = new StringBuilder();
+//            StringBuilder jsonText = new StringBuilder();
+//            JSONArray result = null;
 //            try {
 //                URL url = new URL(params[0]);
 //                connection = (HttpURLConnection) url.openConnection();
-//                //change the request type (i.e. "Post", "Put", "Get")
-//               connection.setRequestMethod( params[1] );
+//                connection.setRequestMethod("DELETE");
 //                if (connection.getResponseCode() == HttpURLConnection.HTTP_OK) {
 //                    BufferedReader reader = new BufferedReader(
 //                            new InputStreamReader(connection.getInputStream()));
 //                    String line;
 //                    while ((line = reader.readLine()) != null) {
-//                        result.append(line);
+//                        jsonText.append(line);
 //                    }
-//                    //save the values
-//                    save(new JSONArray( "["+ result.toString() + "]"), params[2]);
-//                    return new JSONArray("["+ result.toString() + "]");
+//                    //Log.d(TAG, jsonText.toString());
+//                    if (jsonText.charAt(0) == '[') {
+//                        Log.i("1st if", jsonText.toString());
+//                        result = new JSONArray(jsonText.toString());
+//                    } else if (jsonText.toString().equals("null")) {
+//                        Log.i("2st if", jsonText.toString());
+//                        result = new JSONArray();
+//                    } else {
+//                        Log.i("3st if", jsonText.toString());
+//                        result = new JSONArray().put(new JSONObject(jsonText.toString()));
+//                    }
 //                } else {
 //                    throw new Exception();
 //                }
 //            } catch (Exception e) {
 //                e.printStackTrace();
 //            } finally {
-//                assert connection != null;
-//                connection.disconnect();
+//                if (connection != null) {
+//                    connection.disconnect();
+//                }
 //            }
-//            return null;
+//            return result;
 //        }
 //
-//        //is this method needed? Will it be needed?
 //        @Override
-//        protected void onPostExecute(JSONArray response) {
-//            if (response != null) {
-//
+//        protected void onPostExecute(JSONArray players) {
+//            playerList.clear();
+//            if (players == null) {
+//                Toast.makeText(MainActivity.this, getString(R.string.connection_error), Toast.LENGTH_SHORT).show();
+//            } else if (players.length() == 0) {
+//                Toast.makeText(MainActivity.this, getString(R.string.no_results_error), Toast.LENGTH_SHORT).show();
 //            } else {
-//
+//                convertJSONtoArrayList(players);
 //            }
+//            MainActivity.this.updateDisplay();
 //        }
+//
 //    }
-
 
     /**
      * save will save the data that has been received from the server
@@ -278,78 +471,30 @@ public class ServerCommunication {
      * @param type
      *  Whether the data is for the Player or Game data structure
      */
-//    public void save( JSONArray jsonArray, String type )
-//    {
-//        //convert the jsonArray to an array list of json objects
-//        ArrayList<JSONObject> jsonObjectList = new ArrayList<JSONObject>();
-//        for (int i = 0; i < jsonArray.length(); i++) {
-//            try {
-//                JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                jsonObjectList.add(jsonObject);
-//
-//            } catch (Exception e) {
-//
-//            }
-//        }
-//        if( type.equals("game")) {
-//            GameClass game = new GameClass(context);
-//            //game.saveInfo(jsonObjectList);
-//        }
-//        else if (type.equals("player"))
-//        {
-//
-//            Player player = new Player(context);
-//            player.saveInfo(jsonObjectList);
-//        }
-//    }
+    public void save( JSONArray jsonArray, String type )
+    {
+        Log.i("the type is ", type);
+        //convert the jsonArray to an array list of json objects
+        ArrayList<JSONObject> jsonObjectList = new ArrayList<JSONObject>();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            try {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                jsonObjectList.add(jsonObject);
 
-    /**
-     * This function will save the values from the server's response to shared preferences
-     * @param jsonArray
-     */
-//    private void saveFunction( JSONArray jsonArray )
-//    {
-//        Log.i("in save ", " function...");
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-//        SharedPreferences.Editor editor = preferences.edit();
-//
-//        //convert the jsonArray to an array list of json objects
-//        ArrayList<JSONObject> jsonObjectList = new ArrayList<JSONObject>();
-//        for (int i = 0; i < jsonArray.length(); i++) {
-//            try {
-//                JSONObject jsonObject = jsonArray.getJSONObject(i);
-//                jsonObjectList.add(jsonObject);
-//
-//            } catch (Exception e) {
-//
-//            }
-//        }
-//        Log.i( "jsonObjectList.size is", Integer.toString(jsonObjectList.size()));
-//        //iterate through each jsonObject in the list
-//        for (int i=0;  i< jsonObjectList.size(); i++ )
-//        {
-//            JSONObject jsonObject = jsonObjectList.get(i);
-//            Iterator<String> iter = jsonObject.keys();
-//            //go through each JSON object
-//            while (iter.hasNext()) {
-//                String key = iter.next();
-//                //if the server responds with error, break and
-//                //TODO, what should be done in the case of an error
-//                if ( key.equals("err")){
-//                    break;
-//                }
-//                try {
-//                    Object value = jsonObject.get(key);
-//                    //to implement: save the values to shared preferences;
-//                    Log.i( "the key is ", key );
-//                    Log.i( " the value is ", value.toString() );
-//                    editor.putString(key, value.toString());
-//                    editor.commit();
-//                } catch (JSONException e) {
-//                    // Something went wrong!
-//                }
-//            }
-//        }
-//
-//    }
+            } catch (Exception e) {
+
+            }
+        }
+        Log.i("parsed json response", jsonObjectList.toString());
+        if( type.equals("game")) {
+            GameClass game = new GameClass(context);
+            game.saveInfo(jsonObjectList);
+        }
+        else if (type.equals("player"))
+        {
+            Player player = new Player(context);
+            player.saveInfo(jsonObjectList);
+        }
+    }
+
 }

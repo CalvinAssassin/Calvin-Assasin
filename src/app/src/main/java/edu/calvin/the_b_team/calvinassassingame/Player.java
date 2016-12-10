@@ -26,16 +26,18 @@ public class Player {
      */
     public class PlayerInfo{
         public String[] fieldNames = { "ID", "firstName", "lastName", "residence", "major",
-                "latitude", "longitude"
+                "latitude", "longitude", "locUpdateTime", "gameID", "isAlive", "currentGameID"
         };
 
-        public String[] intFieldNames = { "ID" };
+        public String[] intFieldNames = { "ID", "currentGameID" };
         public String[] doubleFieldNames = { "latitude", "longitude" };
-        public String[] stringFieldNames = { "firstName", "lastName", "residence", "major" };
+        public String[] stringFieldNames = { "firstName", "lastName", "residence", "major", "locUpdateTime" };
+        public String[] booleanFieldNames = { "isAlive" };
 
-        public int ID;
+        public int ID, currentGameID;
         public Double latitude, longitude;
-        public String firstName, lastName, residence, major;
+        public String firstName, lastName, residence, major, locUpdateTime;
+        public boolean isAlive;
 
     }
 
@@ -53,16 +55,16 @@ public class Player {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = preferences.edit();
             PlayerInfo playerInfo = new PlayerInfo();
-            playerInfo.ID = 0;
+            playerInfo.ID = playerInfo.currentGameID = 0;
             playerInfo.latitude = playerInfo.longitude = 0.0;
-            playerInfo.firstName = playerInfo.lastName = playerInfo.residence = playerInfo.major = "";
+            playerInfo.firstName = playerInfo.lastName = playerInfo.residence
+                    = playerInfo.major = playerInfo.locUpdateTime = "";
+            playerInfo.isAlive = false;
             Gson gson = new Gson();
             String json = gson.toJson(playerInfo);
             editor.putString("playerInfo", json);
             editor.commit();
-
             this.playerInfo = playerInfo;
-
         }
         else
         {
@@ -71,6 +73,18 @@ public class Player {
             PlayerInfo playerInformation = gson.fromJson(json, PlayerInfo.class);
             this.playerInfo = playerInformation;
         }
+    }
+
+    /**
+     * This method will refresh the memory by pulling the latest from
+     * the disk and saving it to the current object.
+     */
+    public void refreshMemory()
+    {
+        Gson gson = new Gson();
+        String json = app_preferences.getString("playerInfo", "");
+        PlayerInfo gameInformation = gson.fromJson(json, PlayerInfo.class);
+        this.playerInfo = gameInformation;
     }
 
 
@@ -143,6 +157,28 @@ public class Player {
     }
 
     /**
+     * This method allows someone to save a single value
+     * @param key
+     *  The field name of the value being saved
+     * @param value
+     *  the value being saved
+     * @return
+     */
+    public boolean save( String key, boolean value ) {
+        if (Arrays.asList(this.playerInfo.booleanFieldNames).contains(key)) {
+            try {
+                Field field = PlayerInfo.class.getField(key);
+                field.set(this.playerInfo, value);
+            } catch (Exception e) {
+                return false;
+            }
+            saveToDrive();
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * This method will save the player data structure to the hard drive
      * @return
      *  true if save was a success, false otherwise
@@ -156,59 +192,55 @@ public class Player {
         editor.putString("playerInfo", json);
         editor.commit();
         return true;
-
     }
 
     /**
-     * save information passed as a arrayList of json objects
+     * save information passed as a arrayList of json objects, used by ServerCommunication
      * @param jsonObjectList
      *  The arraylist containing the data
      * @return
      */
-//    public boolean saveInfo(  ArrayList<JSONObject> jsonObjectList )
-//    {
-//        for (int i=0;  i< jsonObjectList.size(); i++ )
-//        {
-//            JSONObject jsonObject = jsonObjectList.get(i);
-//            Iterator<String> iter = jsonObject.keys();
-//            //go through each JSON object
-//            while (iter.hasNext()) {
-//                String key = iter.next();
-//                //if the server responds with error, break and
-//                //TODO, what should be done in the case of an error
-//                if ( key.equals("err")){
-//                    return false;
-//                }
-//                if( Arrays.asList(this.playerInfo.fieldNames).contains(key))
-//                {
-//                    try {
-//                        Object value = jsonObject.get(key);
-//                        Log.i( "the key is ", key );
-//                        Log.i( " the value is ", value.toString() );
-//                        //store the value
-//                        Field field = PlayerInfo.class.getField( key );
-//                        field.set(this.playerInfo, value );
-//                    } catch (Exception e) {
-//                        // Something went wrong!
-//                        Log.i( "exception in saveInfo", e.toString());
-//                        return false;
-//                    }
-//                }
-//                else
-//                    return false;
-//
-//            }
-//        }
-//        //initialize the editor to save values
-//        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-//        SharedPreferences.Editor editor = preferences.edit();
-//        Gson gson = new Gson();
-//        String json = gson.toJson(this.playerInfo);
-//        //save values
-//        editor.putString("gameInfo", json);
-//        editor.commit();
-//        return true;
-//    }
+    public boolean saveInfo(  ArrayList<JSONObject> jsonObjectList )
+    {
+        for (int i=0;  i< jsonObjectList.size(); i++ )
+        {
+            Log.i("size of jsonObjectList ", String.valueOf(jsonObjectList.size()));
+            JSONObject jsonObject = jsonObjectList.get(i);
+            Iterator<String> iter = jsonObject.keys();
+            //go through each JSON object
+            while (iter.hasNext()) {
+                String key = iter.next();
+                Log.i("key in player class ", key );
+                //if the server responds with error, break and
+                //TODO, what should be done in the case of an error
+                if ( key.equals("err")){
+                    return false;
+                }
+                if( Arrays.asList(this.playerInfo.fieldNames).contains(key))
+                {
+                    try {
+                        Object value = jsonObject.get(key);
+                        Log.i( "the key is ", key );
+                        Log.i( " the value is ", value.toString() );
+                        //store the value
+                        Field field = PlayerInfo.class.getField( key );
+                        Log.i("the field is ", field.getName());
+                        field.set(this.playerInfo, value );
+                    } catch (Exception e) {
+                        // Something went wrong!
+                        Log.i( "exception in saveInfo", e.toString());
+                        return false;
+                    }
+                }
+                else {
+                    Log.i("bad name", " here 1");
+                    return false;
+                }
+            }
+        }
+        saveToDrive();
+        return true;
+    }
 
     /**
      * a generic accessor for the fields in the PlayerInfo data structure
@@ -219,28 +251,25 @@ public class Player {
      */
     public Object getValue( String fieldName )
     {
+        refreshMemory();
         if( Arrays.asList(this.playerInfo.fieldNames).contains(fieldName) ) {
             try {
-
-
-
                 Class c = this.playerInfo.getClass();
                 Field field = c.getField(fieldName);
                 Object value = field.get(this.playerInfo);
                 return value;
-                //return value.toString();
 
             } catch (Exception e) {
                 return e.toString();
             }
         }
-
         return "err";
     }
 
     /**
      * thre following accessors give access to the saved info
      * @return
+     *  the value from the disk
      */
     public int getID()
     {
@@ -286,6 +315,23 @@ public class Player {
         if ( !getValue( "ID" ).equals("err") )
             return (String) getValue("residence");
         return "error";
+    }
+    public String getTimestap()
+    {
+        if( !getValue( "locUpdateTime").equals("err"))
+            return (String) getValue("locUpdateTime");
+        return "error";
+    }
+    public int getGameID()
+    {
+        if ( !getValue( "currentGameID" ).equals("err") )
+            return (int) getValue( "currentGameID" );
+        return 0;
+    }
+
+    public boolean getIsAlive()
+    {
+        return (boolean) getValue("isAlive");
     }
 
 }
