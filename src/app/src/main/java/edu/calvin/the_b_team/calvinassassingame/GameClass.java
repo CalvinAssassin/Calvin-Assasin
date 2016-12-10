@@ -34,21 +34,19 @@ public class GameClass {
     public class GameInfo {
 
         //used to see if types are correct when saving
-        public String[] integerFieldNames = { "ID"};
-        public String[] stringFieldNames = { "gameName", "startDate" };
+        public String[] integerFieldNames = { "ID", "targetID"};
+        public String[] stringFieldNames = { "gameName", "startDate", "targetTimeLeft" };
         //public String[] JSONArrayFieldNames = { "players"};
         public String[] booleanFieldNames = {"inPlay"};
 
         //allows one to find out if a field exists
         public String[] fieldNames = {"ID", "gameName", "inPlay",
-                "startDate", "players"
+                "startDate", "players", "targetID", "targetTimeLeft"
         };
         //current game items
-        public int ID;
-        public String gameName, startDate;
+        public int ID, targetID;
+        public String gameName, targetTimeLeft, startDate, players;
         public boolean inPlay;
-        public JSONArray players;
-
 
     }
 
@@ -66,10 +64,9 @@ public class GameClass {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = preferences.edit();
             GameInfo gameInfo = new GameInfo();
-            gameInfo.ID = 0;
+            gameInfo.ID = gameInfo.targetID = 0;
             gameInfo.inPlay = false;
-            gameInfo.startDate = gameInfo.gameName = "";
-            gameInfo.players = new  JSONArray();
+            gameInfo.startDate = gameInfo.players = gameInfo.gameName = gameInfo.targetTimeLeft = "";
             Gson gson = new Gson();
             String json = gson.toJson(gameInfo);
             editor.putString("gameInfo", json);
@@ -206,11 +203,19 @@ public class GameClass {
                 {
                     try {
                         Object value = jsonObject.get(key);
-//                        Log.i( "the key is ", key );
-//                        Log.i( " the value is ", value.toString() );
+                        Log.i( "the key is ", key );
+                        Log.i( " the value is ", value.toString() );
                         //store the value
-                        Field field = GameInfo.class.getField( key );
-                        field.set(this.gameInfo, value );
+                        if( key.equals("players")) {
+                            //before saving the players JSONArray, change it to a string
+                            String playersString = value.toString();
+                            Field field = GameInfo.class.getField(key);
+                            field.set(this.gameInfo, playersString);
+                        }
+                        else {
+                            Field field = GameInfo.class.getField(key);
+                            field.set(this.gameInfo, value);
+                        }
 
                     } catch (Exception e) {
                         // Something went wrong!
@@ -286,9 +291,78 @@ public class GameClass {
             return (String) getValue("startDate");
         return "error!";
     }
+    public String getTargetTimeLeft()
+    {
+        if ( !getValue( "targetTimeLeft" ).equals("err") )
+            return (String) getValue("targetTimeLeft");
+        return "error!";
+    }
+
+    public int getTargetID()
+    {
+        if ( !getValue( "targetID" ).equals("err") )
+            return (int) getValue("targetID");
+        return 0;
+    }
 
     public JSONArray getPlayers()
     {
-        return this.gameInfo.players;
+        try {
+            Log.i("json string from mem", this.gameInfo.players);
+            return new JSONArray(this.gameInfo.players);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return new JSONArray();
+        }
     }
+
+    /**
+     * This will return the jsonObject that corrolates with the ID
+     * @param ID
+     *  The ID of the player being retreived
+     * @return
+     *  The playeri info
+     */
+    public JSONObject getPlayerInfo( int ID ) {
+        //first convert jsonArray String to arrayList
+        ArrayList<JSONObject> list = new ArrayList();
+        try {
+            JSONArray jsonArray = new JSONArray(this.gameInfo.players);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                list.add(jsonObject);
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        //iterate through the arrayList and looking for a matching ID
+        for(int i = 0; i<list.size();i++)
+        {
+            try {
+                //return the JSONObject if match is found
+                if (list.get(i).getInt("ID") == ID) {
+                    return list.get(i);
+                }
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        JSONObject error = new JSONObject();
+        try {
+            //no matching ID, return error object
+            return error.put("error", "error");
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return new JSONObject();
+        }
+    }
+
 }

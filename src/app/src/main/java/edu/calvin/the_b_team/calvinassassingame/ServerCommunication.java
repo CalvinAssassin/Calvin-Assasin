@@ -44,7 +44,7 @@ import android.os.Handler;
 
 public class ServerCommunication {
     //the base URL for our Server
-    private final String baseUrl = "http://153.106.116.65:8082/api";
+    private final String baseUrl = "http://153.106.116.80:8082/api";
     private SharedPreferences app_preferences;
     private Context context;
 
@@ -58,6 +58,7 @@ public class ServerCommunication {
         context = contextFromActivity;
         //allows information to be pulled from shared preferences
         app_preferences = PreferenceManager.getDefaultSharedPreferences(context);
+
     }
 
     /**
@@ -115,6 +116,7 @@ public class ServerCommunication {
     {
         GameClass game = new GameClass(this.context);
         int gameID = game.getID();
+        Log.i("the game url", baseUrl + "/game/" + gameID);
         runQuery( baseUrl + "/game/" + gameID , "GET", "game", "");
     }
 
@@ -476,6 +478,7 @@ public class ServerCommunication {
 
             }
         }
+        Log.i("parsed json response", jsonObjectList.toString());
         if( type.equals("game")) {
             GameClass game = new GameClass(context);
             game.saveInfo(jsonObjectList);
