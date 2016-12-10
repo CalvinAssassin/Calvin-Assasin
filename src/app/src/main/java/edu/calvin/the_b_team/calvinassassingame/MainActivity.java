@@ -112,43 +112,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //when this button is clicked, show the alert
-                //assassinationSentAlert.show();
-//                try {
-//                    JSONArray jsonArray = new JSONArray("[\n" +
-//                            "\t{\n" +
-//                            "      \"ID\": 101,\n" +
-//                            "      \"firstName\": \"Christiaan\",\n" +
-//                            "      \"lastName\": \"Hazlett\",\n" +
-//                            "      \"residence\": \"KHvR\",\n" +
-//                            "      \"major\": \"computer science\",\n" +
-//                            "      \"latitude\": 28.02,\n" +
-//                            "      \"longitude\": 15.43,\n" +
-//                            "      \"locUpdateTime\": \"2016-12-08 12:50:25.069637\",\n" +
-//                            "      \"currentGameID\": 1,\n" +
-//                            "      \"isAlive\": true\n" +
-//                            "    },\n" +
-//                            "    {\n" +
-//                            "      \"ID\": 204,\n" +
-//                            "      \"firstName\": \"Nate\",\n" +
-//                            "      \"lastName\": \"Bender\",\n" +
-//                            "      \"residence\": \"RVD\",\n" +
-//                            "      \"major\": \"computer science\",\n" +
-//                            "      \"latitude\": 28.02,\n" +
-//                            "      \"longitude\": 15.43,\n" +
-//                            "      \"locUpdateTime\": \"2016-12-08 19:49:23.989986\",\n" +
-//                            "      \"currentGameID\": 1,\n" +
-//                            "      \"isAlive\": true\n" +
-//                            "    }\n" +
-//                            "  ]");
-//
-//                   // Log.i("the jsonArray is ", jsonArray.toString());
-//                    ServerCommunication server = new ServerCommunication(context);
-//                    server.getGame();
-//                }
-//                catch (Exception e)
-//                {
-//
-//                }
+                assassinationSentAlert.show();
             }
         });
 
