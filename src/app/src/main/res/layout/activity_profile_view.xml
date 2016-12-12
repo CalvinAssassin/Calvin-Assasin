@@ -44,67 +44,90 @@
             android:id="@+id/choose_photo_button" />
 
         <TextView
-            android:text="@string/user_name_label"
+            android:text="@string/user_first_name_label"
             android:selectAllOnFocus="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/player_name_label"
+            android:id="@+id/player_first_name_label"
             android:layout_below="@+id/choose_photo_button"
             android:layout_marginTop="24dp"/>
 
         <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="102dp"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
             android:selectAllOnFocus="true"
-            android:text="@string/user_name"
+            android:text="@string/user_first_name"
             android:ems="10"
-            android:id="@+id/player_name_editable"
-            android:textAlignment="center"
-            android:layout_alignBaseline="@+id/player_name_label"
+            android:id="@+id/player_first_name_editable"
+            android:layout_toRightOf="@+id/player_first_name_label"
+            android:layout_alignBaseline="@+id/player_first_name_label"/>
+
+        <TextView
+            android:text="@string/user_last_name_label"
+            android:selectAllOnFocus="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/player_last_name_label"
+            android:layout_alignBaseline="@+id/player_first_name_editable"
+            android:layout_toRightOf="@+id/player_first_name_editable"
+            android:layout_marginTop="24dp"/>
+
+        <EditText
+            android:layout_width="102dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:selectAllOnFocus="true"
+            android:text="@string/user_last_name"
+            android:ems="10"
+            android:id="@+id/player_last_name_editable"
+            android:layout_alignBaseline="@+id/player_last_name_label"
+            android:layout_toRightOf="@+id/player_last_name_label"/>
+
+        <TextView
+            android:text="@string/user_major_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/player_major_label"
+            android:layout_below="@+id/player_first_name_label"
+            android:layout_marginTop="24dp"
+            android:layout_alignStart="@+id/player_first_name_label"
+            android:textAlignment="center" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textCapWords"
+            android:selectAllOnFocus="true"
+            android:text="@string/user_major"
+            android:id="@+id/player_major_editable"
+            android:layout_alignBaseline="@+id/player_major_label"
             android:layout_centerHorizontal="true" />
 
         <TextView
-            android:text="@string/user_year_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/player_class_label"
-            android:layout_below="@+id/player_name_label"
-            android:layout_marginTop="24dp"
-            android:layout_alignStart="@+id/player_name_label"
-            android:textAlignment="center" />
-
-        <Spinner
-            android:id="@+id/player_class_editable"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/player_class_label"
-            android:layout_marginTop="24dp"
-            android:textAlignment="center"
-            android:layout_centerHorizontal="true"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/player_home_label"
+            android:id="@+id/player_residence_label"
             android:text="@string/user_home_label"
-            android:layout_below="@+id/player_class_label"
+            android:layout_below="@+id/player_major_label"
             android:layout_marginTop="24dp"
-            android:layout_alignStart="@+id/player_class_label" />
+            android:layout_alignStart="@+id/player_major_label" />
 
-        <Spinner
-            android:id="@+id/player_home_editable"
+        <EditText
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/player_home_label"
-            android:textAlignment="center"
-            android:layout_centerHorizontal="true"/>
+            android:inputType="textCapWords"
+            android:selectAllOnFocus="true"
+            android:text="@string/user_residence"
+            android:id="@+id/player_residence_editable"
+            android:layout_alignBaseline="@+id/player_residence_label"
+            android:layout_centerHorizontal="true"  />
 
         <Button
             android:text="FINALIZE"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/player_home_editable"
+            android:layout_below="@+id/player_residence_editable"
             android:layout_marginTop="32dp"
             android:layout_centerHorizontal="true"
             android:id="@+id/finalize_profile_button"/>

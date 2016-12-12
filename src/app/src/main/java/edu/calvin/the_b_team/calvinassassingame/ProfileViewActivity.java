@@ -46,9 +46,10 @@ public class ProfileViewActivity extends AppCompatActivity {
     //Initialize Widgets
     private Button choosePhotoButton;
     private Button finalizeButton;
-    private EditText playerNameEditable;
-    private Spinner playerClassEditable;
-    private Spinner playerHomeEditable;
+    private EditText playerFirstNameEditable;
+    private EditText playerLastNameEditable;
+    private EditText playerMajorEditable;
+    private EditText playerResidenceEditable;
 
     //Initialize State Variables
     private boolean settingsFinalized = false;
@@ -61,9 +62,13 @@ public class ProfileViewActivity extends AppCompatActivity {
     private int menuChoice = 0;
     private AlertDialog.Builder firstRunAlert;
 
+    private ServerCommunication server;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        ServerCommunication server = new ServerCommunication(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_view);
         setTitle(getResources().getText(R.string.profile_activity_title));
@@ -80,26 +85,20 @@ public class ProfileViewActivity extends AppCompatActivity {
         profileImage = (ImageView) findViewById(R.id.profile_picture);
         choosePhotoButton = (Button) findViewById(R.id.choose_photo_button);
         finalizeButton = (Button) findViewById(R.id.finalize_profile_button);
-        playerNameEditable = (EditText) findViewById(R.id.player_name_editable);
-        playerClassEditable = (Spinner) findViewById(R.id.player_class_editable);
-        playerHomeEditable = (Spinner) findViewById(R.id.player_home_editable);
-        
-        app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        playerFirstNameEditable = (EditText) findViewById(R.id.player_first_name_editable);
+        playerLastNameEditable = (EditText) findViewById(R.id.player_last_name_editable);
+        playerMajorEditable = (EditText) findViewById(R.id.player_major_editable);
+        playerResidenceEditable = (EditText) findViewById(R.id.player_residence_editable);
 
-        ArrayAdapter<CharSequence> classList, homeList;
-        classList = ArrayAdapter.createFromResource(this, R.array.class_array, android.R.layout.simple_spinner_item);
-        homeList  = ArrayAdapter.createFromResource(this, R.array.home_array, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        classList.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        homeList.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        // Apply the adapter to the spinner
-        playerClassEditable.setAdapter(classList);
-        playerHomeEditable.setAdapter(homeList);
+
+        app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Player player = new Player(this);
 
         //Load layout items from saved preferences
-        playerNameEditable.setText(app_preferences.getString("playerName",playerNameEditable.getText().toString()));
-        playerClassEditable.setSelection(app_preferences.getInt("playerClass",0));
-        playerHomeEditable.setSelection(app_preferences.getInt("playerHome",0));
+        playerFirstNameEditable.setText((String)player.getValue("firstName"));
+        playerLastNameEditable.setText((String)player.getValue("lastName"));
+        playerMajorEditable.setText((String)player.getValue("major"));
+        playerResidenceEditable.setText((String)player.getValue("residence"));
         loadProfileImage(app_preferences.getString("playerPhotoPath","android.resource://edu.calvin.the_b_team.calvinassassingame/" + R.mipmap.ic_profile_placeholder));
         settingsFinalized = app_preferences.getBoolean("settingsFinalized",false);
         firstRun = app_preferences.getBoolean("firstRun", true);
@@ -183,9 +182,10 @@ public class ProfileViewActivity extends AppCompatActivity {
 
     //Stop the user from editing the info on the page
     private void disableTextFields(){
-        playerNameEditable.setEnabled(false);
-        playerClassEditable.setEnabled(false);
-        playerHomeEditable.setEnabled(false);
+        playerFirstNameEditable.setEnabled(false);
+        playerLastNameEditable.setEnabled(false);
+        playerMajorEditable.setEnabled(false);
+        playerResidenceEditable.setEnabled(false);
         choosePhotoButton.setEnabled(false);
         finalizeButton.setEnabled(false);
         finalizeButton.setVisibility(View.GONE);
@@ -195,24 +195,24 @@ public class ProfileViewActivity extends AppCompatActivity {
     /* A complete removal and reinstall of the app is required to make these editable again. This prevents
     /* users from editing their name/info during or between games. For obvious reasons */
     private void finalizeTextFields(){
-//        SharedPreferences.Editor editor = app_preferences.edit();
+        SharedPreferences.Editor editor = app_preferences.edit();
+        Player player = new Player(this);
 //        editor.putString("playerName", playerNameEditable.getText().toString());
 //        editor.putInt("playerClass", playerClassEditable.getSelectedItemPosition());
 //        editor.putInt("playerHome", playerHomeEditable.getSelectedItemPosition());
-//        editor.putBoolean("settingsFinalized", settingsFinalized);
+        editor.putBoolean("settingsFinalized", settingsFinalized);
 //
-//        Bitmap profileBitmap = ((BitmapDrawable)profileImage.getDrawable()).getBitmap();
-//        editor.putString("playerPhotoPath", saveProfilePhoto(profileBitmap));
+        Bitmap profileBitmap = ((BitmapDrawable)profileImage.getDrawable()).getBitmap();
+        editor.putString("playerPhotoPath", saveProfilePhoto(profileBitmap));
 //
-//        editor.commit(); // Commit the changes to the preferences file
+        editor.commit(); // Commit the changes to the preferences file
 
-        Player player = new Player(this);
-        player.save("firstName" , playerNameEditable.getText().toString());
-        player.save("lastName" , "lastName");
-        player.save( "residence",  playerHomeEditable.getSelectedItemPosition() );
-        player.save( "major", "CS");
-        ServerCommunication server = new ServerCommunication(this);
-        server.createUserProfile();
+        player.save("firstName" , playerFirstNameEditable.getText().toString());
+        player.save("lastName" , playerLastNameEditable.getText().toString());
+        player.save( "residence",  playerResidenceEditable.getText().toString() );
+        player.save( "major", playerMajorEditable.getText().toString());
+        //ServerCommunication server = new ServerCommunication(this);
+        //server.createUserProfile();
 
     }
 
