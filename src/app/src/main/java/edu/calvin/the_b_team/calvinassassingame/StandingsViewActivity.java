@@ -56,6 +56,7 @@ public class StandingsViewActivity extends AppCompatActivity {
 
         //Load the stored variables
         app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Player player = new Player(this);
 
         //Load Layout Items
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
@@ -75,19 +76,25 @@ public class StandingsViewActivity extends AppCompatActivity {
 
         setTitle(getResources().getText(R.string.standings_activity_title));
 
-        //Populate the list before it can be rendered
-        String[] playerObjects = populatePlayerList();
-        //Then calculate the progress bar according to the length of the list
-        progressBar.setMax(playerObjects.length);
-        progressBar.setProgress(calculateRemainingPlayers(playerObjects));
+        //The following if-else block tests to make sure that the user is part of a game
+        //TODO: It will be uncommented when the server is functional
+        //if (player.getGameID() != 0) {
+            //Populate the list before it can be rendered
+            String[] playerObjects = populatePlayerList();
+            //Then calculate the progress bar according to the length of the list
+            progressBar.setMax(playerObjects.length);
+            progressBar.setProgress(calculateRemainingPlayers(playerObjects));
 
-        remainingPlayersText.setText(calculateRemainingPlayers(playerObjects) + "/" + playerObjects.length + " Players Assassinated" );
+            remainingPlayersText.setText(calculateRemainingPlayers(playerObjects) + "/" + playerObjects.length + " Players Assassinated");
 
-        playerList = (ListView)findViewById(R.id.playerList);
-        playerListItems = new ArrayList<String>();
-        playerListArrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, playerObjects);
-        playerList.setAdapter(playerListArrayAdapter);
-
+            playerList = (ListView) findViewById(R.id.playerList);
+            playerListItems = new ArrayList<String>();
+            playerListArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, playerObjects);
+            playerList.setAdapter(playerListArrayAdapter);
+//        }
+//        else{
+//            remainingPlayersText.setText(R.string.no_game_warning);
+//        }
     }
 
     private int calculateRemainingPlayers(String[] playerObjs){

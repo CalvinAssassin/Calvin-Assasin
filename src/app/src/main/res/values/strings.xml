@@ -32,6 +32,7 @@
 
     <!-- Strings related to Standings Activity -->
     <string name="standings_activity_title">Standings</string>
+    <string name="no_game_warning">Join a game to view standings.</string>
 
     <!-- Strings related to Game Selection Activity -->
     <string name="join_game_title">Upcoming Games:</string>
