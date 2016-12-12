@@ -1,14 +1,22 @@
 package edu.calvin.the_b_team.calvinassassingame;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.media.Image;
+import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +32,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.content.Intent;
+import android.location.LocationListener;
 
 import com.google.android.gms.games.Game;
 
@@ -31,6 +40,7 @@ import org.json.JSONArray;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -49,6 +59,9 @@ public class MainActivity extends AppCompatActivity {
     private Runnable runnable;
     private boolean targetEliminated;
     private SharedPreferences savedValues;
+
+    private LocationManager locationManager;
+    private LocationListener listener;
     Context context = this;
 
 
@@ -108,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 }, 5000);
             }
         });
+
         killedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,6 +129,37 @@ public class MainActivity extends AppCompatActivity {
                 assassinationSentAlert.show();
             }
         });
+
+        //get location
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        listener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                Log.i("test ", location.getLongitude() + " " + location.getLatitude());
+                //TODO, only save the coordinates every 10 minutes
+                ServerCommunication server = new ServerCommunication(context);
+                Player player = new Player(context);
+                player.save("latitude", location.getLatitude());
+                player.save("longtitude", location.getLongitude());
+                server.updateUserProfileWithoutDelay( "latitude", String.valueOf( location.getLatitude()));
+                server.updateUserProfileWithoutDelay("longtitude", String.valueOf(location.getLongitude()));
+            }
+
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+
+            }
+
+            @Override
+            public void onProviderEnabled(String s) {
+
+            }
+
+            @Override
+            public void onProviderDisabled(String s) {
+            }
+        };
+        configure();
 
     }       // onCreate
 
@@ -166,6 +211,31 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(runnable, 1000);
     }
 
+    void configure(){
+        // first check for permissions
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.INTERNET}
+                        ,10);
+            }
+            return;
+        }
+        // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
+        //noinspection MissingPermission
+        locationManager.requestLocationUpdates("gps", 5000, 0, listener);
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case 10:
+                configure();
+                break;
+            default:
+                break;
+        }
+    }
 
     //Beginning of menu drawer configuration
     private void addDrawerItems() {

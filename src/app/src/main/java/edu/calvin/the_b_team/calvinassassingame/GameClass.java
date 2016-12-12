@@ -35,7 +35,7 @@ public class GameClass {
 
         //used to see if types are correct when saving
         public String[] integerFieldNames = { "ID", "targetID"};
-        public String[] stringFieldNames = { "gameName", "targetStartTime", "startDate","targetTimeLeft", "targetTimeoutTime" };
+        public String[] stringFieldNames = { "gameName", "targetStartTime", "startDate","targetTimeLeft", "targetTimeoutTime", "players" };
         public String[] booleanFieldNames = {"inPlay"};
 
         //allows one to find out if a field exists
@@ -107,12 +107,15 @@ public class GameClass {
     public boolean save( String key, String value ) {
         if (Arrays.asList(this.gameInfo.stringFieldNames).contains(key)) {
             try {
+                Log.i("made it ", "here");
                 Field field = GameInfo.class.getField(key);
                 field.set(this.gameInfo, value);
             } catch (Exception e) {
+                e.printStackTrace();
                 return false;
             }
             saveToDrive();
+            Log.i("bad value in save", " ");
             return true;
         }
         return false;

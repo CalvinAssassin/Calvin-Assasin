@@ -103,7 +103,7 @@ public class ServerCommunication {
                 }
                 catch (Exception e)
                 {
-                    new PutTask().execute(url, typeOfInfo);
+                    new PutTask().execute(url, typeOfInfo, jsonString);
                 }
         }
     }
@@ -177,6 +177,23 @@ public class ServerCommunication {
         int playerID = player.getID();
         String url = baseUrl + "/profile/" + playerID;
         runQuery(url, "PUT", "player", jsonGenerator(hm));
+    }
+
+    /**
+     * This is exactly the same as updateUserProfile except that it will not delay
+     * the main thread until the server response has come back.
+     * @param key
+     * @param value
+     */
+    public void updateUserProfileWithoutDelay(String key, String value)
+    {
+        Log.i("function", " called");
+        HashMap hm = new HashMap();
+        hm.put(key, value);
+        Player player = new Player(context);
+        int playerID = player.getID();
+        String url = baseUrl + "/profile/" + playerID;
+        new PostTask().execute(url, "player", jsonGenerator(hm));
     }
 
     /**
