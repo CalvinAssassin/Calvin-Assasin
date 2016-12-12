@@ -75,7 +75,13 @@ public class StandingsViewActivity extends AppCompatActivity {
 
         setTitle(getResources().getText(R.string.standings_activity_title));
 
+        //Populate the list before it can be rendered
         String[] playerObjects = populatePlayerList();
+        //Then calculate the progress bar according to the length of the list
+        progressBar.setMax(playerObjects.length);
+        progressBar.setProgress(calculateRemainingPlayers(playerObjects));
+
+        remainingPlayersText.setText(calculateRemainingPlayers(playerObjects) + "/" + playerObjects.length + " Players Assassinated" );
 
         playerList = (ListView)findViewById(R.id.playerList);
         playerListItems = new ArrayList<String>();
@@ -84,10 +90,21 @@ public class StandingsViewActivity extends AppCompatActivity {
 
     }
 
+    private int calculateRemainingPlayers(String[] playerObjs){
+        //Count the number of players in the now populated list who are dead
+        int count = 0;
+        for (int i = 0 ; i < playerObjs.length ; i++){
+            if (playerObjs[i].toLowerCase().contains("dead")) count++;
+        }
+        return count;
+    }
+
     private String[] populatePlayerList() {
+        //Populate the list based on the players in the game class. Append 'Dead' or 'Alive' to their names depending on their
+        // isAlive key
         GameClass game = new GameClass(this);
         //TODO: test when server is running
-        game.gameInfo.players = "[{\"ID\": 101,\"firstName\": \"Christiaan\",\"lastName\":\"Hazlett\",\"residence\": \"KHvR\",\"major\":\"computer science\",\"latitude\": 28.02,\"longitude\": 15.43,\"locUpdateTime\":\"2016-12-08 12:50:25.069637\",\"currentGameID\": 1,\"isAlive\": true},{\"ID\": 204,\"firstName\":\"Nate\",\"lastName\":\"Bender\",\"residence\":\"RVD\",\"major\": \"computer science\",\"latitude\": 28.02,\"longitude\": 15.43,\"locUpdateTime\":\"2016-12-08 19:49:23.989986\",\"currentGameID\":1,\"isAlive\": true}]";
+        game.gameInfo.players = "[{\"ID\": 101,\"firstName\": \"Christiaan\",\"lastName\":\"Hazlett\",\"residence\": \"KHvR\",\"major\":\"computer science\",\"latitude\": 28.02,\"longitude\": 15.43,\"locUpdateTime\":\"2016-12-08 12:50:25.069637\",\"currentGameID\": 1,\"isAlive\": false},{\"ID\": 204,\"firstName\":\"Nate\",\"lastName\":\"Bender\",\"residence\":\"RVD\",\"major\": \"computer science\",\"latitude\": 28.02,\"longitude\": 15.43,\"locUpdateTime\":\"2016-12-08 19:49:23.989986\",\"currentGameID\":1,\"isAlive\": true}]";
         //ServerCommunication server = new ServerCommunication(this);
         //server.getGame();
 
@@ -100,7 +117,7 @@ public class StandingsViewActivity extends AppCompatActivity {
 
                 JSONObject player = JSONplayerList.getJSONObject(i);
                 Log.i("the player object ", player.toString());
-                playerObjects[i] = player.getString("firstName") + " " + player.getString( "lastName" );
+                playerObjects[i] = player.getString("firstName") + " " + player.getString( "lastName" ) + (Boolean.valueOf(player.getString("isAlive"))? " - Alive" : " - Dead");
                 //playerObjects[i] = " test ";
             }
             catch (JSONException e){

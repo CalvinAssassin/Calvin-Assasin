@@ -37,8 +37,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/progressBar"
                 android:layout_gravity="center_horizontal"
-                android:max="12"
-                android:progress="1" />
+                android:max="1"
+                android:progress="0" />
 
             <Space
                 android:layout_width="match_parent"

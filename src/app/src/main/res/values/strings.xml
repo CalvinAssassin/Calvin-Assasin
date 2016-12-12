@@ -27,18 +27,6 @@
     <string name="finalize_button">FINALIZE</string>
     <string name="finalize_message">You will not be able to change you profile after finalizing. Continue?</string>
 
-    <string-array name="home_array">
-        <item>KHvR</item>
-        <item>BB</item>
-        <item>NVW</item>
-        <item>BHT</item>
-        <item>RVD</item>
-        <item>SE</item>
-        <item>BV</item>
-        <item>KE</item>
-        <item>Off Campus</item>
-    </string-array>
-
     <!-- Strings related to Map Activity-->
     <string name="title_activity_gpsmap">Map</string>
 
