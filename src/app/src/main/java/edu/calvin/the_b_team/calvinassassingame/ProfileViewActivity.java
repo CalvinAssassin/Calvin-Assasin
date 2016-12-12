@@ -195,16 +195,25 @@ public class ProfileViewActivity extends AppCompatActivity {
     /* A complete removal and reinstall of the app is required to make these editable again. This prevents
     /* users from editing their name/info during or between games. For obvious reasons */
     private void finalizeTextFields(){
-        SharedPreferences.Editor editor = app_preferences.edit();
-        editor.putString("playerName", playerNameEditable.getText().toString());
-        editor.putInt("playerClass", playerClassEditable.getSelectedItemPosition());
-        editor.putInt("playerHome", playerHomeEditable.getSelectedItemPosition());
-        editor.putBoolean("settingsFinalized", settingsFinalized);
+//        SharedPreferences.Editor editor = app_preferences.edit();
+//        editor.putString("playerName", playerNameEditable.getText().toString());
+//        editor.putInt("playerClass", playerClassEditable.getSelectedItemPosition());
+//        editor.putInt("playerHome", playerHomeEditable.getSelectedItemPosition());
+//        editor.putBoolean("settingsFinalized", settingsFinalized);
+//
+//        Bitmap profileBitmap = ((BitmapDrawable)profileImage.getDrawable()).getBitmap();
+//        editor.putString("playerPhotoPath", saveProfilePhoto(profileBitmap));
+//
+//        editor.commit(); // Commit the changes to the preferences file
 
-        Bitmap profileBitmap = ((BitmapDrawable)profileImage.getDrawable()).getBitmap();
-        editor.putString("playerPhotoPath", saveProfilePhoto(profileBitmap));
+        Player player = new Player(this);
+        player.save("firstName" , playerNameEditable.getText().toString());
+        player.save("lastName" , "lastName");
+        player.save( "residence",  playerHomeEditable.getSelectedItemPosition() );
+        player.save( "major", "CS");
+        ServerCommunication server = new ServerCommunication(this);
+        server.createUserProfile();
 
-        editor.commit(); // Commit the changes to the preferences file
     }
 
     //Save the profile image to a file in the app's internal file system (imageDir/profile.jpg)
