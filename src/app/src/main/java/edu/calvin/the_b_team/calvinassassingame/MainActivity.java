@@ -12,6 +12,7 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.support.v4.widget.DrawerLayout;
@@ -205,12 +206,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 //    This is an expiriment. It adds the '...' to the action bar
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -220,7 +222,13 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_help) {
+            String helpText = getString(R.string.target_help);
+
+//            String helpText = "this is the help text for the target page";
+            Intent intent = new Intent(this, HelpActivity.class);
+            intent.putExtra ("helpText", helpText);
+            startActivity (intent);
             return true;
         }
 
@@ -262,6 +270,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 this.startActivity(intent);
                 break;
+
         }
     }
     // End of menu drawer configuration

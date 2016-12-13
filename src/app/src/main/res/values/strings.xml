@@ -58,6 +58,16 @@
     <!-- Strings related to Settings -->
     <string name="title_activity_settings">Settings</string>
 
+    <!-- Strings related to help pages -->
+    <string name="help_title">Help</string>
+    <string name="action_help">Help</string>
+    <string name="target_help">this is the help text for the target page</string>
+    <string name="profile_help">this is the help text for the profile page</string>
+    <string name="map_help">this is the help text for the map page</string>
+    <string name="standings_help">this is the help text for the standings page</string>
+    <string name="game_select_help">this is the help text for the game select page</string>
+
+
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
 
@@ -113,4 +123,6 @@
     <string name="pref_assassination_alert_label">Assassination</string>
     <string name="pref_assassin_prox_alert_label">Assassin Proximity</string>
     <string name="pref_time_limit_alert_label">Time Limit</string>
+    <string name="title_activity_help">HelpActivity</string>
+    <string name="title_activity_topic">TopicActivity</string>
 </resources>
