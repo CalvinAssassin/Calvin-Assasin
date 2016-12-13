@@ -135,10 +135,9 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_help) {
-//            String helpText= R.string.topic_section1;
-            String helpText = "this is the help text for the Map page";
+            String helpText = getString(R.string.map_help);
             Intent intent = new Intent(this, HelpActivity.class);
-            intent.putExtra ("helpText", helpText.toString());
+            intent.putExtra ("helpText", helpText);
             startActivity (intent);
             return true;
         }

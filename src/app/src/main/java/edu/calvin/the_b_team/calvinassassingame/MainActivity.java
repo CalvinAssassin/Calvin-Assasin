@@ -223,10 +223,11 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_help) {
-//            String helpText= R.string.topic_section1;
-            String helpText = "this is the help text for the target page";
-            Intent intent = new Intent(MainActivity.this, HelpActivity.class);
-            intent.putExtra ("helpText", helpText.toString());
+            String helpText = getString(R.string.target_help);
+
+//            String helpText = "this is the help text for the target page";
+            Intent intent = new Intent(this, HelpActivity.class);
+            intent.putExtra ("helpText", helpText);
             startActivity (intent);
             return true;
         }
