@@ -130,11 +130,24 @@ public class MainActivity extends AppCompatActivity {
                 assassinationSentAlert.show();
             }
         });
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         //get the gps coordinates
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        listener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+            }
+            @Override
+            public void onStatusChanged(String s, int i, Bundle bundle) {
+            }
+
+            @Override
+            public void onProviderEnabled(String s) {
+            }
+            @Override
+            public void onProviderDisabled(String s) {
+            }
+        };
         configure();
-
-
     }       // onCreate
 
     /** countDownStart() starts the count down until the end of the round
@@ -193,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public Location configure(){
         // first check for permissions
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.INTERNET}
                         ,10);
@@ -202,6 +215,7 @@ public class MainActivity extends AppCompatActivity {
         }
         // this code won't execute IF permissions are not allowed, because in the line above there is return statement.
         //noinspection MissingPermission
+        locationManager.requestLocationUpdates("gps", 5000, 0, listener);
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         if(location != null)
         {

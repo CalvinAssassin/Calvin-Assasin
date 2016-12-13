@@ -66,8 +66,12 @@ public class GameClass {
             GameInfo gameInfo = new GameInfo();
             gameInfo.ID = gameInfo.targetID = 0;
             gameInfo.inPlay = false;
-            gameInfo.targetStartTime = gameInfo.players = gameInfo.startDate =
-                    gameInfo.targetTimeoutTime = gameInfo.gameName = gameInfo.targetTimeLeft = "";
+            gameInfo.targetStartTime = "";
+            gameInfo.players = "[{}]";
+            gameInfo.startDate = "";
+            gameInfo.targetTimeoutTime = "";
+            gameInfo.gameName = "g1";
+            gameInfo.targetTimeLeft = "0";
             Gson gson = new Gson();
             String json = gson.toJson(gameInfo);
             editor.putString("gameInfo", json);
@@ -107,7 +111,6 @@ public class GameClass {
     public boolean save( String key, String value ) {
         if (Arrays.asList(this.gameInfo.stringFieldNames).contains(key)) {
             try {
-                Log.i("made it ", "here");
                 Field field = GameInfo.class.getField(key);
                 field.set(this.gameInfo, value);
             } catch (Exception e) {
@@ -115,9 +118,9 @@ public class GameClass {
                 return false;
             }
             saveToDrive();
-            Log.i("bad value in save", " ");
             return true;
         }
+        Log.i("bad value in save", key);
         return false;
     }
 
@@ -282,7 +285,7 @@ public class GameClass {
         return "error!";
     }
 
-    public boolean inPlay()
+    public boolean getInPlay()
     {
         if ( !getValue( "inPlay" ).equals("err") )
             return (boolean) getValue("inPlay");

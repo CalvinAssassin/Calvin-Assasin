@@ -26,7 +26,7 @@ public class Player {
      */
     public class PlayerInfo{
         public String[] fieldNames = { "ID", "firstName", "lastName", "residence", "major",
-                "latitude", "longitude", "locUpdateTime", "gameID", "isAlive", "currentGameID"
+                "latitude", "longitude", "locUpdateTime", "isAlive", "currentGameID"
         };
 
         public String[] intFieldNames = { "ID", "currentGameID" };
@@ -57,8 +57,11 @@ public class Player {
             PlayerInfo playerInfo = new PlayerInfo();
             playerInfo.ID = playerInfo.currentGameID = 0;
             playerInfo.latitude = playerInfo.longitude = 0.0;
-            playerInfo.firstName = playerInfo.lastName = playerInfo.residence
-                    = playerInfo.major = playerInfo.locUpdateTime = "";
+            playerInfo.firstName = "first name";
+            playerInfo.lastName = "last name";
+            playerInfo.residence = "residence";
+            playerInfo.major = "major";
+            playerInfo.locUpdateTime = "0000-00-00 00:00:00";
             playerInfo.isAlive = false;
             Gson gson = new Gson();
             String json = gson.toJson(playerInfo);
@@ -230,7 +233,7 @@ public class Player {
                     }
                 }
                 else {
-                    Log.i("bad name", " here 1");
+                    Log.i("bad name", key);
                     return false;
                 }
             }
@@ -313,13 +316,13 @@ public class Player {
             return (String) getValue("residence");
         return "error";
     }
-    public String getTimestap()
+    public String getLocUpdateTime()
     {
         if( !getValue( "locUpdateTime").equals("err"))
             return (String) getValue("locUpdateTime");
         return "error";
     }
-    public int getGameID()
+    public int getCurrentGameID()
     {
         if ( !getValue( "currentGameID" ).equals("err") )
             return (int) getValue( "currentGameID" );
