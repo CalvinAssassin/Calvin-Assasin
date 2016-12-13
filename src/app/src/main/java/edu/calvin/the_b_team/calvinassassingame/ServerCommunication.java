@@ -44,7 +44,7 @@ import android.os.Handler;
 
 public class ServerCommunication {
     //the base URL for our Server
-    private final String baseUrl = "http://153.106.116.80:8082/api";
+    private final String baseUrl = "http://153.106.116.78:8082/api";
     private SharedPreferences app_preferences;
     private Context context;
 
@@ -176,24 +176,24 @@ public class ServerCommunication {
         Player player = new Player(context);
         int playerID = player.getID();
         String url = baseUrl + "/profile/" + playerID;
+        Log.i("url ", url);
         runQuery(url, "PUT", "player", jsonGenerator(hm));
     }
 
     /**
-     * This is exactly the same as updateUserProfile except that it will not delay
+     * This function can be usedexcept that it will not delay
      * the main thread until the server response has come back.
      * @param key
      * @param value
      */
-    public void updateUserProfileWithoutDelay(String key, String value)
+    public void updateUserProfileCoordinatesWithoutDelay(String key, double value)
     {
-        Log.i("function", " called");
         HashMap hm = new HashMap();
         hm.put(key, value);
         Player player = new Player(context);
         int playerID = player.getID();
         String url = baseUrl + "/profile/" + playerID;
-        new PostTask().execute(url, "player", jsonGenerator(hm));
+        new PutTask().execute(url, "player", jsonGenerator(hm));
     }
 
     /**
@@ -372,8 +372,9 @@ public class ServerCommunication {
             StringBuilder jsonText = new StringBuilder();
             JSONArray result = null;
             try {
-                String jsonString = params[2];
-                JSONObject jsonData = new JSONObject(jsonString);
+//                String jsonString = params[2];
+//                JSONObject jsonData = new JSONObject(jsonString);
+                JSONObject jsonData = new JSONObject(params[2]);
                 //jsonData.put("emailaddress", "new@calvin.edu");
                 URL url = new URL(params[0]);
                 connection = (HttpURLConnection) url.openConnection();

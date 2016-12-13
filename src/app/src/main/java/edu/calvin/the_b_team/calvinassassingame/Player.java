@@ -204,13 +204,11 @@ public class Player {
     {
         for (int i=0;  i< jsonObjectList.size(); i++ )
         {
-            Log.i("size of jsonObjectList ", String.valueOf(jsonObjectList.size()));
             JSONObject jsonObject = jsonObjectList.get(i);
             Iterator<String> iter = jsonObject.keys();
             //go through each JSON object
             while (iter.hasNext()) {
                 String key = iter.next();
-                Log.i("key in player class ", key );
                 //if the server responds with error, break and
                 //TODO, what should be done in the case of an error
                 if ( key.equals("err")){
@@ -220,15 +218,14 @@ public class Player {
                 {
                     try {
                         Object value = jsonObject.get(key);
-                        Log.i( "the key is ", key );
-                        Log.i( " the value is ", value.toString() );
+//                        Log.i( "the key is ", key );
+//                        Log.i( " the value is ", value.toString() );
                         //store the value
                         Field field = PlayerInfo.class.getField( key );
-                        Log.i("the field is ", field.getName());
                         field.set(this.playerInfo, value );
                     } catch (Exception e) {
                         // Something went wrong!
-                        Log.i( "exception in saveInfo", e.toString());
+                        e.printStackTrace();
                         return false;
                     }
                 }
