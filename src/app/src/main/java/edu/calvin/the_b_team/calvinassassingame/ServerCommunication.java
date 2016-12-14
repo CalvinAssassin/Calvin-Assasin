@@ -123,10 +123,11 @@ public class ServerCommunication {
     /**
      * the method will return the target's information
      */
-    public void getTargetID()
+    public void getTargetInfo()
     {
         Player player = new Player(this.context);
-        String url = baseUrl + "/profile/" + 10 + "/target";
+        String url = baseUrl + "/profile/" + player.getID() + "/target";
+        Log.i("url for getTargetInfo", url);
         runQuery(url,"GET", "game", "");
     }
 

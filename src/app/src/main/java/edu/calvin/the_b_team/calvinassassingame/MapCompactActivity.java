@@ -21,6 +21,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONObject;
+
 /**
  * Created by jjh35 on 11/5/2016.
  */
@@ -79,9 +81,31 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         // The coordinates for Calvin College is 42.9306° N, -85.5880° W
-        LatLng calvin = new LatLng(42.9306, -85.5880);
-        mMap.addMarker(new MarkerOptions().position(calvin).title("Marker at calvin college"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(calvin, 17));
+        //LatLng calvin = new LatLng(42.9306, -85.5880);
+        ServerCommunication server = new ServerCommunication(this);
+        server.getTargetInfo();
+        server.getGame();
+        //Player player = new Player(this);
+        GameClass game = new GameClass(this);
+        int targetID = game.getTargetID();
+        JSONObject target = game.getPlayerInfo(targetID);
+        double lat = 0.0;
+        double lng = 0.0;
+        try {
+            lat = target.getDouble("latitude");
+            lng = target.getDouble("longitude");
+        }  catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        LatLng targetCoordinates = new LatLng(lat, lng);
+        if( lat == 0.0)
+        {
+           targetCoordinates = new LatLng(42.9306, -85.5880);
+        }
+
+        mMap.addMarker(new MarkerOptions().position(targetCoordinates).title("target's Marker"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(targetCoordinates, 17));
     }
 
     // Beginning of menu drawer configuration

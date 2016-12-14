@@ -206,6 +206,12 @@ public class GameClass {
                 if ( key.equals("err")){
                     return false;
                 }
+                //the server will return "gameID" or "playerID" for queries for target ID
+                //these keys are not valid, but the rest of the info is, so just skip it
+                if( key.equals("gameID") || key.equals("playerID"))
+                {
+                    continue;
+                }
                 if(Arrays.asList(this.gameInfo.fieldNames).contains(key) )
                 {
                     try {
