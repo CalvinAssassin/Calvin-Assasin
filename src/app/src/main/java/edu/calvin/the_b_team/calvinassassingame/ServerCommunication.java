@@ -44,7 +44,7 @@ import android.os.Handler;
 
 public class ServerCommunication {
     //the base URL for our Server
-    private final String baseUrl = "http://153.106.116.78:8082/api";
+    private final String baseUrl = "http://153.106.116.67:8082/api";
     private SharedPreferences app_preferences;
     private Context context;
 
@@ -178,6 +178,26 @@ public class ServerCommunication {
         String url = baseUrl + "/profile/" + playerID;
         Log.i("url ", url);
         runQuery(url, "PUT", "player", jsonGenerator(hm));
+    }
+
+    /**
+     * gets a list of current games from the server
+     * and saves it to shared preferences under "currentGames"
+     */
+    public void getCurrentGames()
+    {
+        String url = baseUrl + "/games";
+        runQuery( url, "GET", "currentGames", "");
+    }
+
+    /**
+     * gets a list of fture games from the server
+     * and saves it to shared preferences under "futureGames"
+     */
+    public void getFutureGames()
+    {
+        String url = baseUrl + "/games/future";
+        runQuery(url, "GET", "futureGames", "");
     }
 
     /**
@@ -491,6 +511,8 @@ public class ServerCommunication {
      */
     public void save( JSONArray jsonArray, String type )
     {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
         Log.i("the type is ", type);
         //convert the jsonArray to an array list of json objects
         ArrayList<JSONObject> jsonObjectList = new ArrayList<JSONObject>();
@@ -512,6 +534,16 @@ public class ServerCommunication {
         {
             Player player = new Player(context);
             player.saveInfo(jsonObjectList);
+        }
+        else if (type.equals("currentGames"))
+        {
+            editor.putString("currentGames", jsonArray.toString());
+            editor.commit();
+        }
+        else if (type.equals("futureGames"))
+        {
+            editor.putString("futureGames", jsonArray.toString());
+            editor.commit();
         }
     }
 
