@@ -16,36 +16,23 @@
     <string name="profile_activity_title">Profile</string>
     <string name="profile_activity_description">Information about you.</string>
     <string name="choose_photo_button">Choose Photo</string>
-    <string name="user_name_label">Player name: </string>
-    <string name="user_name">Full Name</string>
-    <string name="user_year_label">Player class: </string>
+    <string name="user_first_name_label">First name: </string>
+    <string name="user_last_name_label">Last name: </string>
+    <string name="user_first_name">First Name</string>
+    <string name="user_last_name">Last Name</string>
+    <string name="user_major_label">Major: </string>
+    <string name="user_major">Computer Science</string>
     <string name="user_home_label">Residence: </string>
+    <string name="user_residence">KHvR</string>
     <string name="finalize_button">FINALIZE</string>
     <string name="finalize_message">You will not be able to change you profile after finalizing. Continue?</string>
-    <string-array name="class_array">
-        <item>Freshman</item>
-        <item>Sophomore</item>
-        <item>Junior</item>
-        <item>Senior</item>
-        <item>Other</item>
-    </string-array>
-    <string-array name="home_array">
-        <item>KHvR</item>
-        <item>BB</item>
-        <item>NVW</item>
-        <item>BHT</item>
-        <item>RVD</item>
-        <item>SE</item>
-        <item>BV</item>
-        <item>KE</item>
-        <item>Off Campus</item>
-    </string-array>
 
     <!-- Strings related to Map Activity-->
     <string name="title_activity_gpsmap">Map</string>
 
     <!-- Strings related to Standings Activity -->
     <string name="standings_activity_title">Standings</string>
+    <string name="no_game_warning">Join a game to view standings.</string>
 
     <!-- Strings related to Game Selection Activity -->
     <string name="join_game_title">Upcoming Games:</string>

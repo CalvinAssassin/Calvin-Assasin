@@ -26,7 +26,7 @@ import java.util.Iterator;
 public class GameClass {
     private SharedPreferences app_preferences;
     private Context context;
-    private GameInfo gameInfo;
+    public GameInfo gameInfo;
 
     /**
      * this class is the data structure that saves the game information, doesn't work timeLeft and gameName

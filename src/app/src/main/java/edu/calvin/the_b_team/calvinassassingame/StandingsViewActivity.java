@@ -12,13 +12,23 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.games.Game;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class StandingsViewActivity extends AppCompatActivity {
 
@@ -28,6 +38,13 @@ public class StandingsViewActivity extends AppCompatActivity {
     private String mActivityTitle;
     private ActionBarDrawerToggle mDrawerToggle;
 
+    //Player List Variables
+    private ProgressBar progressBar;
+    private TextView remainingPlayersText;
+    private ListView playerList;
+    private ArrayList<String> playerListItems;
+    private ArrayAdapter playerListArrayAdapter;
+
     private SharedPreferences app_preferences;
 
 
@@ -36,11 +53,18 @@ public class StandingsViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_standings_view);
 
+
         //Load the stored variables
         app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Player player = new Player(this);
+
+        //Load Layout Items
+        progressBar = (ProgressBar)findViewById(R.id.progressBar);
+        remainingPlayersText = (TextView)findViewById(R.id.remainingPlayersText);
 
         //Set up the menu drawer and its items
-        mDrawerList = (ListView)findViewById(R.id.navList);mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView)findViewById(R.id.navList);
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
 
         addDrawerItems();
@@ -52,11 +76,68 @@ public class StandingsViewActivity extends AppCompatActivity {
 
         setTitle(getResources().getText(R.string.standings_activity_title));
 
+        //The following if-else block tests to make sure that the user is part of a game
+        //TODO: It will be uncommented when the server is functional
+        //if (player.getGameID() != 0) {
+            //Populate the list before it can be rendered
+            String[] playerObjects = populatePlayerList();
+            //Then calculate the progress bar according to the length of the list
+            progressBar.setMax(playerObjects.length);
+            progressBar.setProgress(calculateRemainingPlayers(playerObjects));
+
+            remainingPlayersText.setText(calculateRemainingPlayers(playerObjects) + "/" + playerObjects.length + " Players Assassinated");
+
+            playerList = (ListView) findViewById(R.id.playerList);
+            playerListItems = new ArrayList<String>();
+            playerListArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, playerObjects);
+            playerList.setAdapter(playerListArrayAdapter);
+//        }
+//        else{
+//            remainingPlayersText.setText(R.string.no_game_warning);
+//        }
     }
+
+    private int calculateRemainingPlayers(String[] playerObjs){
+        //Count the number of players in the now populated list who are dead
+        int count = 0;
+        for (int i = 0 ; i < playerObjs.length ; i++){
+            if (playerObjs[i].toLowerCase().contains("dead")) count++;
+        }
+        return count;
+    }
+
+    private String[] populatePlayerList() {
+        //Populate the list based on the players in the game class. Append 'Dead' or 'Alive' to their names depending on their
+        // isAlive key
+        GameClass game = new GameClass(this);
+        //TODO: test when server is running
+        game.gameInfo.players = "[{\"ID\": 101,\"firstName\": \"Christiaan\",\"lastName\":\"Hazlett\",\"residence\": \"KHvR\",\"major\":\"computer science\",\"latitude\": 28.02,\"longitude\": 15.43,\"locUpdateTime\":\"2016-12-08 12:50:25.069637\",\"currentGameID\": 1,\"isAlive\": false},{\"ID\": 204,\"firstName\":\"Nate\",\"lastName\":\"Bender\",\"residence\":\"RVD\",\"major\": \"computer science\",\"latitude\": 28.02,\"longitude\": 15.43,\"locUpdateTime\":\"2016-12-08 19:49:23.989986\",\"currentGameID\":1,\"isAlive\": true}]";
+        //ServerCommunication server = new ServerCommunication(this);
+        //server.getGame();
+
+        JSONArray JSONplayerList = game.getPlayers();
+
+        String[] playerObjects = new String[JSONplayerList.length()];
+
+        for (int i = 0; i < JSONplayerList.length(); i++) {
+            try {
+
+                JSONObject player = JSONplayerList.getJSONObject(i);
+                Log.i("the player object ", player.toString());
+                playerObjects[i] = player.getString("firstName") + " " + player.getString( "lastName" ) + (Boolean.valueOf(player.getString("isAlive"))? " - Alive" : " - Dead");
+                //playerObjects[i] = " test ";
+            }
+            catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+        return playerObjects;
+    }
+
     // Beginning of menu drawer configuration
 
     private void addDrawerItems() {
-        String[] menuPages = { "Target", "Profile", "Map", "Join a Game", "Settings" };
+        String[] menuPages = { "Home", "Profile", "Map", "Join a Game", "Settings" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuPages);
         mDrawerList.setAdapter(mAdapter);
 
