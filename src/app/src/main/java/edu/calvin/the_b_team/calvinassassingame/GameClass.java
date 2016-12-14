@@ -35,7 +35,7 @@ public class GameClass {
 
         //used to see if types are correct when saving
         public String[] integerFieldNames = { "ID", "targetID"};
-        public String[] stringFieldNames = { "gameName", "targetStartTime", "startDate","targetTimeLeft", "targetTimeoutTime" };
+        public String[] stringFieldNames = { "gameName", "targetStartTime", "startDate","targetTimeLeft", "targetTimeoutTime", "players" };
         public String[] booleanFieldNames = {"inPlay"};
 
         //allows one to find out if a field exists
@@ -66,8 +66,12 @@ public class GameClass {
             GameInfo gameInfo = new GameInfo();
             gameInfo.ID = gameInfo.targetID = 0;
             gameInfo.inPlay = false;
-            gameInfo.targetStartTime = gameInfo.players = gameInfo.startDate =
-                    gameInfo.targetTimeoutTime = gameInfo.gameName = gameInfo.targetTimeLeft = "";
+            gameInfo.targetStartTime = "";
+            gameInfo.players = "[{}]";
+            gameInfo.startDate = "";
+            gameInfo.targetTimeoutTime = "";
+            gameInfo.gameName = "g1";
+            gameInfo.targetTimeLeft = "0";
             Gson gson = new Gson();
             String json = gson.toJson(gameInfo);
             editor.putString("gameInfo", json);
@@ -110,11 +114,13 @@ public class GameClass {
                 Field field = GameInfo.class.getField(key);
                 field.set(this.gameInfo, value);
             } catch (Exception e) {
+                e.printStackTrace();
                 return false;
             }
             saveToDrive();
             return true;
         }
+        Log.i("bad value in save", key);
         return false;
     }
 
@@ -279,7 +285,7 @@ public class GameClass {
         return "error!";
     }
 
-    public boolean inPlay()
+    public boolean getInPlay()
     {
         if ( !getValue( "inPlay" ).equals("err") )
             return (boolean) getValue("inPlay");

@@ -44,7 +44,7 @@ import android.os.Handler;
 
 public class ServerCommunication {
     //the base URL for our Server
-    private final String baseUrl = "http://153.106.116.80:8082/api";
+    private final String baseUrl = "http://153.106.116.67:8082/api";
     private SharedPreferences app_preferences;
     private Context context;
 
@@ -103,7 +103,7 @@ public class ServerCommunication {
                 }
                 catch (Exception e)
                 {
-                    new PutTask().execute(url, typeOfInfo);
+                    new PutTask().execute(url, typeOfInfo, jsonString);
                 }
         }
     }
@@ -176,7 +176,44 @@ public class ServerCommunication {
         Player player = new Player(context);
         int playerID = player.getID();
         String url = baseUrl + "/profile/" + playerID;
+        Log.i("url ", url);
         runQuery(url, "PUT", "player", jsonGenerator(hm));
+    }
+
+    /**
+     * gets a list of current games from the server
+     * and saves it to shared preferences under "currentGames"
+     */
+    public void getCurrentGames()
+    {
+        String url = baseUrl + "/games";
+        runQuery( url, "GET", "currentGames", "");
+    }
+
+    /**
+     * gets a list of fture games from the server
+     * and saves it to shared preferences under "futureGames"
+     */
+    public void getFutureGames()
+    {
+        String url = baseUrl + "/games/future";
+        runQuery(url, "GET", "futureGames", "");
+    }
+
+    /**
+     * This function can be usedexcept that it will not delay
+     * the main thread until the server response has come back.
+     * @param key
+     * @param value
+     */
+    public void updateUserProfileCoordinatesWithoutDelay(String key, double value)
+    {
+        HashMap hm = new HashMap();
+        hm.put(key, value);
+        Player player = new Player(context);
+        int playerID = player.getID();
+        String url = baseUrl + "/profile/" + playerID;
+        new PutTask().execute(url, "player", jsonGenerator(hm));
     }
 
     /**
@@ -355,8 +392,9 @@ public class ServerCommunication {
             StringBuilder jsonText = new StringBuilder();
             JSONArray result = null;
             try {
-                String jsonString = params[2];
-                JSONObject jsonData = new JSONObject(jsonString);
+//                String jsonString = params[2];
+//                JSONObject jsonData = new JSONObject(jsonString);
+                JSONObject jsonData = new JSONObject(params[2]);
                 //jsonData.put("emailaddress", "new@calvin.edu");
                 URL url = new URL(params[0]);
                 connection = (HttpURLConnection) url.openConnection();
@@ -473,6 +511,8 @@ public class ServerCommunication {
      */
     public void save( JSONArray jsonArray, String type )
     {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = preferences.edit();
         Log.i("the type is ", type);
         //convert the jsonArray to an array list of json objects
         ArrayList<JSONObject> jsonObjectList = new ArrayList<JSONObject>();
@@ -494,6 +534,16 @@ public class ServerCommunication {
         {
             Player player = new Player(context);
             player.saveInfo(jsonObjectList);
+        }
+        else if (type.equals("currentGames"))
+        {
+            editor.putString("currentGames", jsonArray.toString());
+            editor.commit();
+        }
+        else if (type.equals("futureGames"))
+        {
+            editor.putString("futureGames", jsonArray.toString());
+            editor.commit();
         }
     }
 
