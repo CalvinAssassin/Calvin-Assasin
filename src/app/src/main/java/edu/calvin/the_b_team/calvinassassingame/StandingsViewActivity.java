@@ -47,6 +47,8 @@ public class StandingsViewActivity extends AppCompatActivity {
 
     private SharedPreferences app_preferences;
 
+    private boolean javinDead = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,12 @@ public class StandingsViewActivity extends AppCompatActivity {
         //Load the stored variables
         app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
         Player player = new Player(this);
+        javinDead = app_preferences.getBoolean("javinDead",false);
+        if (javinDead) {
+            SharedPreferences.Editor editor = app_preferences.edit();
+            editor.putBoolean("paigeTarget", true);
+            editor.commit();
+        }
 
         //Load Layout Items
         progressBar = (ProgressBar)findViewById(R.id.progressBar);
@@ -111,7 +119,7 @@ public class StandingsViewActivity extends AppCompatActivity {
         // isAlive key
         GameClass game = new GameClass(this);
         //TODO: test when server is running
-        game.gameInfo.players = "[{\"ID\": 101,\"firstName\": \"Christiaan\",\"lastName\":\"Hazlett\",\"residence\": \"KHvR\",\"major\":\"computer science\",\"latitude\": 28.02,\"longitude\": 15.43,\"locUpdateTime\":\"2016-12-08 12:50:25.069637\",\"currentGameID\": 1,\"isAlive\": false},{\"ID\": 204,\"firstName\":\"Nate\",\"lastName\":\"Bender\",\"residence\":\"RVD\",\"major\": \"computer science\",\"latitude\": 28.02,\"longitude\": 15.43,\"locUpdateTime\":\"2016-12-08 19:49:23.989986\",\"currentGameID\":1,\"isAlive\": true}]";
+        game.gameInfo.players = "[{\"ID\": 101,\"firstName\": \"Jesse\",\"lastName\":\"Hulse\",\"residence\": \"KE\",\"major\":\"computer science\",\"latitude\": 28.02,\"longitude\": 15.43,\"locUpdateTime\":\"2016-12-08 12:50:25.069637\",\"currentGameID\": 1,\"isAlive\": true},{\"ID\": 204,\"firstName\":\"Javin\",\"lastName\":\"Unger\",\"residence\":\"KE Apartments\",\"major\": \"computer science\",\"latitude\": 28.02,\"longitude\": 15.43,\"locUpdateTime\":\"2016-12-08 19:49:23.989986\",\"currentGameID\":1,\"isAlive\": false},{\"ID\": 204,\"firstName\":\"Paige\",\"lastName\":\"Brinks\",\"residence\":\"Off Campus\",\"major\": \"computer science\",\"latitude\": 28.02,\"longitude\": 15.43,\"locUpdateTime\":\"2016-12-08 19:49:23.989986\",\"currentGameID\":1,\"isAlive\": true}]";
         //ServerCommunication server = new ServerCommunication(this);
         //server.getGame();
 

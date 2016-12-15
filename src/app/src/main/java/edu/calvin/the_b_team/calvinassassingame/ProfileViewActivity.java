@@ -64,10 +64,13 @@ public class ProfileViewActivity extends AppCompatActivity {
 
     private ServerCommunication server;
 
+    //DEMO VARIABLES
+    private boolean javinDead;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ServerCommunication server = new ServerCommunication(this);
+        //ServerCommunication server = new ServerCommunication(this);
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_view);
@@ -101,6 +104,7 @@ public class ProfileViewActivity extends AppCompatActivity {
         playerResidenceEditable.setText((String)player.getValue("residence"));
         loadProfileImage(app_preferences.getString("playerPhotoPath","android.resource://edu.calvin.the_b_team.calvinassassingame/" + R.mipmap.ic_profile_placeholder));
         settingsFinalized = app_preferences.getBoolean("settingsFinalized",false);
+        javinDead = app_preferences.getBoolean("javinDead",false);
         firstRun = app_preferences.getBoolean("firstRun", true);
 
         //Set up the alert that warns that settings arent finalized when users leave the activity

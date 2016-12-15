@@ -1,8 +1,10 @@
 package edu.calvin.the_b_team.calvinassassingame;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Point;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -34,6 +36,9 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
     private ArrayAdapter<String> mAdapter;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
+    private SharedPreferences app_preferences;
+
+    private boolean paigeTarget = false;
 
 
     @Override
@@ -49,6 +54,10 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hamburger);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
+        app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Player player = new Player(this);
+        paigeTarget = app_preferences.getBoolean("paigeTarget",false);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -81,30 +90,33 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         // The coordinates for Calvin College is 42.9306° N, -85.5880° W
-        //LatLng calvin = new LatLng(42.9306, -85.5880);
-        ServerCommunication server = new ServerCommunication(this);
-        //server.getTargetInfo();
-        //server.getGame();
-        GameClass game = new GameClass(this);
-        int targetID = game.getTargetID();
-        JSONObject target = game.getPlayerInfo(targetID);
-        double lat = 0.0;
-        double lng = 0.0;
-        try {
-            lat = target.getDouble("latitude");
-            lng = target.getDouble("longitude");
-        }  catch(Exception e)
-        {
-            e.printStackTrace();
+        LatLng calvin = new LatLng(42.928017, -85.5830);
+        if (paigeTarget){
+            calvin = new LatLng(42.9313, -85.5886);
         }
-        LatLng targetCoordinates = new LatLng(lat, lng);
-        if( lat == 0.0)
-        {
-           targetCoordinates = new LatLng(42.9306, -85.5880);
-        }
+//        ServerCommunication server = new ServerCommunication(this);
+//        server.getTargetInfo();
+//        server.getGame();
+//        GameClass game = new GameClass(this);
+//        int targetID = game.getTargetID();
+//        JSONObject target = game.getPlayerInfo(targetID);
+//        double lat = 0.0;
+//        double lng = 0.0;
+//        try {
+//            lat = target.getDouble("latitude");
+//            lng = target.getDouble("longitude");
+//        }  catch(Exception e)
+//        {
+//            e.printStackTrace();
+//        }
+//        LatLng targetCoordinates = new LatLng(lat, lng);
+//        if( lat == 0.0)
+//        {
+//           targetCoordinates = new LatLng(42.9306, -85.5880);
+//        }
 
-        mMap.addMarker(new MarkerOptions().position(targetCoordinates).title("target's Marker"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(targetCoordinates, 17));
+        mMap.addMarker(new MarkerOptions().position(calvin).title("target's Marker"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(calvin, 17));
     }
 
     // Beginning of menu drawer configuration

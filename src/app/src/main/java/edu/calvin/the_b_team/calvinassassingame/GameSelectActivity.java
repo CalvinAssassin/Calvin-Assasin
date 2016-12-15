@@ -40,6 +40,9 @@ public class GameSelectActivity extends AppCompatActivity {
     private SharedPreferences app_preferences;
     boolean settingsFinalized;
 
+    //DEMO VARIABLES
+    private boolean javinDead;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,8 +104,7 @@ public class GameSelectActivity extends AppCompatActivity {
         //Games that will start
         String[] upcomingGameObjects = {
                 //TODO: This is hardcoded until we can retrieve the list of games
-                "Game 3 - Begins: 6 December 2016 - 10 Players",
-                "Game 4 - Begins: 13 December 2016 - 2 Players"
+                "Game 1 - Beginning Soon - 3 Players"
         };
         upcomingGameList = (ListView)findViewById(R.id.upcomingList);
         upcomingListItems = new ArrayList<String>();
@@ -111,8 +113,7 @@ public class GameSelectActivity extends AppCompatActivity {
 
         String[] activeGameObjects = {
                 //TODO: This is hardcoded until we can retrieve the list of games
-                "Game 1 - Began: 22 November 2016 - 19 Players",
-                "Game 2 - Began: 29 November 2016 - 22 Players"
+
         };
         activeGameList = (ListView)findViewById(R.id.activeList);
         activeListItems = new ArrayList<String>();

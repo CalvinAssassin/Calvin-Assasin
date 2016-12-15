@@ -12,6 +12,7 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.media.Image;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog.Builder assassinationSentAlert;
     private AlertDialog.Builder targetConfirmationAlert;
     private TextView count_down_textView;
-    private ImageView splashImage;
+    private ImageView targetPhoto;
     private Handler handler;
     private Runnable runnable;
     private boolean targetEliminated;
@@ -66,6 +67,12 @@ public class MainActivity extends AppCompatActivity {
     private LocationManager locationManager;
     private LocationListener listener;
     Context context = this;
+
+    //DEMO VARIABLES
+    private boolean javinDead = false;
+    private boolean paigeTarget = false;
+    private SharedPreferences app_preferences;
+
 
 
     @Override
@@ -89,9 +96,25 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
         killedButton = (Button)findViewById(R.id.killedButton);
+        targetPhoto = (ImageView)findViewById(R.id.targetImage);
         count_down_textView = (TextView)findViewById(R.id.count_down_textView);
         targetEliminated = false;
         savedValues = getSharedPreferences("SavedValues", MODE_PRIVATE);
+
+        TextView targetName = (TextView) findViewById(R.id.targetNameTextView);
+        TextView targetMajor = (TextView) findViewById(R.id.targetMajorTextView);
+        TextView targetResidence = (TextView) findViewById(R.id.targetHomeTextView);
+
+        app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        javinDead = app_preferences.getBoolean("javinDead",false);
+        paigeTarget = app_preferences.getBoolean("paigeTarget",false);
+
+        if (javinDead){
+            targetPhoto.setImageResource(R.drawable.targetphoto2);
+            targetName.setText("Paige Brinks");
+            targetResidence.setText("Off Campus");
+            targetMajor.setText("Computer Science");
+        }
 
         addDrawerItems();
         setupDrawer();
@@ -117,6 +140,10 @@ public class MainActivity extends AppCompatActivity {
         targetConfirmationAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick (DialogInterface dialog2, int id2) {
                 targetEliminated = true;
+                javinDead = true;
+                SharedPreferences.Editor editor = app_preferences.edit();
+                editor.putBoolean("javinDead", javinDead);
+                editor.commit();
             }
         });
         assassinationSentAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
@@ -140,32 +167,32 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //when this button is clicked, show the alert
                 assassinationSentAlert.show();
-                ServerCommunication server = new ServerCommunication(context);
-                server.confirmAssassination();
+                //ServerCommunication server = new ServerCommunication(context);
+                //server.confirmAssassination();
             }
         });
-        GameClass game = new GameClass(context);
+        //GameClass game = new GameClass(context);
 
         // get targets info
-        TextView targetName = (TextView) findViewById(R.id.targetNameTextView);
-        TextView targetMajor = (TextView) findViewById(R.id.targetMajorTextView);
-        TextView targetResidence = (TextView) findViewById(R.id.targetHomeTextView);
-        int targetID = game.getTargetID();
-        Log.i("here", " printing array");
-        Log.i("the players array", game.getPlayers().toString());
-        JSONObject target = game.getPlayerInfo(targetID);
-        try {
-            String firstName = target.getString("firstName");
-            String lastName = target.getString("lastName");
-            targetName.setText( firstName + " " + lastName);
-            String major = target.getString("major");
-            String residence = target.getString("residence");
-            targetMajor.setText(major);
-            targetResidence.setText(residence);
-        } catch(Exception e)
-        {
-            e.printStackTrace();
-        }
+//        TextView targetName = (TextView) findViewById(R.id.targetNameTextView);
+//        TextView targetMajor = (TextView) findViewById(R.id.targetMajorTextView);
+//        TextView targetResidence = (TextView) findViewById(R.id.targetHomeTextView);
+//        int targetID = game.getTargetID();
+//        Log.i("here", " printing array");
+//        Log.i("the players array", game.getPlayers().toString());
+//        JSONObject target = game.getPlayerInfo(targetID);
+//        try {
+//            String firstName = target.getString("firstName");
+//            String lastName = target.getString("lastName");
+//            targetName.setText( firstName + " " + lastName);
+//            String major = target.getString("major");
+//            String residence = target.getString("residence");
+//            targetMajor.setText(major);
+//            targetResidence.setText(residence);
+//        } catch(Exception e)
+//        {
+//            e.printStackTrace();
+//        }
         
         //get the gps coordinates
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -199,18 +226,22 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                     // Date of end of round
-                    GameClass game = new GameClass(context);
+                    //GameClass game = new GameClass(context);
                     //TODO change the futureDate to load from a sharedPreferences that can sync to the server
-                    Date futureDate = dateFormat.parse(game.getTargetTimeoutTime());
+                    //Date futureDate = dateFormat.parse(game.getTargetTimeoutTime());
+                    Date futureDate = dateFormat.parse("2016-12-25 00:00:00");
                     Date currentDate = new Date();
                     // get difference in time from now until futureDate
                     // update it every second
                     if (currentDate.after(futureDate)) {
                         count_down_textView.setText("TIME UP");
-                    } else if (targetEliminated) {
+                    }
+                    else if (javinDead && !paigeTarget) {
                         count_down_textView.setTextColor(Color.RED);
                         count_down_textView.setText("TARGET\nELIMINATED");
-                    } else {
+                    }
+
+                     else {
                         long diff = futureDate.getTime() - currentDate.getTime();
                         long days = diff / (24 * 60 * 60 * 1000);
                         diff -= days * (24 * 60 * 60 * 1000);

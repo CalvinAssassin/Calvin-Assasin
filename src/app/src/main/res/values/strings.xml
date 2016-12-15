@@ -24,7 +24,7 @@
     <string name="user_major">Computer Science</string>
     <string name="user_home_label">Residence: </string>
     <string name="user_residence">KHvR</string>
-    <string name="finalize_button">FINALIZE</string>
+    <string name="finalize_button">CONFIRM</string>
     <string name="finalize_message">You will not be able to change you profile after finalizing. Continue?</string>
 
     <!-- Strings related to Map Activity-->
