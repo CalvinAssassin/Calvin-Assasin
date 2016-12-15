@@ -74,13 +74,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle(getResources().getText(R.string.main_activity_title));
 
-        Player player = new Player(context);
-        player.save("ID", 10);
-        GameClass g = new GameClass(context);
-        g.save("ID", 1);
-        g.save("targetID", 11);
-        ServerCommunication server = new ServerCommunication(context);
-        server.getGame();
+        //this code saves values that are currently consisten with the server
+//        Player player = new Player(context);
+//        player.save("ID", 10);
+//        GameClass g = new GameClass(context);
+//        g.save("ID", 1);
+//        g.save("targetID", 11);
+//        ServerCommunication server = new ServerCommunication(context);
+//        server.getGame();
 
 
         //Set up the menu drawer and its items
