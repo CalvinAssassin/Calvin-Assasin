@@ -44,7 +44,8 @@ import android.os.Handler;
 
 public class ServerCommunication {
     //the base URL for our Server
-    private final String baseUrl = "http://153.106.116.67:8082/api";
+    //private final String baseUrl = "http://153.106.116.67:8082/api";
+    private final String baseUrl = "http://153.106.84.38:8082/api";
     private SharedPreferences app_preferences;
     private Context context;
 
@@ -108,6 +109,17 @@ public class ServerCommunication {
         }
     }
 
+    /**
+     * this method will contact the server and confirm an assasssination
+     * TODO: test
+     */
+    public void confirmAssassination(){
+        Player player = new Player(context);
+        String url = baseUrl + "/profile/" + player.getID() + "/target/assassinate";
+        HashMap hm = new HashMap();
+        hm.put("need", "json");
+        new PostTask().execute(url, "game",jsonGenerator(hm));
+    }
 
     /**
      * This method will retrieve the values from the server and save them to shared preferences
@@ -212,7 +224,7 @@ public class ServerCommunication {
         hm.put(key, value);
         Player player = new Player(context);
         int playerID = player.getID();
-        String url = baseUrl + "/profile/" + playerID;
+        String url = baseUrl + "/profile/" + 10;
         new PutTask().execute(url, "player", jsonGenerator(hm));
     }
 
