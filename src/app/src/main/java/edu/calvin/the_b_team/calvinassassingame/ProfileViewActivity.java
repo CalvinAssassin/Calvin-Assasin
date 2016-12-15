@@ -11,10 +11,12 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -68,6 +70,7 @@ public class ProfileViewActivity extends AppCompatActivity {
     private boolean javinDead;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //ServerCommunication server = new ServerCommunication(this);
@@ -76,8 +79,10 @@ public class ProfileViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile_view);
         setTitle(getResources().getText(R.string.profile_activity_title));
 
+
         //Set up the menu drawer and its items
-        mDrawerList = (ListView)findViewById(R.id.navList);mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView)findViewById(R.id.navList);
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         addDrawerItems();
         setupDrawer();
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_hamburger);
@@ -92,6 +97,10 @@ public class ProfileViewActivity extends AppCompatActivity {
         playerLastNameEditable = (EditText) findViewById(R.id.player_last_name_editable);
         playerMajorEditable = (EditText) findViewById(R.id.player_major_editable);
         playerResidenceEditable = (EditText) findViewById(R.id.player_residence_editable);
+
+
+
+        app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
 
 
         app_preferences = PreferenceManager.getDefaultSharedPreferences(this);
@@ -332,7 +341,15 @@ public class ProfileViewActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.help, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent;
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -342,12 +359,19 @@ public class ProfileViewActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        if (id == R.id.help_button) {
+            intent = new Intent(this, HelpActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            this.startActivity(intent);
+            return true;
+        }
         // Activate the navigation drawer toggle
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     private void selectItem(int position) {
         // Handle Navigation Options

@@ -100,4 +100,13 @@
     <string name="pref_assassination_alert_label">Assassination</string>
     <string name="pref_assassin_prox_alert_label">Assassin Proximity</string>
     <string name="pref_time_limit_alert_label">Time Limit</string>
+    <string name="action_favorite">help</string>
+
+
+    <string name="help_Activity_title">Calvin Assassin Help</string>
+    <string name="topic_activity_label">Help Topic</string>
+
+    <string name="topic1_text">Simple Help</string>
+    <string name="help_button">help_button</string>
+
 </resources>
