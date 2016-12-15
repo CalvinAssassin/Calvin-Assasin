@@ -85,7 +85,6 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
         ServerCommunication server = new ServerCommunication(this);
         server.getTargetInfo();
         server.getGame();
-        //Player player = new Player(this);
         GameClass game = new GameClass(this);
         int targetID = game.getTargetID();
         JSONObject target = game.getPlayerInfo(targetID);
