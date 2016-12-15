@@ -148,7 +148,7 @@ public class GameSelectActivity extends AppCompatActivity {
     // Beginning of menu drawer configuration
 
     private void addDrawerItems() {
-        String[] menuPages = { "Target", "Profile", "Map", "Standings", "Settings" };
+        String[] menuPages = { "Target", "Profile", "Map", "Standings", "Settings", "Help" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuPages);
         mDrawerList.setAdapter(mAdapter);
 
@@ -241,6 +241,11 @@ public class GameSelectActivity extends AppCompatActivity {
                 break;
             case 4:
                 intent = new Intent(this, SettingsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                this.startActivity(intent);
+                break;
+            case 5:
+                intent = new Intent(this, HelpActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 this.startActivity(intent);
                 break;

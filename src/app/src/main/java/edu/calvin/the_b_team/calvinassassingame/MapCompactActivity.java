@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,7 +122,7 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
 
     // Beginning of menu drawer configuration
     private void addDrawerItems() {
-        String[] menuPages = { "Target", "Profile", "Standings", "Join a Game", "Settings" };
+        String[] menuPages = { "Target", "Profile", "Standings", "Join a Game", "Settings", "Help" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuPages);
         mDrawerList.setAdapter(mAdapter);
 
@@ -155,7 +156,16 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.help, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+        Intent intent;
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -165,12 +175,23 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
         if (id == R.id.action_settings) {
             return true;
         }
+
+        if (id == R.id.help_button) {
+            intent = new Intent(this, HelpActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            this.startActivity(intent);
+            return true;
+        }
+
         // Activate the navigation drawer toggle
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
+
         return super.onOptionsItemSelected(item);
     }
+
+
 
     private void selectItem(int position) {
 
@@ -199,6 +220,11 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
                 break;
             case 4:
                 intent = new Intent(this, SettingsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                this.startActivity(intent);
+                break;
+            case 5:
+                intent = new Intent(this, HelpActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 this.startActivity(intent);
                 break;

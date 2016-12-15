@@ -13,8 +13,7 @@
         For information on the different parts of this app, touch any of the images below!</string>
     <string name="help_page_intro_html">
     <![CDATA[
-      We are here to help you!
-      For information on the different parts of this app, touch any of the images below!:
+      We are here to help you! Below are short descriptions of each of the pages in the application!:
        ]]>
     </string>
 
@@ -98,26 +97,10 @@
       You have to join a game if you want to play. Games already in session can not be joined but you can join
         upcoming games.
     </string>
-    <string name="topic_section4">
-    <![CDATA[
-      <p>
-      Image buttons define an image and a label on the screen.
-      Touching an image takes you to the help text for a topic.
-      </p>
-      <p>
-        For each button, you use three images.
-        One represents the button in its default, unselected state.
-        The other two are used for when the button is selected and pressed.
-        The images and the definition of the button drawable are in the drawable folders in the resource folder.
-        </p>
-      <p>
-        By the way, the images used in this demo app are left over from an
-        <a href="http://blahti.wordpress.com/2011/03/14/build-dashboard-ui-for-android/">earlier demo program</a>.
-        For a real app, choose images that are good fit for the help topics.
-        </p>
-      <p><b>Return to the previous screen by touching the Back button.</b>
-        </p>
-       ]]>
+
+    <string name="help_title_section5">Further Questions?</string>
+    <string name="help_text_section5">
+        Still have questions? Feel free to send feedback and questions to nsbender1@gmail.com
     </string>
 
 

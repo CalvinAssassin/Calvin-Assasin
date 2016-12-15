@@ -45,6 +45,15 @@ public class HelpActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
 /**
  */
@@ -58,48 +67,6 @@ public class HelpActivity extends AppCompatActivity {
      * @return void
      */
 
-    public void onClickHelp (View v)
-    {
-        int id = v.getId ();
-        int textId = -1;
-        switch (id) {
-            case R.id.help_button1 :
-                textId = R.string.topic_section1;
-                break;
-            case R.id.help_button2 :
-                textId = R.string.topic_section2;
-                break;
-            case R.id.help_button3 :
-                textId = R.string.topic_section3;
-                break;
-            case R.id.help_button4 :
-                textId = R.string.topic_section4;
-                break;
-            default:
-                break;
-        }
-
-        if (textId >= 0) startInfoActivity (textId);
-        else toast ("Detailed Help for that topic is not available.", true);
-    }
-
-    /**
-     * Start a TopicActivity and show the text indicated by argument 1.
-     *
-     * @param textId int - resource id of the text to show
-     * @return void
-     */
-
-    public void startInfoActivity (int textId)
-    {
-        if (textId >= 0) {
-            Intent intent = (new Intent(this, TopicActivity.class));
-            intent.putExtra (ARG_TEXT_ID, textId);
-            startActivity (intent);
-        } else {
-            toast ("No information is available for topic: " + textId, true);
-        }
-    } // end startInfoActivity
 
     /**
      * Show a string on the screen via Toast.
@@ -123,14 +90,6 @@ public class HelpActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                this.finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
 
 } // end class

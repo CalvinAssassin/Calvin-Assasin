@@ -135,7 +135,8 @@ public class ProfileViewActivity extends AppCompatActivity {
         //Set up a greeting to firstRun users
         firstRunAlert = new AlertDialog.Builder(ProfileViewActivity.this);
         firstRunAlert.setTitle("Welcome to Calvin Assassin!");
-        firstRunAlert.setMessage("Before you start playing, enter some information about yourself so other players can find you!");
+        firstRunAlert.setMessage("Before you start playing, enter some information about yourself so other players can find you!" +
+                " When you're done, accept your changes, and press the menu button at the top left to get started with a game!");
         firstRunAlert.setNeutralButton("OK", new DialogInterface.OnClickListener() {
             public void onClick (DialogInterface dialog, int id) {
 
@@ -294,7 +295,7 @@ public class ProfileViewActivity extends AppCompatActivity {
     // Beginning of menu drawer configuration
 
     private void addDrawerItems() {
-        String[] menuPages = { "Target", "Map", "Standings", "Join a Game", "Settings" };
+        String[] menuPages = { "Target", "Map", "Standings", "Join a Game", "Settings", "Help" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuPages);
         mDrawerList.setAdapter(mAdapter);
 
@@ -399,6 +400,11 @@ public class ProfileViewActivity extends AppCompatActivity {
                 break;
             case 4:
                 intent = new Intent(this, SettingsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                this.startActivity(intent);
+                break;
+            case 5:
+                intent = new Intent(this, HelpActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 this.startActivity(intent);
                 break;
