@@ -74,6 +74,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle(getResources().getText(R.string.main_activity_title));
 
+        //this code saves values that are currently consisten with the server
+//        Player player = new Player(context);
+//        player.save("ID", 10);
+//        GameClass g = new GameClass(context);
+//        g.save("ID", 1);
+//        g.save("targetID", 11);
+//        ServerCommunication server = new ServerCommunication(context);
+//        server.getGame();
+
+
         //Set up the menu drawer and its items
         mDrawerList = (ListView)findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
@@ -130,6 +140,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //when this button is clicked, show the alert
                 assassinationSentAlert.show();
+                ServerCommunication server = new ServerCommunication(context);
+                server.confirmAssassination();
             }
         });
         GameClass game = new GameClass(context);
@@ -139,6 +151,8 @@ public class MainActivity extends AppCompatActivity {
         TextView targetMajor = (TextView) findViewById(R.id.targetMajorTextView);
         TextView targetResidence = (TextView) findViewById(R.id.targetHomeTextView);
         int targetID = game.getTargetID();
+        Log.i("here", " printing array");
+        Log.i("the players array", game.getPlayers().toString());
         JSONObject target = game.getPlayerInfo(targetID);
         try {
             String firstName = target.getString("firstName");
@@ -183,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 handler.postDelayed(this, 1000);
                 try {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aaa");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
                     // Date of end of round
                     GameClass game = new GameClass(context);
                     //TODO change the futureDate to load from a sharedPreferences that can sync to the server
@@ -243,14 +257,12 @@ public class MainActivity extends AppCompatActivity {
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         if(location != null)
         {
-            Log.i("the location is", location.toString());
-            Toast.makeText(context, "coordinates" + location.getLongitude() + " " + location.getLatitude(), Toast.LENGTH_LONG).show();
             ServerCommunication server = new ServerCommunication(context);
             Player player = new Player(context);
             player.save("latitude", location.getLatitude());
             player.save("longitude", location.getLongitude());;
-            server.updateUserProfileCoordinatesWithoutDelay( "latitude",  location.getLatitude());
-            server.updateUserProfileCoordinatesWithoutDelay("longitude", location.getLongitude());
+            //server.updateUserProfileCoordinatesWithoutDelay( "latitude",  location.getLatitude());
+            //server.updateUserProfileCoordinatesWithoutDelay("longitude", location.getLongitude());
             return location;
         }
         return null;

@@ -83,8 +83,8 @@ public class MapCompactActivity extends AppCompatActivity implements OnMapReadyC
         // The coordinates for Calvin College is 42.9306° N, -85.5880° W
         //LatLng calvin = new LatLng(42.9306, -85.5880);
         ServerCommunication server = new ServerCommunication(this);
-        server.getTargetInfo();
-        server.getGame();
+        //server.getTargetInfo();
+        //server.getGame();
         GameClass game = new GameClass(this);
         int targetID = game.getTargetID();
         JSONObject target = game.getPlayerInfo(targetID);
