@@ -132,12 +132,12 @@ public class MainActivity extends AppCompatActivity {
                 assassinationSentAlert.show();
             }
         });
+        GameClass game = new GameClass(context);
 
         // get targets info
         TextView targetName = (TextView) findViewById(R.id.targetNameTextView);
         TextView targetMajor = (TextView) findViewById(R.id.targetMajorTextView);
         TextView targetResidence = (TextView) findViewById(R.id.targetHomeTextView);
-        GameClass game = new GameClass(context);
         int targetID = game.getTargetID();
         JSONObject target = game.getPlayerInfo(targetID);
         try {
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         {
             e.printStackTrace();
         }
-
+        
         //get the gps coordinates
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         listener = new LocationListener() {
@@ -183,10 +183,11 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 handler.postDelayed(this, 1000);
                 try {
-                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss aaa");
                     // Date of end of round
+                    GameClass game = new GameClass(context);
                     //TODO change the futureDate to load from a sharedPreferences that can sync to the server
-                    Date futureDate = dateFormat.parse("2016-12-25");   // in the future this date will not be hard coded
+                    Date futureDate = dateFormat.parse(game.getTargetTimeoutTime());
                     Date currentDate = new Date();
                     // get difference in time from now until futureDate
                     // update it every second
@@ -372,20 +373,20 @@ public class MainActivity extends AppCompatActivity {
     }
     // End of menu drawer configuration
 
-    @Override
-    public void onPause() {
-        SharedPreferences.Editor editor = savedValues.edit();
-        editor.putBoolean("targetEliminatedBool", targetEliminated);
-        editor.commit();
-
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        targetEliminated = savedValues.getBoolean("targetEliminatedBool", false);
-    }
+//    @Override
+//    public void onPause() {
+//        SharedPreferences.Editor editor = savedValues.edit();
+//        editor.putBoolean("targetEliminatedBool", targetEliminated);
+//        editor.commit();
+//
+//        super.onPause();
+//    }
+//
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        targetEliminated = savedValues.getBoolean("targetEliminatedBool", false);
+//    }
 
 
 
