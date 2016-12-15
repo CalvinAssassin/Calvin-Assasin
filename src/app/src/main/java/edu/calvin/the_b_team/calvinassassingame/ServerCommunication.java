@@ -45,7 +45,7 @@ import android.os.Handler;
 public class ServerCommunication {
     //the base URL for our Server
     //private final String baseUrl = "http://153.106.116.67:8082/api";
-    private final String baseUrl = "http://153.106.84.38:8082/api";
+    private final String baseUrl = "http://153.106.161.150:8082/api";
     private SharedPreferences app_preferences;
     private Context context;
 

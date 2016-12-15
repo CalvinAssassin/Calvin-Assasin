@@ -80,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
 //        GameClass g = new GameClass(context);
 //        g.save("ID", 1);
 //        g.save("targetID", 11);
-//        ServerCommunication server = new ServerCommunication(context);
-//        server.getGame();
+        ServerCommunication server = new ServerCommunication(context);
+        server.getGame();
 
 
         //Set up the menu drawer and its items

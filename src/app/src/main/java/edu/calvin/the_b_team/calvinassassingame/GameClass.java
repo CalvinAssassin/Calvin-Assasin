@@ -64,7 +64,7 @@ public class GameClass {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = preferences.edit();
             GameInfo gameInfo = new GameInfo();
-            gameInfo.ID = gameInfo.targetID = 0;
+            gameInfo.ID = gameInfo.targetID = 1;
             gameInfo.inPlay = false;
             gameInfo.targetStartTime = "";
             gameInfo.players = "[{}]";

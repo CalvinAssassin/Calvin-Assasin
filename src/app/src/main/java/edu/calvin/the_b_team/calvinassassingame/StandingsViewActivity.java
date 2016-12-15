@@ -78,7 +78,7 @@ public class StandingsViewActivity extends AppCompatActivity {
 
         //The following if-else block tests to make sure that the user is part of a game
         //TODO: It will be uncommented when the server is functional
-        //if (player.getGameID() != 0) {
+        if (player.getCurrentGameID() != 0) {
             //Populate the list before it can be rendered
             String[] playerObjects = populatePlayerList();
             //Then calculate the progress bar according to the length of the list
@@ -91,10 +91,10 @@ public class StandingsViewActivity extends AppCompatActivity {
             playerListItems = new ArrayList<String>();
             playerListArrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, playerObjects);
             playerList.setAdapter(playerListArrayAdapter);
-//        }
-//        else{
-//            remainingPlayersText.setText(R.string.no_game_warning);
-//        }
+        }
+        else{
+            remainingPlayersText.setText(R.string.no_game_warning);
+        }
     }
 
     private int calculateRemainingPlayers(String[] playerObjs){
@@ -111,9 +111,12 @@ public class StandingsViewActivity extends AppCompatActivity {
         // isAlive key
         GameClass game = new GameClass(this);
         //TODO: test when server is running
-        game.gameInfo.players = "[{\"ID\": 101,\"firstName\": \"Christiaan\",\"lastName\":\"Hazlett\",\"residence\": \"KHvR\",\"major\":\"computer science\",\"latitude\": 28.02,\"longitude\": 15.43,\"locUpdateTime\":\"2016-12-08 12:50:25.069637\",\"currentGameID\": 1,\"isAlive\": false},{\"ID\": 204,\"firstName\":\"Nate\",\"lastName\":\"Bender\",\"residence\":\"RVD\",\"major\": \"computer science\",\"latitude\": 28.02,\"longitude\": 15.43,\"locUpdateTime\":\"2016-12-08 19:49:23.989986\",\"currentGameID\":1,\"isAlive\": true}]";
-        //ServerCommunication server = new ServerCommunication(this);
-        //server.getGame();
+        //game.gameInfo.players = "[{\"ID\": 101,\"firstName\": \"Christiaan\",\"lastName\":\"Hazlett\",\"residence\": \"KHvR\",\"major\":\"computer science\",\"latitude\": 28.02,\"longitude\": 15.43,\"locUpdateTime\":\"2016-12-08 12:50:25.069637\",\"currentGameID\": 1,\"isAlive\": false},{\"ID\": 204,\"firstName\":\"Nate\",\"lastName\":\"Bender\",\"residence\":\"RVD\",\"major\": \"computer science\",\"latitude\": 28.02,\"longitude\": 15.43,\"locUpdateTime\":\"2016-12-08 19:49:23.989986\",\"currentGameID\":1,\"isAlive\": true}]";
+        ServerCommunication server = new ServerCommunication(this);
+        server.getGame();
+
+        try{Thread.sleep(1000);}
+        catch (Exception e){};
 
         JSONArray JSONplayerList = game.getPlayers();
 

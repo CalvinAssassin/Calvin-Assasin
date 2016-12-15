@@ -197,9 +197,6 @@ public class ProfileViewActivity extends AppCompatActivity {
     private void finalizeTextFields(){
         SharedPreferences.Editor editor = app_preferences.edit();
         Player player = new Player(this);
-//        editor.putString("playerName", playerNameEditable.getText().toString());
-//        editor.putInt("playerClass", playerClassEditable.getSelectedItemPosition());
-//        editor.putInt("playerHome", playerHomeEditable.getSelectedItemPosition());
         editor.putBoolean("settingsFinalized", settingsFinalized);
 //
         Bitmap profileBitmap = ((BitmapDrawable)profileImage.getDrawable()).getBitmap();
@@ -211,8 +208,8 @@ public class ProfileViewActivity extends AppCompatActivity {
         player.save("lastName" , playerLastNameEditable.getText().toString());
         player.save( "residence",  playerResidenceEditable.getText().toString() );
         player.save( "major", playerMajorEditable.getText().toString());
-        //ServerCommunication server = new ServerCommunication(this);
-        //server.createUserProfile();
+        ServerCommunication server = new ServerCommunication(this);
+        server.createUserProfile();
 
     }
 

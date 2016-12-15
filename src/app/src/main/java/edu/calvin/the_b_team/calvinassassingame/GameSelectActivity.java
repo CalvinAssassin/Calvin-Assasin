@@ -9,6 +9,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -17,6 +18,10 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.gms.games.Game;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -98,27 +103,51 @@ public class GameSelectActivity extends AppCompatActivity {
             }
         });
 
-        //Games that will start
-        String[] upcomingGameObjects = {
-                //TODO: This is hardcoded until we can retrieve the list of games
-                "Game 3 - Begins: 6 December 2016 - 10 Players",
-                "Game 4 - Begins: 13 December 2016 - 2 Players"
-        };
-        upcomingGameList = (ListView)findViewById(R.id.upcomingList);
-        upcomingListItems = new ArrayList<String>();
-        upcomingGameListArrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, upcomingGameObjects);
-        upcomingGameList.setAdapter(upcomingGameListArrayAdapter);
+        ServerCommunication server = new ServerCommunication(this);
 
-        String[] activeGameObjects = {
-                //TODO: This is hardcoded until we can retrieve the list of games
-                "Game 1 - Began: 22 November 2016 - 19 Players",
-                "Game 2 - Began: 29 November 2016 - 22 Players"
-        };
-        activeGameList = (ListView)findViewById(R.id.activeList);
-        activeListItems = new ArrayList<String>();
-        activeGameListArrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, activeGameObjects);
-        activeGameList.setAdapter(activeGameListArrayAdapter);
+        server.getCurrentGames();
+        String currentGamesString = app_preferences.getString("currentGames","{\"currentGames\":[]}");
+        currentGamesString = currentGamesString.substring(1,currentGamesString.length()-1);
+        currentGamesString = "{\"currentGames\":" + currentGamesString + "}";
+        Toast.makeText(getBaseContext(), currentGamesString, Toast.LENGTH_LONG).show();
+        try{
+            JSONObject jObject = new JSONObject(currentGamesString);
+            JSONArray currentGamesJSON = jObject.getJSONArray("currentGames");
+            String[] currentGamesList = new String[currentGamesJSON.length()];
+            for (int i = 0; i < currentGamesJSON.length(); i++) {
+                JSONObject currentGame = currentGamesJSON.getJSONObject(i);
+                currentGamesList[i] = currentGame.getString("gameName");
+            }
+            activeGameList = (ListView)findViewById(R.id.activeList);
+            activeListItems = new ArrayList<String>();
+            activeGameListArrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, currentGamesList);
+            activeGameList.setAdapter(activeGameListArrayAdapter);
+        }
+        catch (JSONException e){
+            Log.e("currentGameRetrieval"," Error Retrieving list of current games.");
+        }
 
+        server.getFutureGames();
+        String upcomingGamesString = app_preferences.getString("futureGames","{\"futureGames\":[]}");
+        upcomingGamesString = upcomingGamesString.substring(1,upcomingGamesString.length()-1);
+        upcomingGamesString = "{\"futureGames\":" + upcomingGamesString + "}";
+
+        try{
+            JSONObject jObject = new JSONObject(upcomingGamesString);
+            JSONArray upcomingGamesJSON = jObject.getJSONArray("futureGames");
+            String[] upcomingGamesList = new String[upcomingGamesJSON.length()];
+            for (int i = 0; i < upcomingGamesJSON.length(); i++) {
+                JSONObject upcomingGame = upcomingGamesJSON.getJSONObject(i);
+                upcomingGamesList[i] = upcomingGame.getString("gameName");
+            }
+            upcomingGameList = (ListView)findViewById(R.id.upcomingList);
+            upcomingListItems = new ArrayList<String>();
+            upcomingGameListArrayAdapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, upcomingGamesList);
+            upcomingGameList.setAdapter(upcomingGameListArrayAdapter);
+        }
+        catch (JSONException e){
+            Log.e("upcomingGameRetrieval"," Error Retrieving list of upcoming games.");
+        }
 
         //User selects a game to join from the upcomingGameList
         upcomingGameList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
