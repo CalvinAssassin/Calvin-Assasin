@@ -117,7 +117,7 @@ public class ServerCommunication {
         GameClass game = new GameClass(this.context);
         int gameID = game.getID();
         Log.i("the game url", baseUrl + "/game/" + gameID);
-        runQuery( baseUrl + "/game/" + gameID , "GET", "game", "");
+        new GetTask().execute(baseUrl + "/game/" + gameID, "game", "");
     }
 
     /**
@@ -127,8 +127,7 @@ public class ServerCommunication {
     {
         Player player = new Player(this.context);
         String url = baseUrl + "/profile/" + player.getID() + "/target";
-        Log.i("url for getTargetInfo", url);
-        runQuery(url,"GET", "game", "");
+        new GetTask().execute(url, "game", "");
     }
 
     /**
