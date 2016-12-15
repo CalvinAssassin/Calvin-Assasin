@@ -38,6 +38,8 @@ import android.location.LocationListener;
 import com.google.android.gms.games.Game;
 
 import org.json.JSONArray;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -130,6 +132,27 @@ public class MainActivity extends AppCompatActivity {
                 assassinationSentAlert.show();
             }
         });
+
+        // get targets info
+        TextView targetName = (TextView) findViewById(R.id.targetNameTextView);
+        TextView targetMajor = (TextView) findViewById(R.id.targetMajorTextView);
+        TextView targetResidence = (TextView) findViewById(R.id.targetHomeTextView);
+        GameClass game = new GameClass(context);
+        int targetID = game.getTargetID();
+        JSONObject target = game.getPlayerInfo(targetID);
+        try {
+            String firstName = target.getString("firstName");
+            String lastName = target.getString("lastName");
+            targetName.setText( firstName + " " + lastName);
+            String major = target.getString("major");
+            String residence = target.getString("residence");
+            targetMajor.setText(major);
+            targetResidence.setText(residence);
+        } catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+
         //get the gps coordinates
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         listener = new LocationListener() {
