@@ -8,6 +8,9 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+/**
+ * This class helps to create the splash screen when the app loads
+ */
 public class SplashActivity extends Activity {
 
     private SharedPreferences app_preferences;

@@ -17,10 +17,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 /**
- * Created by jjh35 on 11/26/2016.
+ * Jesse Hulse
  *
  * This game class stores information about the game. Information will be saved in
- * saved shared preferences.
+ * saved shared preferences under "gameInfo":.
  */
 
 public class GameClass {
@@ -29,7 +29,8 @@ public class GameClass {
     public GameInfo gameInfo;
 
     /**
-     * this class is the data structure that saves the game information, doesn't work timeLeft and gameName
+     * this class is the data structure that saves the game information. When saved to
+     * shared preferences, it is changed to gson format and saved as a string
      */
     public class GameInfo {
 
@@ -46,7 +47,6 @@ public class GameClass {
         public int ID, targetID;
         public String gameName, targetTimeLeft, targetStartTime, players, targetTimeoutTime, startDate;
         public boolean inPlay;
-
     }
 
     /**
@@ -64,14 +64,15 @@ public class GameClass {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = preferences.edit();
             GameInfo gameInfo = new GameInfo();
-            gameInfo.ID = gameInfo.targetID = 0;
+            gameInfo.ID = 1;
+            gameInfo.targetID = 2;
             gameInfo.inPlay = false;
             gameInfo.targetStartTime = "";
             gameInfo.players = "[{}]";
-            gameInfo.startDate = "";
-            gameInfo.targetTimeoutTime = "";
+            gameInfo.startDate = "12-152-16";
+            gameInfo.targetTimeoutTime = "2016-12-25 02:22:00";
             gameInfo.gameName = "g1";
-            gameInfo.targetTimeLeft = "0";
+            gameInfo.targetTimeLeft = "1234566";
             Gson gson = new Gson();
             String json = gson.toJson(gameInfo);
             editor.putString("gameInfo", json);
@@ -79,13 +80,12 @@ public class GameClass {
             this.gameInfo = gameInfo;
         }
         else
-        {
+        { //pull the values from shared preferences
             Gson gson = new Gson();
             String json = app_preferences.getString("gameInfo", "");
             GameInfo gameInformation = gson.fromJson(json, GameInfo.class);
             this.gameInfo = gameInformation;
         }
-
     }
 
     /**
@@ -200,9 +200,7 @@ public class GameClass {
             //go through each JSON object
             while (iter.hasNext()) {
                 String key = iter.next();
-                //Log.i("key in player class ", key );
-                //if the server responds with error, break and
-                //TODO, what should be done in the case of an error
+                //if the server responds with error, break
                 if ( key.equals("err")){
                     return false;
                 }
@@ -216,8 +214,8 @@ public class GameClass {
                 {
                     try {
                         Object value = jsonObject.get(key);
-                        Log.i( "the key is ", key );
-                        Log.i( " the value is ", value.toString() );
+//                        Log.i( "the key is ", key );
+//                        Log.i( " the value is ", value.toString() );
                         //store the value
                         if( key.equals("players")) {
                             //before saving the players JSONArray, change it to a string
@@ -231,17 +229,13 @@ public class GameClass {
                         }
 
                     } catch (Exception e) {
-                        // Something went wrong!
                         e.printStackTrace();
-                       // Log.i( "exception in saveInfo", e.toString());
                         return false;
                     }
                 }
-                else {
-                    Log.i("bad name", " here 1");
+                else {;
                     return false;
                 }
-
             }
         }
         saveToDrive();
@@ -264,7 +258,6 @@ public class GameClass {
                 Field field = c.getField(fieldName);
                 Object value = field.get(this.gameInfo);
                 return value;
-                //return value.toString();
             } catch (Exception e) {
                 return "err";
             }
@@ -350,7 +343,7 @@ public class GameClass {
      * @param ID
      *  The ID of the player being retreived
      * @return
-     *  The playeri info
+     *  The player info
      */
     public JSONObject getPlayerInfo( int ID ) {
         //first convert jsonArray String to arrayList

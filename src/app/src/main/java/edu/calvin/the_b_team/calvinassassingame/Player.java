@@ -11,8 +11,9 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 /**
- * Created by jjh35 on 11/26/2016.
- * This class stores and gives access to all information about the user
+ *
+ * This class stores and gives access to all information about the user and saves
+ * it to shared preferences
  */
 
 public class Player {
@@ -22,7 +23,8 @@ public class Player {
     private PlayerInfo playerInfo;
 
     /**
-     * this class is a data structure that will save the information about the user
+     * this class is a data structure that will save the information about the user. It will be
+     * saved to shared preferences
      */
     public class PlayerInfo{
         public String[] fieldNames = { "ID", "firstName", "lastName", "residence", "major",
@@ -55,7 +57,7 @@ public class Player {
             SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
             SharedPreferences.Editor editor = preferences.edit();
             PlayerInfo playerInfo = new PlayerInfo();
-            playerInfo.ID = playerInfo.currentGameID = 0;
+            playerInfo.ID = playerInfo.currentGameID = 1;
             playerInfo.latitude = playerInfo.longitude = 0.0;
             playerInfo.firstName = "first name";
             playerInfo.lastName = "last name";
@@ -70,7 +72,7 @@ public class Player {
             this.playerInfo = playerInfo;
         }
         else
-        {
+        {//pull from shared preferences
             Gson gson = new Gson();
             String json = app_preferences.getString("playerInfo", "");
             PlayerInfo playerInformation = gson.fromJson(json, PlayerInfo.class);
@@ -89,7 +91,6 @@ public class Player {
         PlayerInfo gameInformation = gson.fromJson(json, PlayerInfo.class);
         this.playerInfo = gameInformation;
     }
-
 
     /**
      * The following methods are overloads of public boolean save(...) for different types
@@ -233,7 +234,6 @@ public class Player {
                     }
                 }
                 else {
-                    Log.i("bad name", key);
                     return false;
                 }
             }

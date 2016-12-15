@@ -20,6 +20,9 @@ import com.google.android.gms.games.Game;
 
 import java.util.ArrayList;
 
+/**
+ * This activity allows a user to select a game from upcoming and view current games
+ */
 public class GameSelectActivity extends AppCompatActivity {
 
     //Initialize Drawer and Layout things

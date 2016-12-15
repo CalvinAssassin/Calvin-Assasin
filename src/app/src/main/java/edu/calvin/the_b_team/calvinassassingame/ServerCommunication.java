@@ -455,7 +455,7 @@ public class ServerCommunication {
     /**
      * Inner class for DELETEing
      * From professor VanderLinden,Thanks!
-     * TODO: DOES NOT WORK!!!
+     * TODO: test
      */
 //    private class DeleteTask extends AsyncTask<String, Void, JSONArray> {
 //

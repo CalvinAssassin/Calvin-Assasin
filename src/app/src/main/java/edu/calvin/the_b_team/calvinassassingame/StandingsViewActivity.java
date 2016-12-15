@@ -30,6 +30,9 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * This is the standing page that displays the standings of a current game.
+ */
 public class StandingsViewActivity extends AppCompatActivity {
 
     private ListView mDrawerList;
@@ -125,7 +128,6 @@ public class StandingsViewActivity extends AppCompatActivity {
                 JSONObject player = JSONplayerList.getJSONObject(i);
                 Log.i("the player object ", player.toString());
                 playerObjects[i] = player.getString("firstName") + " " + player.getString( "lastName" ) + (Boolean.valueOf(player.getString("isAlive"))? " - Alive" : " - Dead");
-                //playerObjects[i] = " test ";
             }
             catch (JSONException e){
                 e.printStackTrace();
