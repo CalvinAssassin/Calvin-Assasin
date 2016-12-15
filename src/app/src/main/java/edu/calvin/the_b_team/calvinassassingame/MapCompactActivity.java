@@ -24,7 +24,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.json.JSONObject;
 
 /**
- * Created by jjh35 on 11/5/2016.
+ * This activity draws a map and displays the target's location
  */
 public class MapCompactActivity extends AppCompatActivity implements OnMapReadyCallback {
 

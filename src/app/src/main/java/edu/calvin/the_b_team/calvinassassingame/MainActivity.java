@@ -74,16 +74,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         setTitle(getResources().getText(R.string.main_activity_title));
 
-        //this code saves values that are currently consisten with the server
-//        Player player = new Player(context);
-//        player.save("ID", 10);
-//        GameClass g = new GameClass(context);
-//        g.save("ID", 1);
-//        g.save("targetID", 11);
-//        ServerCommunication server = new ServerCommunication(context);
-//        server.getGame();
-
-
         //Set up the menu drawer and its items
         mDrawerList = (ListView)findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
@@ -151,8 +141,6 @@ public class MainActivity extends AppCompatActivity {
         TextView targetMajor = (TextView) findViewById(R.id.targetMajorTextView);
         TextView targetResidence = (TextView) findViewById(R.id.targetHomeTextView);
         int targetID = game.getTargetID();
-        Log.i("here", " printing array");
-        Log.i("the players array", game.getPlayers().toString());
         JSONObject target = game.getPlayerInfo(targetID);
         try {
             String firstName = target.getString("firstName");
@@ -261,8 +249,8 @@ public class MainActivity extends AppCompatActivity {
             Player player = new Player(context);
             player.save("latitude", location.getLatitude());
             player.save("longitude", location.getLongitude());;
-            //server.updateUserProfileCoordinatesWithoutDelay( "latitude",  location.getLatitude());
-            //server.updateUserProfileCoordinatesWithoutDelay("longitude", location.getLongitude());
+            server.updateUserProfileCoordinatesWithoutDelay( "latitude",  location.getLatitude());
+            server.updateUserProfileCoordinatesWithoutDelay("longitude", location.getLongitude());
             return location;
         }
         return null;

@@ -34,7 +34,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-
+/**
+ * This activity allows a user to create a profile
+ */
 public class ProfileViewActivity extends AppCompatActivity {
 
     //Initialize Drawer and Layout things
