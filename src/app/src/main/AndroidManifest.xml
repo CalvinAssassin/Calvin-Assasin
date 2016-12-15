@@ -32,6 +32,7 @@
         <activity android:name=".StandingsViewActivity" />
         <activity android:name=".HelpActivity" />
         <activity android:name=".TopicActivity" />
+        <activity android:name=".IndividualHelp" />
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />

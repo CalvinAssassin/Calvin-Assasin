@@ -31,17 +31,16 @@ public class HelpActivity extends AppCompatActivity {
      *
      */
 
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_help);
         setupActionBar();
 
         // Set up so that formatted text can be in the help_page_intro text and so that html links are handled.
-        TextView textView = (TextView) findViewById (R.id.help_page_intro);
+        TextView textView = (TextView) findViewById(R.id.help_page_intro);
         if (textView != null) {
-            textView.setMovementMethod (LinkMovementMethod.getInstance());
-            textView.setText (Html.fromHtml (getString (R.string.help_page_intro_html)));
+            textView.setMovementMethod(LinkMovementMethod.getInstance());
+            textView.setText(Html.fromHtml(getString(R.string.help_page_intro_html)));
         }
     }
 

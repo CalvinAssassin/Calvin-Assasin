@@ -57,7 +57,7 @@ public class StandingsViewActivity extends AppCompatActivity {
     // Beginning of menu drawer configuration
 
     private void addDrawerItems() {
-        String[] menuPages = { "Target", "Profile", "Map", "Join a Game", "Settings" };
+        String[] menuPages = { "Target", "Profile", "Map", "Join a Game", "Settings", "Help" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuPages);
         mDrawerList.setAdapter(mAdapter);
 
@@ -122,19 +122,20 @@ public class StandingsViewActivity extends AppCompatActivity {
         }
 
         if (id == R.id.help_button) {
-            intent = new Intent(this, HelpActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            this.startActivity(intent);
+            String helpText = getString(R.string.standings_help);
+            intent = new Intent(this, IndividualHelp.class);
+            intent.putExtra("helpText", helpText);
+            startActivity(intent);
             return true;
         }
 
-        // Activate the navigation drawer toggle
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
-            return true;
-        }
+            // Activate the navigation drawer toggle
+            if (mDrawerToggle.onOptionsItemSelected(item)) {
+                return true;
+            }
 
-        return super.onOptionsItemSelected(item);
-    }
+            return super.onOptionsItemSelected(item);
+        }
 
     private void selectItem(int position) {
 
@@ -163,6 +164,11 @@ public class StandingsViewActivity extends AppCompatActivity {
                 break;
             case 4:
                 intent = new Intent(this, SettingsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                this.startActivity(intent);
+                break;
+            case 5:
+                intent = new Intent(this, HelpActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 this.startActivity(intent);
                 break;

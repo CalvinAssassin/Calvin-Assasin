@@ -78,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
         countDownStart();
 
         // when killedTarget button is clicked,
-        // show a pop up which says a confirmation message has been sent
+        // show a pop up which says a confirmastion message has been sent
         // then get response from target and alert the user of their targets response
         assassinationSentAlert = new AlertDialog.Builder(MainActivity.this);
         targetConfirmationAlert = new AlertDialog.Builder(MainActivity.this);
@@ -233,11 +233,11 @@ public class MainActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         if (id == R.id.help_button) {
-            intent = new Intent(this, HelpActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            this.startActivity(intent);
+            String helpText = getString(R.string.target_help);
+            intent = new Intent(this, IndividualHelp.class);
+            intent.putExtra ("helpText", helpText);
+            startActivity (intent);
             return true;
         }
 

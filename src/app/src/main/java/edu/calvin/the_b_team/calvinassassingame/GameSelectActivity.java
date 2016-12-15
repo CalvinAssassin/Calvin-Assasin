@@ -147,7 +147,7 @@ public class GameSelectActivity extends AppCompatActivity {
     // Beginning of menu drawer configuration
 
     private void addDrawerItems() {
-        String[] menuPages = { "Target", "Profile", "Map", "Standings", "Settings" };
+        String[] menuPages = { "Target", "Profile", "Map", "Standings", "Settings", "Help" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, menuPages);
         mDrawerList.setAdapter(mAdapter);
 
@@ -201,9 +201,10 @@ public class GameSelectActivity extends AppCompatActivity {
         }
 
         if (id == R.id.help_button) {
-            intent = new Intent(this, HelpActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            this.startActivity(intent);
+            String helpText = getString(R.string.join_game_help);
+            intent = new Intent(this, IndividualHelp.class);
+            intent.putExtra("helpText", helpText);
+            startActivity(intent);
             return true;
         }
         // Activate the navigation drawer toggle
@@ -240,6 +241,11 @@ public class GameSelectActivity extends AppCompatActivity {
                 break;
             case 4:
                 intent = new Intent(this, SettingsActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                this.startActivity(intent);
+                break;
+            case 5:
+                intent = new Intent(this, HelpActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 this.startActivity(intent);
                 break;
