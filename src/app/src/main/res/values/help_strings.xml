@@ -4,10 +4,11 @@
     <string name="no_help_available">
       There is no help available at this time.
     </string>
+
+    <!--String resources for the help activity page  <![CDATA[ ]]> allows you to use html tags for your string text-->
     <string name="about_help_topics">
       Help is available for each section of this app.
     </string>
-
     <string name="help_page_intro">
         We are here to help you!
         For information on the different parts of this app, touch any of the images below!</string>
@@ -17,7 +18,6 @@
       For information on the different parts of this app, touch any of the images below:
        ]]>
     </string>
-
     <string name="help_title_section1">Profile</string>
     <string name="help_text_section1">
       Before you can join a game, you will have to create a profile, and provide the required credentials.
@@ -31,7 +31,6 @@
         </p>
       ]]>
     </string>
-
     <string name="help_title_section2">Map</string>
     <string name="help_text_section2">
         The Map page shows the location of your target. It updates and sends you your target\'s location every ten
@@ -46,13 +45,11 @@
        ]]>
     </string>
 
-
     <string name="help_title_section3">Standings</string>
     <string name="help_text_section3">
       Standings shows who has been assassinated, and who is still in the game.
         Check to see who is dead, or is still alive
     </string>
-
     <string name="topic_section3">
     <![CDATA[
       <p>
@@ -60,7 +57,6 @@
         </p>
        ]]>
     </string>
-
     <string name="help_title_section4">Join a game</string>
     <string name="help_text_section4">
       You have to join a game if you want to play. Games already in session can not be joined but you can join
@@ -75,30 +71,25 @@
        ]]>
     </string>
 
+    <!--String resource for Help pages-->
     <string name="help_intro">Help is always available for you!</string>
-
     <string name="map_help">
         The Map page shows the location of your target. It updates and sends you your target\'s location every ten
         minutes.
     </string>
-
     <string name="target_help">
         The Target page shows your assigned target. Assassinate your target before time runs out!
         If you\'re able to assassinate your target, click the "I eliminated my target button" and you will be given a new target.
         Your Target\'s information is also given to you.
     </string>
-
-
     <string name="profile_help">
         A profile has to be created to join a game. You will be assigned a target after
         your profile has been created. Enter the necessary credentials required to create a profile. After you finalize your
         profile and join a session, you will not be allowed to change your information until the session is over.
     </string>
-
     <string name="standings_help">
         The Standings page shows players who are "alive" and "dead" in the current game session.
     </string>
-
     <string name="join_game_help">
         This page gives you information on current games in session, and game sessions that have not started yet.
         You cannot join a game in session, but you can join a session that has not started yet.

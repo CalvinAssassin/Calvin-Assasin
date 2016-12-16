@@ -1,3 +1,10 @@
+/*
+* Calvin-Assassin individual help page activity -- takes you to a specific help page for each activity.
+* Created: 12/14/16
+*
+*
+ */
+
 package edu.calvin.the_b_team.calvinassassingame;
 
 import android.support.v4.widget.DrawerLayout;

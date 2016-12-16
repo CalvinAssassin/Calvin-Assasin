@@ -1,3 +1,11 @@
+/*
+* Calvin-Assassin help page activity -- Takes you to a general help page when the Help activity is
+* selected from the drawer menu
+* Created: 12/13/16
+*
+ */
+
+
 package edu.calvin.the_b_team.calvinassassingame;
 
 import android.support.v7.app.ActionBar;

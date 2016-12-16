@@ -342,6 +342,8 @@ public class ProfileViewActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+
+        //go to the activity's specific help page
         if (id == R.id.help_button) {
             String helpText = getString(R.string.profile_help);
             intent = new Intent(this, IndividualHelp.class);

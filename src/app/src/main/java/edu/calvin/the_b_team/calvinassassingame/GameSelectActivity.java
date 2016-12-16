@@ -199,7 +199,7 @@ public class GameSelectActivity extends AppCompatActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
+        //go to help page when question icon is clicked
         if (id == R.id.help_button) {
             String helpText = getString(R.string.join_game_help);
             intent = new Intent(this, IndividualHelp.class);
