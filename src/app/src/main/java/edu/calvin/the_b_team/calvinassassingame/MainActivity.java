@@ -111,8 +111,6 @@ public class MainActivity extends AppCompatActivity {
         });
         assassinationSentAlert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             public void onClick (DialogInterface dialog, int id) {
-                // for demo, this just sends the confirmation message 5 secs after
-                // assassination request has been sent
                 handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     public void run() {
@@ -128,7 +126,8 @@ public class MainActivity extends AppCompatActivity {
         killedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //when this button is clicked, show the alert
+                //when this button is clicked, show the alert that a confirmation message is being sent
+                // and send the message
                 assassinationSentAlert.show();
                 ServerCommunication server = new ServerCommunication(context);
                 server.confirmAssassination();
@@ -199,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
                         count_down_textView.setTextColor(Color.RED);
                         count_down_textView.setText("TARGET\nELIMINATED");
                     } else {
+                        // math to display the count down format correctly
                         long diff = futureDate.getTime() - currentDate.getTime();
                         long days = diff / (24 * 60 * 60 * 1000);
                         diff -= days * (24 * 60 * 60 * 1000);
@@ -213,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
                         if (days < 1) {
                             count_down_textView.setTextColor(Color.RED);
                         }
+                        // displays the format like dd:hh:mm:ss
                         count_down_textView.setText(String.format("%02d", days) + ":" + "" + String.format("%02d", hours)
                                 + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds));
                     }
