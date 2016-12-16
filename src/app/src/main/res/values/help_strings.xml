@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="no_help_available">
+      There is no help available at this time.
+    </string>
+    <string name="about_help_topics">
+      Help is available for each section of this app.
+    </string>
+
+    <string name="help_page_intro">
+        We are here to help you!
+        For information on the different parts of this app, touch any of the images below!</string>
+    <string name="help_page_intro_html">
+    <![CDATA[
+      We are here to help you!
+      For information on the different parts of this app, touch any of the images below!:
+       ]]>
+    </string>
+
+    <string name="help_title_section1">Profile</string>
+    <string name="help_text_section1">
+      Before you can join a game, you will have to create a profile, and provide the required credentials.
+    </string>
+    <string name="topic_section1">
+    <![CDATA[
+      <p>
+        If you have an app that you want to add Help to, this demo app shows one way you can do that.
+        All you need are two activities: one for the main Help screen and the other to display the Help
+        text of a selected topic.
+        </p>
+      <p>Each of the help topics has a full page of help text.
+        The help text is defined in xml files in the resource folders of the application.
+        If you use CDATA in the xml definitions, you can define paragraphs and text in bold and italics.
+        Links are also supported.
+       </p>
+      <p>
+        Long topics can be scrolled. Try this one in both portrait and landscape orientation.
+        You will probably have to scroll the text in landscape.
+       </p>
+      <p>
+        If you want all the details about how this app was constructed,
+        touch this link to open a web browser:
+        <a href="http://blahti.wordpress.com">blahti blog</a>.
+        </p>
+      <p><b>Return to the previous screen by touching the Back button.</b>
+        </p>
+      ]]>
+    </string>
+
+    <string name="help_title_section2">Map</string>
+    <string name="help_text_section2">
+     The Map view displays the location of your target 10 minutes ago.
+        The location of your target will update every 10 minutes
+    </string>
+    <string name="topic_section2">
+    <![CDATA[
+      <p>
+        You can display simple forms of Html in a text view.
+        You use the Html class and its fromHtml static method.
+        See
+        <a href="http://developer.android.com/reference/android/text/Html.html">Html on Android Developers</a>.
+      </p>
+      <p>
+        As shown here, paragraphs are supported,
+        as are <b>bold text</b> and <i>italics</i>.
+        The preceding paragraph has a link in it.
+      </p>
+      <p><b>Return to the previous screen by touching the Back button.</b>
+        </p>
+       ]]>
+    </string>
+
+
+    <string name="help_title_section3">Standings</string>
+    <string name="help_text_section3">
+      Standings shows who has been assassinated, and who is still in the game.
+        Check to see who is dead, or is still alive
+    </string>
+    <string name="topic_section3">
+    <![CDATA[
+      <p>
+      You can define links in the help text strings.
+      To get them to work, you have to do some extra set up in the code.
+      </p>
+      <p>
+        To understand how to do this, study
+        <a href="http://developer.android.com/reference/android/text/method/LinkMovementMethod.html">
+          LinkMovementMethod</a> and how it is used with a TextView.
+      </p>
+      <p><b>Return to the previous screen by touching the Back button.</b>
+        </p>
+       ]]>
+    </string>
+
+    <string name="help_title_section4">Join a game</string>
+    <string name="help_text_section4">
+      You have to join a game if you want to play. Games already in session can not be joined but you can join
+        upcoming games.
+    </string>
+
+    <string name="help_title_section5">Questions or comments?</string>
+    <string name="help_text_section5">
+      Still have questions? Feel free to send feedback and questions to nsbender1@gmail.com
+    </string>
+
+    <string name="topic_section4">
+    <![CDATA[
+      <p>
+      Image buttons define an image and a label on the screen.
+      Touching an image takes you to the help text for a topic.
+      </p>
+      <p>
+        For each button, you use three images.
+        One represents the button in its default, unselected state.
+        The other two are used for when the button is selected and pressed.
+        The images and the definition of the button drawable are in the drawable folders in the resource folder.
+        </p>
+      <p>
+        By the way, the images used in this demo app are left over from an
+        <a href="http://blahti.wordpress.com/2011/03/14/build-dashboard-ui-for-android/">earlier demo program</a>.
+        For a real app, choose images that are good fit for the help topics.
+        </p>
+      <p><b>Return to the previous screen by touching the Back button.</b>
+        </p>
+       ]]>
+    </string>
+
+
+</resources>

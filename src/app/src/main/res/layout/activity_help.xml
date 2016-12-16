@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/light_background"
+    android:orientation="vertical" >
+
+    <ScrollView android:id="@+id/ScrollView1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="6dip"
+            >
+            <TextView
+                android:id="@+id/help_page_intro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/help_page_intro"
+                android:padding="2dip"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused"
+                android:textSize="18sp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="4dip">
+
+                <Button android:id="@+id/help_button1"
+                    android:layout_width="232dp"
+                    style="@style/HelpButton.Dark"
+                    android:text="@string/help_title_section1"
+                    android:textColor="@color/colorPrimary"
+                    android:drawableTop="@drawable/help_image1"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/help_text_section1"
+                    android:padding="8dip"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/black"
+
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <Button android:id="@+id/help_button2"
+                    android:layout_height="173dp"
+                    style="@style/HelpButton.Dark"
+                    android:text="@string/help_title_section2"
+                    android:textColor="@android:color/holo_green_dark"
+                    android:drawableTop="@drawable/help_image2"
+                    android:layout_width="243dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/help_text_section2"
+                    android:padding="8dip"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <Button android:id="@+id/help_button3"
+                    android:layout_width="241dp"
+                    android:layout_height="wrap_content"
+                    style="@style/HelpButton.Dark"
+                    android:text="@string/standings_activity_title"
+                    android:drawableTop="@drawable/help_image3"
+                    tools:text="standings  "
+                    android:textColor="?android:attr/colorFocusedHighlight" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/help_text_section3"
+                    android:padding="8dip"
+                    android:layout_weight="1"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <Button android:id="@+id/help_button4"
+                    android:layout_width="239dp"
+                    android:layout_height="197dp"
+                    style="@style/HelpButton.Dark"
+                    android:text="@string/help_title_section4"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:drawableTop="@drawable/help_image4"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/help_text_section4"
+                    android:padding="8dip"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:textColor="@color/common_google_signin_btn_text_dark_focused"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/help_title_section5"
+                    android:padding="8dip"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/help_text_section5"
+                    android:padding="8dip"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
